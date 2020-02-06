@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1>ORSP</h1>
+        <h2>Research Days 2021</h2>
+        <h3>Student Submission</h3>
+        <h4>Primary Presenter</h4>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="firstName">First name</label>
+                    <input type="text" class="form-control" id="firstName">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="lastName">Last name</label>
+                    <input type="text" class="form-control" id="lastName">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="keanID">Student ID</label>
+                    <input type="number" class="form-control" id="keanID" min="0" max="9999999">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="keanEmail">Email Address</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="keanEmail">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="keanEmail">@kean.edu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="major">Major</label>
+                    <select id="major" class="form-control">
+                        <option></option>
+                        <option>Computer Science (Cyber Security Option)</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="class">Class Level</label>
+                    <select id="class" class="form-control">
+                        <option></option>
+                        <option>Sophomore</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="campus">Campus</label>
+                    <select id="campus" class="form-control">
+                        <option></option>
+                        <option>Union (Main)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="" class="btn btn-info col-md-3">Add a Co-Presenter</button>
+
+            <button type="submit" class="btn btn-primary col-md-3">Submit</button>
+        </form>
+
+    </div>
+
+
+
+
+</body>
+
+</html>
