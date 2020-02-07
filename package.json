@@ -1,0 +1,25 @@
+{
+  "name": "senior-capstone",
+  "version": "1.0.0",
+  "description": "Our Senior Capstone",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrfn323/senior-capstone.git"
+  },
+  "author": "RADS Capstone Group",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrfn323/senior-capstone/issues"
+  },
+  "homepage": "https://github.com/mrfn323/senior-capstone#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
