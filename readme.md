@@ -28,6 +28,8 @@ Back-End Development: Syed Fahad Nadeem and Alexander Reis
 `nodemon app.js`
 2. Open your preferred web browser and go to localhost:3000
 
+If you are running into nodemon not found, use `(-g --force)`
+
 # How to view/modify documentation files
 
 The documentation for the database design was created using draw.io. This is a website and desktop application that allows for easy chart and system layout planning. To edit/view the file, you can go to draw.io and then load the file onto the site to view and edit it. 
