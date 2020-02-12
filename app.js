@@ -9,7 +9,7 @@ app.use(express.static('public'));
 
 app.get("/", (req,res)=>{
 
-    res.sendFile(htmlFile('index'));
+    res.sendFile(htmlFile('/index.html'));
 
 });
 
