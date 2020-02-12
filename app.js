@@ -13,16 +13,23 @@ app.get("/", (req,res)=>{
 
 });
 
-app.get("/student-form", (req,res)=>{
+// app.get("/student-form", (req,res)=>{
 
-    res.sendFile(htmlFile("student_form"));
+//     res.sendFile(htmlFile("student_form"));
 
-})
+// })
 
-app.post("/student-form", (req,res)=>{
+// app.post("/student-form", (req,res)=>{
 
-    console.log("Post requeest from student form works!")
-    res.sendFile(htmlFile("index"));
+//     console.log("Post requeest from student form works!");
+//     res.sendFile(htmlFile("confirm"));
+
+// })
+
+
+app.get("*", (req,res)=>{
+
+    res.sendFile(htmlFile(req.url));
 
 })
 
@@ -31,6 +38,6 @@ app.listen(port, ()=>console.log(`Server now running at port ${port}`));
 
 // Function to make it easier to call a page instead of having to do path.join everytime. Just need the name without the .html
 function htmlFile(page){
-    viewsPath = 'views/' + page + '.html';
+    viewsPath = 'views' + page;
     return path.join(dir, viewsPath);
 }
