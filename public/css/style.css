@@ -8,3 +8,11 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance:textfield;
 }
+
+body {
+background-color: #f8f9fa;
+}
+
+.navbar {
+  background-color: #eeeeee !important;
+}
