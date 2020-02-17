@@ -1,7 +1,19 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3000; //3000 for Development. Can be changed when we are ready to implement. 
+
+// Everything needed for db
+const dbconfig = require('./dbconfig.json');
+const mongoose = require('mongoose');
+const host = dbconfig.host;
+const user = dbconfig.user;
+const pass = dbconfig.password;
+const authdb = dbconfig.authenticationDatabase;
+const dbport = dbconfig.port;
+const database = dbconfig.database;
+const uri = `mongodb://${user}:${pass}@${host}:${dbport}/${database}?authSource=${authdb}`;
+
+const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
 const dir = __dirname;
 
 app.set('views', path.join(__dirname, 'views'));
@@ -13,25 +25,37 @@ app.get("/", (req,res)=>{
 
 });
 
-// app.get("/student-form", (req,res)=>{
+app.get("/login", (req,res)=>{
 
-//     res.sendFile(htmlFile("student_form"));
+    res.sendFile(htmlFile('/login.html'))
 
-// })
+})
 
-// app.post("/student-form", (req,res)=>{
+// Routing for testing
 
-//     console.log("Post requeest from student form works!");
-//     res.sendFile(htmlFile("confirm"));
+app.get("/mongotest", (req,res)=>{
 
-// })
+    console.log(uri)
+    mongoose.connect(uri, {useNewUrlParser: true});
+    var myModel = mongoose.model('capstone');
+    myModel.find((error, result)=>{
+        if(error){
+            console.log(error);
+        }else{
+            console.log(result);
+        }
+    });
+    res.sendFile(htmlFile('/index.html'));
 
+})
 
+//Catch all routing
 app.get("*", (req,res)=>{
 
     res.sendFile(htmlFile(req.url));
-
+    
 })
+
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
 
