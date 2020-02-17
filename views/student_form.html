@@ -42,19 +42,18 @@
         <div class="row">
             <h2>Student Submission</h2>
         </div>
-        <div class="row">
-            <h4>Research Project</h4>
-        </div>
-
         <form action="/student-form" method="POST">
+            <div class="form-group row mt-4 col-md-12">
+                <h4>Research Project</h4>
+            </div>
             <div class="row">
                 <div class="form-group col-md-8">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title">
+                    <input type="text" class="form-control" id="title" required="true">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="projectArea">Subject Area</label>
-                    <input type="text" class="form-control" id="projectArea">
+                    <input type="text" class="form-control" id="projectArea" required="true">
                 </div>
             </div>
             <div class="row">
@@ -63,68 +62,63 @@
                     <br>
                     <small class="text-muted">Maximum Number of words for this text box is
                         <b>150</b>.</small> <textarea class="form-control" id="abstract"
-                        onKeyPress="return taLimit(this)" onKeyUp="return taCount(this,'myCounter')" name="Description"
-                        rows=7 wrap="physical" cols=40></textarea>
+                        rows=8 required="true"></textarea>
 
                     <small class="text-muted">You have <b><span id=myCounter>150</span></b> words remaining
                         for your description.</small>
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="advisor">Faculty Advisor</label>
-                    <select id="advisor" class="form-control">
+                    <select id="advisor" class="form-control" required="true">
                         <option></option>
                         <option value="Daehan Kwak">Dr. Daehan Kwak</option>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="researchCampus">Campus Conducted at</label>
-                    <select id="researchCampus" class="form-control">
+                    <select id="researchCampus" class="form-control" required="true">
                         <option></option>
                         <option value="Union, NJ">Union (Main)</option>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="presentationType">Presentation Type</label>
-                    <select id="presentationType" class="form-control">
+                    <select id="presentationType" class="form-control" required="true">
                         <option></option>
                         <option value="Poster">Poster</option>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="fundedBy">Funded By</label>
-                    <select id="fundedBy" class="form-control">
+                    <select id="fundedBy" class="form-control" required="true">
                         <option></option>
                         <option value="McNair">McNair</option>
                     </select>
                 </div>
             </div>
-
             <hr>
-
-            <div class="row mt-4">
+            <div class="form-group row mt-4 col-md-12">
                 <h4>Primary Presenter</h4>
             </div>
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="firstName">First name</label>
-                    <input type="text" class="form-control" id="firstName">
+                    <input type="text" class="form-control" id="firstName" required="true">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="lastName">Last name</label>
-                    <input type="text" class="form-control" id="lastName">
+                    <input type="text" class="form-control" id="lastName" required="true">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="keanID">Student ID</label>
-                    <input type="number" class="form-control" id="keanID" min="0" max="9999999">
+                    <input type="number" class="form-control" id="keanID" min="0" max="9999999" required="true">
                 </div>
                 <div class="form-group col-md-4 ">
                     <label for="keanEmail">Email Address</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="keanEmail">
+                        <input type="text" class="form-control" id="keanEmail" required="true">
                         <div class="input-group-append">
                             <span class="input-group-text" id="keanEmail">@kean.edu</span>
                         </div>
@@ -134,14 +128,14 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="major">Major</label>
-                    <select id="major" class="form-control">
+                    <select id="major" class="form-control" required="true">
                         <option></option>
                         <option>Computer Science (Cyber Security Option)</option>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="class">Class Level</label>
-                    <select id="class" class="form-control">
+                    <select id="class" class="form-control" required="true">
                         <option></option>
                         <option value="Freshman">Freshman</option>
                         <option value="Sophomore">Sophomore</option>
@@ -152,7 +146,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="campus">Campus</label>
-                    <select id="campus" class="form-control">
+                    <select id="campus" class="form-control" required="true">
                         <option></option>
                         <option value="Union">Union (Main)</option>
                         <option value="Wenzhou">Wenzhou (China)</option>
@@ -161,25 +155,17 @@
                     </select>
                 </div>
             </div>
-
-
-
-            <div class="form-row">
-                <div class="form-group col-md-8">
-                    <hr>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <h4>Co-Presenters</h4>
-                    <button type="button" class="btn btn-info mt-2">Add a Co-Presenter</button>
-                </div>
-
-                <div class="form-group col-md-8">
-                    <hr>
-                </div>
-
+            <hr>
+            <div class="form-group row mt-4 col-md-12">
+                <h4>Co-Presenters</h4>
             </div>
-            <div class="form-row mb-2">
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <button type="button" class="btn btn-info">Add a Co-Presenter</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-2">
                 <div class="form-group col">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="waiver" required="true">
@@ -189,17 +175,12 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <button type="submit" class="btn btn-primary col-md-3">Submit</button>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>
-    </div>
-
-
-
     </div>
     <!-- /Container -->
 
