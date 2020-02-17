@@ -4,7 +4,8 @@
   "description": "Our Senior Capstone",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nodemon app.js",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
   "homepage": "https://github.com/mrfn323/senior-capstone#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.2"
+    "mongoose": "^5.9.1"
   },
-  "devDependencies": {}
+  "devDependencies": {"nodemon": "^2.0.2"}
 }
