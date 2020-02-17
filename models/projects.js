@@ -26,7 +26,7 @@ database.on('error', () => console.log('Error occurred on database.'));
 database.once('connected', () => console.log(`Connected to database at ${host}`));
 
 
-var projects = new schema({
+var projectSchema = new schema({
 
     presentaionType: String,
     title: String,
@@ -42,3 +42,7 @@ var projects = new schema({
     dateSubmitted: Date
 
 });
+
+// Testing the schema
+const projects = mongoose.model('projects', projectSchema);
+const choose = new ChooseModel();
