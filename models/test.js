@@ -1,9 +1,9 @@
 // This file can be used to reference how to insert and how to search for a specific model
 const dbconfig = require('./dbconfig.json');
 const mongoose = require('mongoose');
-const URL = `mongodb://${dbconfig.user}:${dbconfig.password}@${dbconfig.host}:${dbconfig.port}/${dbconfig.database}?authSource=${dbconfig.authenticationDatabase}`;
+const URL = dbconfig.URL;
 const database = mongoose.connection;
-
+console.log(URL);
 var schema = mongoose.Schema;
 
 var db = mongoose.connect(URL, {useNewUrlParser: true});
@@ -17,17 +17,23 @@ var testSchema = new schema({
 
 })
 
+/*
+To find a specific document in mongo
+*/
 
+// var test = mongoose.model('Test', testSchema);
 
-var test = mongoose.model('Test', testSchema);
+// test.find({}, (err, findMe)=>{
 
-test.find({}, (err, findMe)=>{
+//     if(err) console.error(err);
+//     console.log(findMe);
+//     database.close();
 
-    if(err) console.error(err);
-    console.log(findMe);
-    database.close();
+// });
 
-});
+/*
+To insert model into mongo
+*/
 
 // var newTest = new test({name: "Testing"});
 // console.log(newTest.name);
@@ -39,3 +45,4 @@ test.find({}, (err, findMe)=>{
 //     database.close();
 // })
 
+database.close();
