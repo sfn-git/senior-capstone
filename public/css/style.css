@@ -16,3 +16,7 @@ background-color: #f8f9fa;
 .navbar {
   background-color: #eeeeee !important;
 }
+
+#signinBtn:hover{
+  cursor: pointer;
+}
