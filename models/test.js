@@ -45,4 +45,16 @@ To insert model into mongo
 //     database.close();
 // })
 
+// Testing major
+// const major = require('major.js');
+
+// var insertMajor = new major({
+
+//     major: "Computer Science",
+//     college: "College of Natural and Applied Health Sciences"
+
+// })
+
+// insertMajor.save()
+
 database.close();
