@@ -10,4 +10,4 @@ var majorSchema = new schema({
 
 var major = mongoose.model("Major", majorSchema);
 
-module.exports = major;
+module.exports = ()=>{return major};

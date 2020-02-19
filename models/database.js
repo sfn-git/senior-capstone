@@ -1,12 +1,21 @@
 const dbconfig = require('./dbconfig.json');
 const mongoose = require('mongoose');
+const tunnel = require('tunnel-ssh');
 const URL = dbconfig.URL;
-const database = mongoose.connection;
-var db = mongoose.connect(URL, {useNewUrlParser: true});
 
-module.exports = {
+var config = {
 
-    db: ()=>{return db},
-    database: ()=>{return database}
+    username: dbconfig.user,
+    privateKey: require('fs').readFileSync(dbconfig.key),
+    host: dbconfig.host,
+    port: dbconfig.port
 
-};
+}
+
+
+
+// module.exports = {
+
+//     connection: ()=>{return db}
+
+// };

@@ -163,64 +163,77 @@
             <hr>
 
             <div class="form-group row mt-4 col-md-12"> </div>
-            		<h4 id="co-pres">Co-Presenters</h4><br>
+            	<h4 id="co-pres">Co-Presenters</h4><br>
 
-            		<h id="num1"></h>
-
+                <div id="BlankHeader"></div>
+                    
             <div class="row">
-            		<div class="form-group col-md-8">
-            			<button type="button" onclick="myFunction()" class="btn btn-info">Add a Co-Presenter</button>
-            		</div>
+            	<div class="form-group col-md-8">
+                    <button type="button" onclick="AddCoPres()" class="btn btn-info">Add a Co-Presenter</button>
+                    <button type='button' id='Delete' onclick='DeleteCoPres()' class='btn btn-info' hidden>Delete a Co-Presenter</button>
+            	</div>
             </div>
 
             <script>
             var x=1;
-            var y=2;
-            function myFunction()
+
+			function addHeader()
+			{
+				var BH = document.getElementById("BlankHeader");
+				BH.innerHTML += "<h id='CoPresHead"+x+"'></h>";
+			}
+
+            function AddCoPres()
             {
-            	if (x==31)
+			    addHeader();
+                
+                if (x==31)
             	{
-            		var j = document.getElementById("num" + x);
-            		j.innerHTML += "Please contact ORSP to add more then 30 co-presenters <br>" ;
-                x++;
+            		var Plus30 = document.getElementById("CoPresHead" + x);
+            		Plus30.innerHTML += "Please contact ORSP to add more then 30 co-presenters <br>";
+                    //incriment so that it goes to next else if and does not reprint Plus30 message
+                    x++;
             	}
-              else if (x>31)
-              {  }
-              else
+                else if (x>31)
+                { 
+                    //print and do nothing after Plus30 
+                }
+                else
             	{
-                var k = document.getElementById("num" + x);
-                k.innerHTML += "<hr class='new4'>" +
-                "<h5>Co-Presenter " + x + "</h5>" +
-                "<div class='row'>"+
-                    "<div class='form-group col-md-3'>"+
-                        "<label for='firstName'>First name</label>"+
-                        "<input type='text' class='form-control' id='firstName' required='true'>"+
-                    "</div>"+
-                    "<div class='form-group col-md-3'>"+
-                        "<label for='lastName'>Last name</label>"+
-                        "<input type='text' class='form-control' id='lastName' required='true'>"+
-                    "</div>"+
-                    "<div class='form-group col-md-2'>"+
-                        "<label for='keanID'>Student ID</label>"+
-                        "<input type='number' class='form-control' id='keanID' min='0' max='9999999' required='true'>"+
-                    "</div>"+
-                    "<div class='form-group col-md-4 '>"+
-                        "<label for='keanEmail'>Email Address</label>"+
-                        "<div class='input-group'>"+
-                            "<input type='text' class='form-control' id='keanEmail' required='true'>"+
-                            "<div class='input-group-append'>"+
-                                "<span class='input-group-text' id='keanEmail'>@kean.edu</span>"+
+                    var CoPresForm = document.getElementById("CoPresHead" + x);
+                    CoPresForm.innerHTML += "<div id=DivForCP" + x + ">"+
+                    "<hr class='new4'>" +
+                    "<h5>Co-Presenter " + x + "</h5>" +
+                    "<div class='row'>"+
+                        "<div class='form-group col-md-3'>"+
+                            "<label for='firstName'>First name</label>"+
+                            "<input type='text' class='form-control' id='firstName' required='true'>"+
+                        "</div>"+
+                        "<div class='form-group col-md-3'>"+
+                            "<label for='lastName'>Last name</label>"+
+                            "<input type='text' class='form-control' id='lastName' required='true'>"+
+                        "</div>"+
+                        "<div class='form-group col-md-2'>"+
+                            "<label for='keanID'>Student ID</label>"+
+                            "<input type='number' class='form-control' id='keanID' min='0' max='9999999' required='true'>"+
+                        "</div>"+
+                        "<div class='form-group col-md-4 '>"+
+                            "<label for='keanEmail'>Email Address</label>"+
+                            "<div class='input-group'>"+
+                                "<input type='text' class='form-control' id='keanEmail' required='true'>"+
+                                "<div class='input-group-append'>"+
+                                    "<span class='input-group-text' id='keanEmail'>@kean.edu</span>"+
+                                "</div>"+
                             "</div>"+
                         "</div>"+
-                    "</div>"+
                     "</div>"+
                     "<div class='row'>"+
                         "<div class='form-group col-md-6'>"+
                             "<label for='major'>Major</label>"+
-                            "<select id='major' class='form-control' required='true'>"+
-                                "<option></option>"+
-                                "<option>Computer Science (Cyber Security Option)</option>"+
-                            "</select>"+
+                                "<select id='major' class='form-control' required='true'>"+
+                                    "<option></option>"+
+                                    "<option>Computer Science (Cyber Security Option)</option>"+
+                                "</select>"+
                         "</div>"+
                         "<div class='form-group col-md-3'>"+
                             "<label for='class'>Class Level</label>"+
@@ -244,12 +257,31 @@
                             "</select>"+
                         "</div>"+
                     "</div><br>";
+                    //incriment counter for BlankHeader
+                    x++;
+                }
 
-                var t = document.getElementById("num" + x);
-                t.innerHTML += "<h id='num"+y+"'></h>";
-                y++;
-                x++;
-            	}
+                if (x>=2)
+	            {
+                    // var m = document.getElementById("Delete");???????? might not need
+                    $('#Delete').removeAttr('hidden');
+                }
+                // console.log('inadd ' + x); ???????? might not need
+            }
+            
+            function DeleteCoPres()
+            {
+				x--;
+					
+                var RemLastCPform = document.getElementById("DivForCP" + x);
+                RemLastCPform.remove();
+
+                if(x<=1)
+                {
+                    $('#Delete').attr('hidden', 'true');
+                }
+
+                // console.log('delete ' + x); ???????? might not need
             }
             </script>
 
@@ -266,7 +298,8 @@
                         <input type="checkbox" class="form-check-input" id="waiver" required="true">
                         <label class="form-check-label" for="waiver">I hereby grant Kean University the
                             permission to display a digital copy of my poster on the Research Days Website
-                            and in the Kean Quest online journal. </label>
+                            and in the Kean Quest online journal.
+                        </label>
                     </div>
                 </div>
             </div>
@@ -275,4 +308,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-        </form></div></body></html>
+        </form>
+    </div>
+</body>
+</html>
