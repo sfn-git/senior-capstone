@@ -10,13 +10,13 @@ var projectSchema = new schema({
     abstract: String,
     projectArea: String,
     researchLocation: String,
-    researchFunding: {name: String},
+    researchFunding: String,
     rdYear: Number,
-    submitter: String,
-    copis: {id: String},
-    facultyAdvisor: {id: String},
+    submitter: {id: String},
+    copis: [{id: String}],
+    facultyAdvisor: [{id: String}],
     fileLoc: String,
-    dateSubmitted: Date
+    dateSubmitted: {type:Date, default:Date.now}
 
 });
 

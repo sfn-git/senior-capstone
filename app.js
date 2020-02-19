@@ -3,10 +3,11 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
 const dir = __dirname;
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // Database models
 // const projectModel = require('./models/projects.js');
-// const majorModel = require('./models/major.js');
+const majorSchema = require('./models/major.js');
 // const dbConnection = require('./models/database.js');
 
 app.set('views', path.join(__dirname, 'views'));
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 app.get("/", (req,res)=>{
 
+    console.log(req);
     res.sendFile(htmlFile('/index.html'));
 
 });
@@ -48,23 +50,29 @@ app.get("*", (req,res)=>{
 // All Post Request
 app.post("/insert-major", (req, res)=>{
 
-    var major = req.body.major;
-    var college = req.body.college;
+    var formMajor = req.body.major;
+    var formCollege = req.body.college;
+
+    var majorModel = mongoose.model('Major', majorSchema);
 
     var newMajor = new majorModel({
-        major: major,
-        college: college
-    });
-    var db = dbConnection.db;
-    var database = dbConnection.database;
-    db.toString;
-    majorModel.find({}, (err, find)=>{
 
-        if(err) res.sendFile(htmlFile("/error.html"));
-        console.log(find);
-    });
+        major: formMajor,
+        college: formCollege
 
-    database.close();
+    })
+    // var db = dbConnection.db;
+    // var database = dbConnection.database;
+    // db.toString;
+    // majorModel.find({}, (err, find)=>{
+
+    //     if(err) res.sendFile(htmlFile("/error.html"));
+    //     console.log(find);
+    // });
+
+    // database.close();
+
+    res.send(newMajor);
 
 })
 

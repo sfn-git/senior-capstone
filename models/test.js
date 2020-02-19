@@ -21,40 +21,28 @@ var testSchema = new schema({
 To find a specific document in mongo
 */
 
-// var test = mongoose.model('Test', testSchema);
+var test = mongoose.model('Test', testSchema);
 
-// test.find({}, (err, findMe)=>{
+test.find({}, (err, findMe)=>{
 
-//     if(err) console.error(err);
-//     console.log(findMe);
-//     database.close();
+    if(err) console.error(err);
+    console.log(findMe);
+    database.close();
 
-// });
+});
 
 /*
 To insert model into mongo
 */
 
-// var newTest = new test({name: "Testing"});
-// console.log(newTest.name);
+var newTest = new test({name: "Testing"});
+console.log(newTest.name);
 
-// newTest.save((err, newTest)=>{
+newTest.save((err, newTest)=>{
 
-//     if(err) return console.error(err);
-//     console.log(newTest);
-//     database.close();
-// })
-
-// Testing major
-// const major = require('major.js');
-
-// var insertMajor = new major({
-
-//     major: "Computer Science",
-//     college: "College of Natural and Applied Health Sciences"
-
-// })
-
-// insertMajor.save()
+    if(err) return console.error(err);
+    console.log(newTest);
+    database.close();
+})
 
 database.close();
