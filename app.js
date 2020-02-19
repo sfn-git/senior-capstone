@@ -5,9 +5,9 @@ const port = process.env.PORT || 3000; //3000 for Development. Can be changed wh
 const dir = __dirname;
 const bodyParser = require('body-parser');
 // Database models
-const projectModel = require('./models/projects.js');
-const majorModel = require('./models/major.js');
-const dbConnection = require('./models/database.js');
+// const projectModel = require('./models/projects.js');
+// const majorModel = require('./models/major.js');
+// const dbConnection = require('./models/database.js');
 
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
