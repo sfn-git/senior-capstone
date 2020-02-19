@@ -20,3 +20,8 @@ background-color: #f8f9fa;
 #signinBtn:hover{
   cursor: pointer;
 }
+
+hr.CPdivider 
+{
+border: 1px solid blue;
+}
