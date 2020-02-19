@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <title>Insert Major</title>
+    </head>
+<body>
+    
+    <div class="container p-4">
+        <div class="row">
+            <h1>Major Insertion Tool</h1>
+        </div>
+        <form action="/insert-major" method="post">
+            <div class="row">
+                <div class="col-md">
+                    Major: <input type="text" name="major">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="college" class="col-md-3">College:</label> 
+                    <select name="college" class="form-control col-md-7">
+                        <option value=""></option>
+                        <option value="CBPM">College of Business and Public Management</option>
+                        <option value="COE">College of Education</option>
+                        <option value="CLA">College of Liberal Arts</option>
+                        <option value="CNAHS">College of Natural, Applied and Health Sciences</option>
+                        <option value="MGC">Michael Graves College</option>
+                        <option value="NWGC">Nathan Weiss Graduate College</option>
+                        <option value="NJCSTM">New Jersey Center for Science, Technology and Mathematics</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>

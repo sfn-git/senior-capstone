@@ -161,14 +161,104 @@
                 </div>
             </div>
             <hr>
-            <div class="form-group row mt-4 col-md-12">
-                <h4>Co-Presenters</h4>
-            </div>
+
+            <div class="form-group row mt-4 col-md-12"> </div>
+            		<h4 id="co-pres">Co-Presenters</h4><br>
+
+            		<h id="num1"></h>
+
             <div class="row">
-                <div class="form-group col-md-8">
-                    <button type="button" class="btn btn-info">Add a Co-Presenter</button>
-                </div>
+            		<div class="form-group col-md-8">
+            			<button type="button" onclick="myFunction()" class="btn btn-info">Add a Co-Presenter</button>
+            		</div>
             </div>
+
+            <script>
+            var x=1;
+            var y=2;
+            function myFunction()
+            {
+            	if (x==31)
+            	{
+            		var j = document.getElementById("num" + x);
+            		j.innerHTML += "Please contact ORSP to add more then 30 co-presenters <br>" ;
+                x++;
+            	}
+              else if (x>31)
+              {  }
+              else
+            	{
+                var k = document.getElementById("num" + x);
+                k.innerHTML += "<hr class='new4'>" +
+                "<h5>Co-Presenter " + x + "</h5>" +
+                "<div class='row'>"+
+                    "<div class='form-group col-md-3'>"+
+                        "<label for='firstName'>First name</label>"+
+                        "<input type='text' class='form-control' id='firstName' required='true'>"+
+                    "</div>"+
+                    "<div class='form-group col-md-3'>"+
+                        "<label for='lastName'>Last name</label>"+
+                        "<input type='text' class='form-control' id='lastName' required='true'>"+
+                    "</div>"+
+                    "<div class='form-group col-md-2'>"+
+                        "<label for='keanID'>Student ID</label>"+
+                        "<input type='number' class='form-control' id='keanID' min='0' max='9999999' required='true'>"+
+                    "</div>"+
+                    "<div class='form-group col-md-4 '>"+
+                        "<label for='keanEmail'>Email Address</label>"+
+                        "<div class='input-group'>"+
+                            "<input type='text' class='form-control' id='keanEmail' required='true'>"+
+                            "<div class='input-group-append'>"+
+                                "<span class='input-group-text' id='keanEmail'>@kean.edu</span>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                    "</div>"+
+                    "<div class='row'>"+
+                        "<div class='form-group col-md-6'>"+
+                            "<label for='major'>Major</label>"+
+                            "<select id='major' class='form-control' required='true'>"+
+                                "<option></option>"+
+                                "<option>Computer Science (Cyber Security Option)</option>"+
+                            "</select>"+
+                        "</div>"+
+                        "<div class='form-group col-md-3'>"+
+                            "<label for='class'>Class Level</label>"+
+                            "<select id='class' class='form-control' required='true'>"+
+                                "<option></option>"+
+                                "<option value='Freshman'>Freshman</option>"+
+                                "<option value='Sophomore'>Sophomore</option>"+
+                                "<option value='Junior'>Junior</option>"+
+                                "<option value='Senior'>Senior</option>"+
+                                "<option value='Graduate'>Graduate</option>"+
+                            "</select>"+
+                        "</div>"+
+                        "<div class='form-group col-md-3'>"+
+                            "<label for='campus'>Campus</label>"+
+                            "<select id='campus' class='form-control' required='true'>"+
+                                "<option></option>"+
+                                "<option value='Union'>Union (Main)</option>"+
+                                "<option value='Wenzhou'>Wenzhou (China)</option>"+
+                                "<option value='Ocean'>Ocean (Toms River)</option>"+
+                                "<option value='Skylands'>Skylands (Oak Ridge)</option>"+
+                            "</select>"+
+                        "</div>"+
+                    "</div><br>";
+
+                var t = document.getElementById("num" + x);
+                t.innerHTML += "<h id='num"+y+"'></h>";
+                y++;
+                x++;
+            	}
+            }
+            </script>
+
+            <style>
+            hr.new4 {
+              border: 1px solid blue;
+            }
+          </style>
+
             <hr>
             <div class="row mb-2">
                 <div class="form-group col">
@@ -185,10 +275,4 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
-        </form>
-    </div>
-    <!-- /Container -->
-
-</body>
-
-</html>
+        </form></div></body></html>
