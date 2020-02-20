@@ -6,4 +6,4 @@ var majorSchema = new schema({
     college: String
 });
 
-module.exports =  majorSchema;
+module.exports =  mongoose.model('Major', majorSchema);
