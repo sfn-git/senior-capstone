@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 var majorSchema = new schema({
-    major: String,
+    major: {type: String, unique: true},
     college: String
 });
 

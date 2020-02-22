@@ -21,9 +21,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group">
-                    <label for="college" class="col-md-3">College:</label> 
-                    <select name="college" class="form-control col-md-7">
+                <div class="form-group col-md">
+                    <label for="college">College:</label> 
+                    <select name="college">
                         <option value=""></option>
                         <option value="CBPM">College of Business and Public Management</option>
                         <option value="COE">College of Education</option>
@@ -35,11 +35,14 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary col-md">Submit</button>
         </form>
 
         <h1>Current Majors in the database</h1>
+        <script type="text/javascript" src="/js/lib/loader.js"></script>
         <script src="/js/getMajors.js"></script>
+
+        <div id="table_div"></div>
 
     </div>
 

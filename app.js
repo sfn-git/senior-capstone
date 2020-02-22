@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 // Database models
 // const projectModel = require('./models/projects.js');
-const database = mongoose.connection;
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -29,14 +28,6 @@ app.get("/student-form", (req, res)=>{
 
 app.get("/insert-major", (req, res)=>{
     res.sendFile(htmlFile('/insert_major.html'));
-    require('./models/database.js');
-    const majorModel = require('./models/major.js');
-    
-    majorModel.find({}, (err, fun)=>{
-        if(err) console.error(err);
-        console.log(fun);
-        database.close();
-    })
     
 })
 
@@ -61,8 +52,7 @@ app.post("/insert-major", (req, res)=>{
     newMajor.save((err, fun)=>{
         if(err) console.error(err);
         console.log(fun);
-        database.close();
-        res.send(newMajor);
+        res.sendFile(htmlFile('/insert_major.html'));
     })
     
 
@@ -71,28 +61,24 @@ app.post("/insert-major", (req, res)=>{
 app.post("/getmajors", (req,res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
-    var sendThis;
-
+    
     console.log('Post received from Major Insert');
 
     majorModel.find({}, function (err, fun){
-        if(err) console.error(err);
-        console.log('Test');
+        if(err){
+            console.error(err);
+        }else{
+            res.send(fun);
+        }
     });
-
-    res.send(sendThis);
-    database.close();
+    
 })
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
-
-// Database listeners
-database.on('error', console.error.bind(console, 'Error connecting to db'));
-database.once('open', ()=>{console.log('Connection to database successful!')});
-
 
 // Function to make it easier to call a page instead of having to do path.join everytime. Just need the name without the .html
 function htmlFile(page){
     viewsPath = 'views' + page;
     return path.join(dir, viewsPath);
 }
+
