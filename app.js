@@ -5,6 +5,7 @@ const port = process.env.PORT || 3000; //3000 for Development. Can be changed wh
 const dir = __dirname;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fs = require("fs");
 // Database models
 // const projectModel = require('./models/projects.js');
 
@@ -14,6 +15,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// All basic routes
 app.get("/", (req,res)=>{
     res.sendFile(htmlFile('/index.html'));
 });
@@ -27,16 +29,22 @@ app.get("/student-form", (req, res)=>{
 })
 
 app.get("/insert-major", (req, res)=>{
-    res.sendFile(htmlFile('/insert_major.html'));
-    
+    res.sendFile(htmlFile('/insert_major.html')); 
 })
 
 //Catch all routing
 app.get("*", (req,res)=>{
-    res.sendFile(htmlFile(req.url));
+    var file = htmlFile(req.url)
+    if(fs.existsSync(file)){
+        res.sendFile(file);
+    }else{
+        res.sendFile(htmlFile("/404.html"));
+    }
+    
 })
 
 // All Post Request
+// Post request after submit button is pressed on the insert-major page
 app.post("/insert-major", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
@@ -54,15 +62,12 @@ app.post("/insert-major", (req, res)=>{
         console.log(fun);
         res.sendFile(htmlFile('/insert_major.html'));
     })
-    
-
 })
 
+// Post request from ajax front end in insert-major page
 app.post("/getmajors", (req,res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
-    
-    console.log('Post received from Major Insert');
 
     majorModel.find({}, function (err, fun){
         if(err){
@@ -76,7 +81,7 @@ app.post("/getmajors", (req,res)=>{
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
 
-// Function to make it easier to call a page instead of having to do path.join everytime. Just need the name without the .html
+// Function to make it easier to call a page instead of having to do path.join everytime.
 function htmlFile(page){
     viewsPath = 'views' + page;
     return path.join(dir, viewsPath);

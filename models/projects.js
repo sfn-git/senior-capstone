@@ -3,18 +3,17 @@ const schema = mongoose.Schema;
 
 
 var projectSchema = new schema({
-
-    _id: mongoose.Schema.Types.ObjectId,
-    presentationType: String,
-    title: String,
-    abstract: String,
-    projectArea: String,
-    researchLocation: String,
-    researchFunding: String,
-    rdYear: Number,
-    submitter: {id: String},
-    copis: [{id: String}],
-    facultyAdvisor: [{id: String}],
+    // _ID get automatically generated
+    presentationType: {type: String},
+    title: {type: String},
+    abstract: {type: String},
+    projectArea: {type: String},
+    researchLocation: {type: String},
+    researchFunding: {type: String},
+    rdYear: {type: Number},
+    submitter: {type: mongoose.Types.ObjectId},
+    copis: [{type: mongoose.Types.ObjectId}],
+    facultyAdvisor: [{_id: mongoose.Types.ObjectId}],
     fileLoc: String,
     dateSubmitted: {type:Date, default:Date.now}
 
