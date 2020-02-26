@@ -82,8 +82,10 @@ app.post("/getmajors", (req,res)=>{
 app.post("/student-form", (req,res)=>{
 
     var title = req.body.title;
+    var projectArea = req.body.projectArea;
+    var waiver = req.body.waiver;
     console.log(title);
-    res.send(title);
+    res.send({'Title': title, 'Project Area': projectArea, 'Waiver': waiver});
 
 })
 
