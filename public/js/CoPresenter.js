@@ -17,22 +17,22 @@ function AddCoPres(divName)
         "<div class='row'>"+
             "<div class='form-group col-md-3'>"+
                 "<label for='firstName'>First name</label>"+
-                "<input type='text' class='form-control' id='firstName' required='true'>"+
+                "<input type='text' class='form-control' id='firstName" + counter + "' name='firstName" + counter + "'required='true'>"+
             "</div>"+
             "<div class='form-group col-md-3'>"+
                 "<label for='lastName'>Last name</label>"+
-                "<input type='text' class='form-control' id='lastName' required='true'>"+
+                "<input type='text' class='form-control' id='lastName" + counter + "' name='lastName" + counter + "'required='true'>"+
             "</div>"+
             "<div class='form-group col-md-2'>"+
                 "<label for='keanID'>Student ID</label>"+
-                "<input type='number' class='form-control' id='keanID' min='0' max='9999999' required='true'>"+
+                "<input type='number' class='form-control' id='keanID" + counter + "' name='keanID" + counter + "' min='0' max='9999999' required='true'>"+
             "</div>"+
             "<div class='form-group col-md-4 '>"+
                 "<label for='keanEmail'>Email Address</label>"+
                 "<div class='input-group'>"+
-                    "<input type='text' class='form-control' id='keanEmail' required='true'>"+
+                    "<input type='text' class='form-control' id='keanEmail" + counter + "' name='keanEmail" + counter + "' required='true'>"+
                     "<div class='input-group-append'>"+
-                        "<span class='input-group-text' id='keanEmail'>@kean.edu</span>"+
+                        "<span class='input-group-text' id='keanEmail" + counter + "' name='keanEmail" + counter + "'> @kean.edu</span>"+
                     "</div>"+
                 "</div>"+
             "</div>"+
@@ -40,14 +40,14 @@ function AddCoPres(divName)
         "<div class='row'>"+
             "<div class='form-group col-md-6'>"+
                 "<label for='major'>Major</label>"+
-                    "<select id='major' class='form-control' required='true'>"+
+                    "<select id='major" + counter + "' name='major" + counter + "' class='form-control' required='true'>"+
                         "<option></option>"+
                         "<option>Computer Science (Cyber Security Option)</option>"+
                     "</select>"+
             "</div>"+
             "<div class='form-group col-md-3'>"+
                 "<label for='class'>Class Level</label>"+
-                "<select id='class' class='form-control' required='true'>"+
+                "<select id='class" + counter + "' name='class" + counter + "' class='form-control' required='true'>"+
                     "<option></option>"+
                     "<option value='Freshman'>Freshman</option>"+
                     "<option value='Sophomore'>Sophomore</option>"+
@@ -58,7 +58,7 @@ function AddCoPres(divName)
             "</div>"+
             "<div class='form-group col-md-3'>"+
                 "<label for='campus'>Campus</label>"+
-                "<select id='campus' class='form-control' required='true'>"+
+                "<select id='campus" + counter + "' name='campus" + counter + "' class='form-control' required='true'>"+
                     "<option></option>"+
                     "<option value='Union'>Union (Main)</option>"+
                     "<option value='Wenzhou'>Wenzhou (China)</option>"+
