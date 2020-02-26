@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 var studentsSchema = new schema({
 
     name: {type: String},
-    stuID: {type: Number},
+    stuID: {type: Number, unique: true},
     email: {type: String, unique: true},
     major: {type: mongoose.Types.ObjectId},
     classLevel: {type: String},
