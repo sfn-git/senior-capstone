@@ -5,6 +5,8 @@ var startApp = function () {
         auth2 = gapi.auth2.init({
             client_id: '745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com',
             cookiepolicy: 'single_host_origin',
+            prompt: 'select_account',
+            hosted_domain: 'kean.edu',
             // Request scopes in addition to 'profile' and 'email'
             //scope: 'additional_scope'
         });
@@ -17,30 +19,22 @@ function attachSignin(element) {
     auth2.attachClickHandler(element, {},
         function (googleUser) {
             var profile = googleUser.getBasicProfile();
-            var email = profile.getEmail().split("@");
-            if(email[1] == "kean.edu"){
-                document.getElementById('name').innerText = "Signed in: " +
-                    profile.getName();
+            document.getElementById('name').innerText = "Signed in: " +
+                profile.getName();
 
-                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                console.log('Full Name: ' + profile.getName());
-                console.log('Given Name: ' + profile.getGivenName());
-                console.log('Family Name: ' + profile.getFamilyName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Full Name: ' + profile.getName());
+            console.log('Given Name: ' + profile.getGivenName());
+            console.log('Family Name: ' + profile.getFamilyName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
-                // The ID token you need to pass to your backend:
-                var id_token = googleUser.getAuthResponse().id_token;
-                console.log("ID Token: " + id_token);
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            //console.log("ID Token: " + id_token);
 
-                document.getElementById("signinBtn").style.display = "none";
-                document.getElementById("signout").classList.add("d-block");
-            }
-            else{
-                alert("Please signin with a kean email");
-                signOut();
-            }
-
+            document.getElementById("signinBtn").style.display = "none";
+            document.getElementById("signout").classList.add("d-block");
         }, function (error) {
             alert(JSON.stringify(error, undefined, 2));
         });
