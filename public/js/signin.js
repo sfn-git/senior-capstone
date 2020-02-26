@@ -5,6 +5,8 @@ var startApp = function () {
         auth2 = gapi.auth2.init({
             client_id: '745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com',
             cookiepolicy: 'single_host_origin',
+            prompt: 'select_account',
+            hosted_domain: 'kean.edu',
             // Request scopes in addition to 'profile' and 'email'
             //scope: 'additional_scope'
         });
@@ -16,10 +18,10 @@ function attachSignin(element) {
     console.log(element.id);
     auth2.attachClickHandler(element, {},
         function (googleUser) {
-            document.getElementById('name').innerText = "Signed in: " +
-                googleUser.getBasicProfile().getName();
-
             var profile = googleUser.getBasicProfile();
+            document.getElementById('name').innerText = "Signed in: " +
+                profile.getName();
+
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Full Name: ' + profile.getName());
             console.log('Given Name: ' + profile.getGivenName());
@@ -29,8 +31,10 @@ function attachSignin(element) {
 
             // The ID token you need to pass to your backend:
             var id_token = googleUser.getAuthResponse().id_token;
-            console.log("ID Token: " + id_token);
-            
+            //console.log("ID Token: " + id_token);
+
+            document.getElementById("signinBtn").style.display = "none";
+            document.getElementById("signout").classList.add("d-block");
         }, function (error) {
             alert(JSON.stringify(error, undefined, 2));
         });
@@ -42,4 +46,6 @@ function signOut() {
         console.log('User signed out.');
     });
     document.getElementById('name').innerText = "";
+    document.getElementById("signinBtn").style.display = "block";
+    document.getElementById("signout").classList.remove("d-block");
 }

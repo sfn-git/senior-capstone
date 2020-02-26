@@ -79,6 +79,14 @@ app.post("/getmajors", (req,res)=>{
     
 })
 
+app.post("/student-form", (req,res)=>{
+
+    var title = req.body.title;
+    console.log(title);
+    res.send(title);
+
+})
+
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
 
 // Function to make it easier to call a page instead of having to do path.join everytime.

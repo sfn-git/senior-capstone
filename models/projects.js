@@ -14,7 +14,7 @@ var projectSchema = new schema({
     submitter: {type: mongoose.Types.ObjectId},
     copis: [{type: mongoose.Types.ObjectId}],
     facultyAdvisor: [{_id: mongoose.Types.ObjectId}],
-    fileLoc: String,
+    fileLoc: {type: String},
     dateSubmitted: {type:Date, default:Date.now}
 
 });
