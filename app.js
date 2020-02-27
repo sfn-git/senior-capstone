@@ -81,11 +81,33 @@ app.post("/getmajors", (req,res)=>{
 
 app.post("/student-form", (req,res)=>{
 
-    var title = req.body.title;
-    var projectArea = req.body.projectArea;
-    var waiver = req.body.waiver;
-    console.log(title);
-    res.send({'Title': title, 'Project Area': projectArea, 'Waiver': waiver});
+    var projectInfo = {};
+    var studentInfo = {};
+    var copresenterInfo= {};
+
+    // Project Info
+    projectInfo.title = req.body.title;
+    projectInfo.projectArea = req.body.projectArea;
+    projectInfo.abstract = req.body.abstract;
+    projectInfo.advisor = req.body.advisor;
+    projectInfo.campusConducted = req.body.researchCampus;
+    projectInfo.presentationType = req.body.presentaionType;
+    projectInfo.fundedBy = req.body.fundedBy;
+    projectInfo.waiver = req.body.waiver; 
+
+    // Lead Presenter Info
+    studentInfo.leadFName = req.body.firstName;
+    studentInfo.leadLName = req.body.lastName;
+    studentInfo.leadID = req.body.keanID;
+    studentInfo.leadEmail = req.body.keanEmail+"@kean.edu";
+    studentInfo.leadMajor = req.body.major;
+    studentInfo.leadClassLevel = req.body.class;
+    studentInfo.leadCampus = req.body.campus;
+    studentInfo.onCampus = req.body.onCampus;
+    // Misc Info
+    
+
+    res.send(req.body);
 
 })
 
