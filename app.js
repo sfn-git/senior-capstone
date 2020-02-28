@@ -83,7 +83,7 @@ app.post("/student-form", (req,res)=>{
 
     var projectInfo = {};
     var studentInfo = {};
-    var copresenterInfo= {};
+    var copresenterInfo= [];
 
     // Project Info
     projectInfo.title = req.body.title;
@@ -96,18 +96,39 @@ app.post("/student-form", (req,res)=>{
     projectInfo.waiver = req.body.waiver; 
 
     // Lead Presenter Info
-    studentInfo.leadFName = req.body.firstName;
-    studentInfo.leadLName = req.body.lastName;
+    studentInfo.name = req.body.firstName;
+    studentInfo.stuID = req.body.lastName;
     studentInfo.leadID = req.body.keanID;
-    studentInfo.leadEmail = req.body.keanEmail+"@kean.edu";
-    studentInfo.leadMajor = req.body.major;
-    studentInfo.leadClassLevel = req.body.class;
-    studentInfo.leadCampus = req.body.campus;
+    studentInfo.email = req.body.keanEmail+"@kean.edu";
+    studentInfo.major = req.body.major;
+    studentInfo.classLevel = req.body.class;
+    studentInfo.primaryLocation = req.body.campus;
     studentInfo.onCampus = req.body.onCampus;
-    // Misc Info
     
+    // Co Presenters
+    var coCount = req.body.coPresenterCount;
 
-    res.send(req.body);
+    for(var i =0; i<coCount; i++){
+        var current = i+1;
+        
+        name = req.body["firstName" + current];
+        stuID = req.body["lastName" + current];
+        email = req.body["keanID" + current];
+        major = req.body["major" + current];
+        classLevel = req.body["class" + current];
+        primaryLocation = req.body["campus" + current];
+
+        copresenterInfo.push({
+            "name": name,
+            "stuID": stuID,
+            "email": email,
+            "major": major,
+            "classLevel": classLevel,
+            "primaryLocation": primaryLocation
+        })
+    }
+
+    res.send(copresenterInfo);
 
 })
 

@@ -1,14 +1,16 @@
-var counter = 1;
-var limit = 31;
+var counter = 0;
+var limit = 30;
 
 function AddCoPres(divName)
 {
    if (counter == limit)
    {
-        alert("You have reached the limit of adding Co-presenters. If you wish to add more please contact ORSP offices at (111)111-1111 or orsp@kean.edu.");
+        alert("You have reached the limit of adding co-presenters. If you wish to add more, please contact the Research Days at (908) 737-3461 or researchdays@kean.edu.");
    }
    else
    {
+        counter++;
+        $("#coPresenterCount").val(counter);
         var newdiv = document.createElement('div');
         newdiv.innerHTML += "<div id=DivForCP" + counter + ">"+
         //delete after decision is made on morder
@@ -68,29 +70,20 @@ function AddCoPres(divName)
             "</div>"+
         "</div><br>";
         document.getElementById(divName).appendChild(newdiv);
-        counter++;
-
-        if (counter>=1)
-      {
-            // var m = document.getElementById("Delete");???????? might not need
-            //$('Delete').removeAttr('hidden');
-        }
+        
    }
 }
    function DeleteCoPres()
    {
-
-
-       if(counter<=1)
+       if(counter<=0)
        {
-         alert("you have not added any co-presneters yet");
-          // $('#Delete').attr('hidden', 'true');
+         alert("No co-presenters added");
        }
        else
        {
-         counter--;
-
            var RemLastCPform = document.getElementById("DivForCP" + counter);
            RemLastCPform.remove();
+           counter--;
+           $("#coPresenterCount").val(counter);
        }
      }
