@@ -1,6 +1,8 @@
 var counter = 0;
 var limit = 30;
 
+console.log(majorJS);
+
 function AddCoPres(divName)
 {
    if (counter == limit)
@@ -13,7 +15,6 @@ function AddCoPres(divName)
         $("#coPresenterCount").val(counter);
         var newdiv = document.createElement('div');
         newdiv.innerHTML += "<div id=DivForCP" + counter + ">"+
-        //delete after decision is made on morder
         "<hr class='CPdivider'>" +
         "<h5>Co-Presenter " + counter + "</h5>" +
         "<div class='row'>"+
@@ -44,9 +45,7 @@ function AddCoPres(divName)
                 "<label for='major'>Major</label>"+
                     "<select id='major" + counter + "' name='major" + counter + "' class='form-control' required='true'>"+
                         "<option></option>"+
-                        "{% for major in major %}"+
-                        "<option value='{{major.id}}'>{{major.major}}</option>"+
-                        "{% endfor %}"+
+                        
                     "</select>"+
             "</div>"+
             "<div class='form-group col-md-3'>"+

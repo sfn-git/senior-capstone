@@ -35,7 +35,7 @@ app.get("/student-form", (req, res)=>{
         if(err){
             console.error(err);
         }else{
-            res.render('student_form', {major: fun});
+            res.render('student_form', {major: fun, majorJS: JSON.stringify(fun)});
         }
     });
 

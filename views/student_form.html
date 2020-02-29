@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Student Submission</title>
+    <script>
+        var majorJS = [];
+        document.write("{% for major in major %}");
+        majorJS.push('{' + '"id": {{major.id}}, "major": {{major.major}}, "college": {{major.college}}' + "}");
+        document.write("{% endfor %}");
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/js/abstractWordCounter.js"></script>
