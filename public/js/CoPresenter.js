@@ -44,7 +44,9 @@ function AddCoPres(divName)
                 "<label for='major'>Major</label>"+
                     "<select id='major" + counter + "' name='major" + counter + "' class='form-control' required='true'>"+
                         "<option></option>"+
-                        "<option>Computer Science (Cyber Security Option)</option>"+
+                        "{% for major in major %}"+
+                        "<option value='{{major.id}}'>{{major.major}}</option>"+
+                        "{% endfor %}"+
                     "</select>"+
             "</div>"+
             "<div class='form-group col-md-3'>"+

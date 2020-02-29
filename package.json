@@ -19,9 +19,11 @@
   "homepage": "https://github.com/mrfn323/senior-capstone#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "consolidate": "^0.15.1",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
-    "mongoose": "^5.9.1"
+    "mongoose": "^5.9.1",
+    "swig": "^1.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

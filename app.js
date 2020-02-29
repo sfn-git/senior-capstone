@@ -6,30 +6,55 @@ const dir = __dirname;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require("fs");
+const cons = require('consolidate')
 // Database models
 // const projectModel = require('./models/projects.js');
 
-
+app.engine('html', cons.swig)
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // All basic routes
 app.get("/", (req,res)=>{
-    res.sendFile(htmlFile('/index.html'));
+
+    res.render('index');
 });
 
 app.get("/login", (req,res)=>{
-    res.sendFile(htmlFile('/login.html'));
+    res.render('login');
 })
 
 app.get("/student-form", (req, res)=>{
-    res.sendFile(htmlFile('/student_form.html'));
+    require('./models/database.js');
+    const majorModel = require('./models/major.js');
+    var frontend;
+    majorModel.find({}, function (err, fun){
+        if(err){
+            console.error(err);
+        }else{
+            res.render('student_form', {major: fun});
+        }
+    });
+
+    
+    
 })
 
 app.get("/insert-major", (req, res)=>{
-    res.sendFile(htmlFile('/insert_major.html')); 
+    require('./models/database.js');
+    const majorModel = require('./models/major.js');
+    var frontend;
+    majorModel.find({}, function (err, fun){
+        if(err){
+            console.error(err);
+        }else{
+            console.log(fun);
+            res.render('insert_major', {major: fun});
+        }
+    });
 })
 
 //Catch all routing
@@ -96,7 +121,7 @@ app.post("/student-form", (req,res)=>{
     projectInfo.waiver = req.body.waiver; 
 
     // Lead Presenter Info
-    studentInfo.name = req.body.firstName;
+    studentInfo.name = `${req.body.firstName} ${req.body.lastName}`;
     studentInfo.stuID = req.body.lastName;
     studentInfo.leadID = req.body.keanID;
     studentInfo.email = req.body.keanEmail+"@kean.edu";
@@ -111,9 +136,9 @@ app.post("/student-form", (req,res)=>{
     for(var i =0; i<coCount; i++){
         var current = i+1;
         
-        name = req.body["firstName" + current];
-        stuID = req.body["lastName" + current];
-        email = req.body["keanID" + current];
+        name = `${req.body["firstName" + current]} ${req.body["lastName" + current]}`;
+        stuID = req.body["keanID" + current];
+        email = req.body["keanEmail" + current];
         major = req.body["major" + current];
         classLevel = req.body["class" + current];
         primaryLocation = req.body["campus" + current];
@@ -128,6 +153,8 @@ app.post("/student-form", (req,res)=>{
         })
     }
 
+    
+    console.log()
     res.send(copresenterInfo);
 
 })

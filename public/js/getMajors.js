@@ -1,16 +1,18 @@
-$.ajax({
-    url: "/getmajors",
-    type: "POST",
-    success: (dbdata)=>{
-        drawTable(dbdata);
-    },
-    error: ()=>{
-        console.log('An error occurred communicating with the database');
-        drawTable({major: "Error in Database :(", college: ""});
-    }
-});
+// $.ajax({
+//     url: "/getmajors",
+//     type: "POST",
+//     success: (dbdata)=>{
+//         drawTable(dbdata);
+//     },
+//     error: ()=>{
+//         console.log('An error occurred communicating with the database');
+//         drawTable({major: "Error in Database :(", college: ""});
+//     }
+// });
 
-function drawTable(dbdata){
+    var dbdata = "{{major}}";
+    console.log(dbdata);
+
     var dataCount = Object.keys(dbdata).length;
     google.charts.load('current', {'packages':['table']});
     google.charts.setOnLoadCallback(drawTable);
@@ -28,5 +30,4 @@ function drawTable(dbdata){
 
         table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
       }
-}
 
