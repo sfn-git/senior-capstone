@@ -10,7 +10,6 @@
 //     }
 // });
 
-    var dbdata = "{{major}}";
     console.log(dbdata);
 
     var dataCount = Object.keys(dbdata).length;
@@ -22,8 +21,17 @@
         data.addColumn('string', 'Major');
         data.addColumn('string', 'College');
         
-        for(var i=0; i<dataCount; i++) {
-            data.addRow([dbdata[i].major, dbdata[i].college])
+        for(index in dbdata) {
+
+            mainObject = dbdata[index].split(",");
+
+            majorObject = mainObject[1].split(":");
+            major = majorObject[1];
+
+            collegeObject = mainObject[2].split(":");
+            college = collegeObject[1].split("}")[0];
+
+            data.addRow([major, college]);
         }
 
         var table = new google.visualization.Table(document.getElementById('table_div'));

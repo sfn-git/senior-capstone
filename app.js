@@ -31,7 +31,7 @@ app.get("/student-form", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
     var frontend;
-    majorModel.find({}, function (err, fun){
+    majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
         if(err){
             console.error(err);
         }else{
@@ -47,7 +47,7 @@ app.get("/insert-major", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
     var frontend;
-    majorModel.find({}, function (err, fun){
+    majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
         if(err){
             console.error(err);
         }else{
@@ -85,7 +85,7 @@ app.post("/insert-major", (req, res)=>{
     newMajor.save((err, fun)=>{
         if(err) console.error(err);
         console.log(fun);
-        res.sendFile(htmlFile('/insert_major.html'));
+        res.redirect(303,'/insert-major');
     })
 })
 

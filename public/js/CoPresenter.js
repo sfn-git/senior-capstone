@@ -72,11 +72,17 @@ function AddCoPres(divName)
         "</div><br>";
         document.getElementById(divName).appendChild(newdiv);
         var select = document.getElementById("major" + counter);
+        // Populates the majors option drop down
         for(index in majorJS){
+            // splits first index of major index
             mainObject = majorJS[index].split(",");
+            // splits ID in major
             IDObject = mainObject[0].split(":");
+            // splits major in major
             majorObject = mainObject[1].split(":");
+            // isolates the ID
             id = IDObject[1];
+            // isolates the major
             major = majorObject[1];
             var opt = document.createElement('option');
             opt.value = id;
