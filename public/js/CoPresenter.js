@@ -71,7 +71,18 @@ function AddCoPres(divName)
             "</div>"+
         "</div><br>";
         document.getElementById(divName).appendChild(newdiv);
-        
+        var select = document.getElementById("major" + counter);
+        for(index in majorJS){
+            mainObject = majorJS[index].split(",");
+            IDObject = mainObject[0].split(":");
+            majorObject = mainObject[1].split(":");
+            id = IDObject[1];
+            major = majorObject[1];
+            var opt = document.createElement('option');
+            opt.value = id;
+            opt.innerHTML = major;
+            select.appendChild(opt);
+        }
    }
 }
    function DeleteCoPres()
