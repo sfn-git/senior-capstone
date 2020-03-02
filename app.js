@@ -23,6 +23,10 @@ app.get("/", (req,res)=>{
     res.render('index');
 });
 
+app.get("/contact", (req,res)=>{
+    res.render('contact');
+})
+
 app.get("/login", (req,res)=>{
     res.render('login');
 })
@@ -46,10 +50,9 @@ app.get("/student-form", (req, res)=>{
 app.get("/insert-major", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
-    var frontend;
     majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
         if(err){
-            console.error(err);
+            res.send(err);
         }else{
             console.log(fun);
             res.render('insert_major', {major: fun});
@@ -57,11 +60,24 @@ app.get("/insert-major", (req, res)=>{
     });
 })
 
+app.get("/insert-faculty", (req,res)=>{
+    require('./models/database.js');
+    const facultyModel = require('./models/faculty.js');
+    facultyModel.find({}, null, {sort: {faculty: 1}}, (err, fun)=>{
+        if(err){
+            res.send(err);
+        }else{
+            console.log(fun);
+            res.render('insert-faculty', {faculty: fun});
+        }
+    })
+})
+
 //Catch all routing
 app.get("*", (req,res)=>{
     var file = htmlFile(req.url)
     if(fs.existsSync(file)){
-        res.sendFile(file);
+        res.render(req.url);
     }else{
         res.sendFile(htmlFile("/404.html"));
     }
@@ -89,21 +105,13 @@ app.post("/insert-major", (req, res)=>{
     })
 })
 
-// Post request from ajax front end in insert-major page
-app.post("/getmajors", (req,res)=>{
-    require('./models/database.js');
-    const majorModel = require('./models/major.js');
+app.post("/insert-faculty", (req,res)=>{
 
-    majorModel.find({}, function (err, fun){
-        if(err){
-            console.error(err);
-        }else{
-            res.send(fun);
-        }
-    });
-    
+    res.send(req.body);
+
 })
 
+// Getting user submission for rd submission
 app.post("/student-form", (req,res)=>{
 
     var projectInfo = {};

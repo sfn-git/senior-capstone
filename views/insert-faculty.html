@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Insert Faculty Portal</title>
+    <script>
+        var facultyData = [];
+        document.write("{% for faculty in faculty %}");
+        facultyData.push(`'facultyName': {{faculty.facultyName}}, 'email': {{faculty.email}}, 'position': {{faculty.position}}, 'department': {{faculty.department}}, 'college': {{faculty.college}}, 'officeLocation': {{faculty.officeLocation}}, 'officePhone': {{faculty.officePhone}}`);
+        document.write("{% endfor %}");
+    </script>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Insert Faculty into Database</h1>
+        <form action="/insert-faculty" method="POST">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label for="facultyName">Name:</label>
+                        <input type="text" name="facultyName" id="facultyName" class="form-control" placeholder="First and Last Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="facultyEmail">Email Address:</label>
+                        <input type="email" name="facultyEmail" id="facultyEmail" class="form-control" placeholder="john@kean.edu" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="facultyPosition">Position:</label>
+                        <select name="facultyPosition" id="facultyPosition" class="form-control">
+                            <option value=""></option>
+                            <option value="Tenure-Track">Tenure-Track</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Adjunct">Adjunct</option>
+                            <option value="Staff">Staff</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="facultyDepartment">Department:</label>
+                        <input type="text" class="form-control" name="facultyDepartment" id="facultyDepartment">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="facultyCollege">College:</label>
+                        <select name="facultyCollege" class="form-control" id="facultyCollege">
+                            <option value=""></option>
+                            <option value="CBPM">College of Business and Public Management</option>
+                            <option value="COE">College of Education</option>
+                            <option value="CLA">College of Liberal Arts</option>
+                            <option value="CNAHS">College of Natural, Applied and Health Sciences</option>
+                            <option value="MGC">Michael Graves College</option>
+                            <option value="NWGC">Nathan Weiss Graduate College</option>
+                            <option value="NJCSTM">New Jersey Center for Science, Technology and Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="facultyOffice">Office:</label>
+                        <input type="text" class="form-control" name="facultyOffice" id="facultyOffice" placeholder="T-130">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="facultyPhone">Phone Ext:</label>
+                        <input type="number" class="form-control" name="facultyPhone" id="facultyPhone" placeholder="73461">
+                    </div>
+                </div>                    
+            </div>
+            <button type="submit" class="btn btn-primary form-control">Submit</button>
+        </form>
+    </div>
+    <hr>
+    <div class="container">
+
+        <h1>Current Majors in the database</h1>
+        <script type="text/javascript" src="/js/lib/loader.js"></script>
+        <script src="/js/getFaculty.js"></script>
+        <div id="table_div"></div>
+
+    </div>
+
+</body>
+</html>
