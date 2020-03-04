@@ -100,14 +100,17 @@
                 <div class="form-group col-md-3">
                     <label for="fundedBy">Funded By</label>
                     <select id="fundedBy" name="fundedBy" class="form-control" required="true">
-                        <option></option>
-                        <option value="McNair">McNair</option>
+                        <option value="None">None</option>
+                        <option value="McNair">McNair Scholars Program</option>
+                        <option value="LSAMP">Louis Stokes Alliances for Minority Participation  (LSAMP)</option>
+                        <option value="SpF">Students Partnering with Faculty (SpF)</option>
+                        <option value="FFRA">Foundation Faculty Research Awards (FFRA)</option>
                     </select>
                 </div>
             </div>
             <hr>
             <div class="form-group row mt-4 col-md-12">
-                <h4>Primary Presenter</h4>
+                <h4>Primary Presenter (You)</h4>
             </div>
             <div class="row">
                 <div class="form-group col-md-3">
@@ -174,7 +177,7 @@
                 </div>
             </div>
             <hr>
-            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;" value="0" >
+            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;" value="{{coCount}}" >
             <div class="form-group row mt-4 col-md-12"> </div>
             	<h4 id="co-pres">Co-Presenters</h4><br>
 

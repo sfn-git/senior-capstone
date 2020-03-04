@@ -35,8 +35,9 @@ app.get("/student-form", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
     const facultyModel = require('./models/faculty.js');
+
     var promise = [];
-    promise.push(majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
+    promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
         if(err){
             console.error(err);
         }else{
@@ -45,19 +46,17 @@ app.get("/student-form", (req, res)=>{
     }));
 
     promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
-
         if(err){
             console.error(err);
         }else{
             console.log("Callback Faculty");
         }
-
     }))
     
     // res.render('student_form');
     Promise.all(promise).then(values=>{
         console.log(values);
-        res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1]})
+        res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0})
     })
     
 })
@@ -122,6 +121,7 @@ app.post("/insert-major", (req, res)=>{
 
 app.post("/insert-faculty", (req,res)=>{
 
+    // Getting Variable from from
     var facultyName = req.body.facultyName;
     var facultyEmail = req.body.facultyEmail;
     var facultyPosition = req.body.facultyPosition;
@@ -130,11 +130,12 @@ app.post("/insert-faculty", (req,res)=>{
     var facultyOffice = req.body.facultyOffice;
     var facultyPhone = req.body.facultyPhone;
 
+    // Connection to DB
     require('./models/database.js');
     const facultyModel = require('./models/faculty.js');
 
+    // Creating faculty model to be inserted
     var newFaculty = new facultyModel({
-
         facultyName: facultyName,
         email: facultyEmail,
         position: facultyPosition,
@@ -142,18 +143,16 @@ app.post("/insert-faculty", (req,res)=>{
         college: facultyCollege,
         officeLocation: facultyOffice,
         officePhone: facultyPhone
-
     });
 
+    // Makes connection to db and inserts
     newFaculty.save((err, fun)=>{
-
         if(err){
             console.log(err);
         }else{
             console.log(fun);
             res.redirect(303, '/insert-faculty');
         }
-
     })
 
 })
@@ -161,33 +160,31 @@ app.post("/insert-faculty", (req,res)=>{
 // Getting user submission for rd submission
 app.post("/student-form", (req,res)=>{
 
-    var projectInfo = {};
-    var studentInfo = {};
     var copresenterInfo= [];
 
     // Project Info
-    projectInfo.title = req.body.title;
-    projectInfo.projectArea = req.body.projectArea;
-    projectInfo.abstract = req.body.abstract;
-    projectInfo.advisor = req.body.advisor;
-    projectInfo.campusConducted = req.body.researchCampus;
-    projectInfo.presentationType = req.body.presentaionType;
-    projectInfo.fundedBy = req.body.fundedBy;
-    projectInfo.waiver = req.body.waiver; 
+    title = req.body.title;
+    projectArea = req.body.projectArea;
+    abstract = req.body.abstract;
+    advisor = req.body.advisor;
+    campusConducted = req.body.researchCampus;
+    presentationType = req.body.presentaionType;
+    fundedBy = req.body.fundedBy;
+    waiver = req.body.waiver; 
 
     // Lead Presenter Info
-    studentInfo.name = `${req.body.firstName} ${req.body.lastName}`;
-    studentInfo.stuID = req.body.lastName;
-    studentInfo.leadID = req.body.keanID;
-    studentInfo.email = req.body.keanEmail+"@kean.edu";
-    studentInfo.major = req.body.major;
-    studentInfo.classLevel = req.body.class;
-    studentInfo.primaryLocation = req.body.campus;
-    studentInfo.onCampus = req.body.onCampus;
+    name = `${req.body.firstName} ${req.body.lastName}`;
+    stuID = req.body.lastName;
+    leadID = req.body.keanID;
+    email = req.body.keanEmail+"@kean.edu";
+    major = req.body.major;
+    classLevel = req.body.class;
+    primaryLocation = req.body.campus;
+    onCampus = req.body.onCampus;
     
     // Co Presenters
     var coCount = req.body.coPresenterCount;
-
+    console.log(coCount);
     for(var i =0; i<coCount; i++){
         var current = i+1;
         
@@ -208,9 +205,7 @@ app.post("/student-form", (req,res)=>{
         })
     }
 
-    
-    console.log()
-    res.send(copresenterInfo);
+    res.send(req.body);
 
 })
 
