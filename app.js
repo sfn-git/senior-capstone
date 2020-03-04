@@ -23,14 +23,6 @@ app.get("/", (req,res)=>{
     res.render('index');
 });
 
-app.get("/contact", (req,res)=>{
-    res.render('contact');
-})
-
-app.get("/login", (req,res)=>{
-    res.render('login');
-})
-
 app.get("/student-form", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
@@ -57,8 +49,9 @@ app.get("/student-form", (req, res)=>{
     Promise.all(promise).then(values=>{
         console.log(values);
         res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0})
+    }).catch((err)=>{
+        console.log(err);
     })
-    
 })
 
 app.get("/insert-major", (req, res)=>{
@@ -89,9 +82,11 @@ app.get("/insert-faculty", (req,res)=>{
 
 //Catch all routing
 app.get("*", (req,res)=>{
-    var file = htmlFile(req.url)
-    if(fs.existsSync(file)){
-        res.render(req.url);
+    var file = req.url.split("/")[1];
+    var checkFile = htmlFile(req.url)+".html";
+    console.log(checkFile);
+    if(fs.existsSync(checkFile)){
+        res.render(file);
     }else{
         res.render("404");
     }
