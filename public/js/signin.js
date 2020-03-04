@@ -32,6 +32,16 @@ function attachSignin(element) {
             // The ID token you need to pass to your backend:
             var id_token = googleUser.getAuthResponse().id_token;
             //console.log("ID Token: " + id_token);
+            //Send ID token to server
+            /*
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                console.log('Signed in as: ' + xhr.responseText);
+            };
+            xhr.send('idtoken=' + id_token);
+            */
 
             document.getElementById("signinBtn").style.display = "none";
             document.getElementById("signout").classList.add("d-block");
