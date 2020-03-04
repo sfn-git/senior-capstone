@@ -12,4 +12,4 @@ var studentsSchema = new schema({
 
 });
 
-module.exports = studentsSchema;
+module.exports = mongoose.model('Students', studentsSchema);

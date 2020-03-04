@@ -34,16 +34,31 @@ app.get("/login", (req,res)=>{
 app.get("/student-form", (req, res)=>{
     require('./models/database.js');
     const majorModel = require('./models/major.js');
-    var frontend;
-    majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
+    const facultyModel = require('./models/faculty.js');
+    var promise = [];
+    promise.push(majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
         if(err){
             console.error(err);
         }else{
-            res.render('student_form', {major: fun, majorJS: JSON.stringify(fun)});
+            console.log("Callback Major")
         }
-    });
+    }));
 
+    promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
+
+        if(err){
+            console.error(err);
+        }else{
+            console.log("Callback Faculty");
+        }
+
+    }))
     
+    // res.render('student_form');
+    Promise.all(promise).then(values=>{
+        console.log(values);
+        res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1]})
+    })
     
 })
 
@@ -79,7 +94,7 @@ app.get("*", (req,res)=>{
     if(fs.existsSync(file)){
         res.render(req.url);
     }else{
-        res.sendFile(htmlFile("/404.html"));
+        res.render("404");
     }
     
 })
@@ -107,7 +122,39 @@ app.post("/insert-major", (req, res)=>{
 
 app.post("/insert-faculty", (req,res)=>{
 
-    res.send(req.body);
+    var facultyName = req.body.facultyName;
+    var facultyEmail = req.body.facultyEmail;
+    var facultyPosition = req.body.facultyPosition;
+    var facultyDepartment = req.body.facultyDepartment;
+    var facultyCollege = req.body.facultyCollege;
+    var facultyOffice = req.body.facultyOffice;
+    var facultyPhone = req.body.facultyPhone;
+
+    require('./models/database.js');
+    const facultyModel = require('./models/faculty.js');
+
+    var newFaculty = new facultyModel({
+
+        facultyName: facultyName,
+        email: facultyEmail,
+        position: facultyPosition,
+        department: facultyDepartment,
+        college: facultyCollege,
+        officeLocation: facultyOffice,
+        officePhone: facultyPhone
+
+    });
+
+    newFaculty.save((err, fun)=>{
+
+        if(err){
+            console.log(err);
+        }else{
+            console.log(fun);
+            res.redirect(303, '/insert-faculty');
+        }
+
+    })
 
 })
 

@@ -78,7 +78,9 @@
                     <label for="advisor">Faculty Advisor</label>
                     <select id="advisor" name="advisor" class="form-control" required="true">
                         <option></option>
-                        <option value="Daehan Kwak">Dr. Daehan Kwak</option>
+                        {% for faculty in faculty %}
+                        <option value='{{faculty.id}}'>{{faculty.facultyName}}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group col-md-3">

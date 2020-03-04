@@ -10,7 +10,7 @@
     <script>
         var facultyData = [];
         document.write("{% for faculty in faculty %}");
-        facultyData.push(`'facultyName': {{faculty.facultyName}}, 'email': {{faculty.email}}, 'position': {{faculty.position}}, 'department': {{faculty.department}}, 'college': {{faculty.college}}, 'officeLocation': {{faculty.officeLocation}}, 'officePhone': {{faculty.officePhone}}`);
+        facultyData.push({'facultyName': '{{faculty.facultyName}}', 'email': '{{faculty.email}}', 'position': '{{faculty.position}}', 'department': '{{faculty.department}}', 'college': '{{faculty.college}}', 'officeLocation': '{{faculty.officeLocation}}', 'officePhone': '{{faculty.officePhone}}'});
         document.write("{% endfor %}");
     </script>
 </head>
@@ -39,6 +39,7 @@
                             <option value="Lecturer">Lecturer</option>
                             <option value="Adjunct">Adjunct</option>
                             <option value="Staff">Staff</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
                         </select>
                     </div>
                     <div class="col-md-6">
