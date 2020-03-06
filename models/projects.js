@@ -5,7 +5,7 @@ const schema = mongoose.Schema;
 var projectSchema = new schema({
     // _ID get automatically generated
     presentationType: {type: String},
-    title: {type: String},
+    title: {type: String, unique: true},
     abstract: {type: String},
     projectArea: {type: String},
     researchLocation: {type: String},
@@ -17,7 +17,10 @@ var projectSchema = new schema({
     fileLoc: {type: String},
     onCampus: {type: Boolean},
     waiver: {type: Boolean},
-    dateSubmitted: {type:Date, default:Date.now}
+    dateSubmitted: {type:Date, default:Date.now},
+    dateApproved: {type:Date},
+    dateDenied: {type:Date},
+    dateLastModified: {type: Date}
 
 });
 

@@ -7,8 +7,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const cons = require('consolidate');
-// Database models
-// const projectModel = require('./models/projects.js');
+require('./models/database.js');
 
 app.engine('html', cons.swig)
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +23,6 @@ app.get("/", (req,res)=>{
 });
 
 app.get("/student-form", (req, res)=>{
-    require('./models/database.js');
     const majorModel = require('./models/major.js');
     const facultyModel = require('./models/faculty.js');
 
@@ -32,16 +30,12 @@ app.get("/student-form", (req, res)=>{
     promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
         if(err){
             console.error(err);
-        }else{
-            console.log("Callback Major")
         }
     }));
 
     promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
         if(err){
             console.error(err);
-        }else{
-            console.log("Callback Faculty");
         }
     }))
     
@@ -55,20 +49,17 @@ app.get("/student-form", (req, res)=>{
 })
 
 app.get("/insert-major", (req, res)=>{
-    require('./models/database.js');
     const majorModel = require('./models/major.js');
     majorModel.find({}, null, {sort: {major: 1}},function (err, fun){
         if(err){
             res.send(err);
         }else{
-            console.log(fun);
             res.render('insert_major', {major: fun});
         }
     });
 })
 
 app.get("/insert-faculty", (req,res)=>{
-    require('./models/database.js');
     const facultyModel = require('./models/faculty.js');
     facultyModel.find({}, null, {sort: {faculty: 1}}, (err, fun)=>{
         if(err){
@@ -84,7 +75,6 @@ app.get("/insert-faculty", (req,res)=>{
 app.get("*", (req,res)=>{
     var file = req.url.split("/")[1];
     var checkFile = htmlFile(req.url)+".html";
-    console.log(checkFile);
     if(fs.existsSync(checkFile)){
         res.render(file);
     }else{
@@ -97,7 +87,6 @@ app.get("*", (req,res)=>{
 // All Post Request
 // Post request after submit button is pressed on the insert-major page
 app.post("/insert-major", (req, res)=>{
-    require('./models/database.js');
     const majorModel = require('./models/major.js');
     
     var formMajor = req.body.major;
@@ -127,7 +116,6 @@ app.post("/insert-faculty", (req,res)=>{
     var facultyPhone = req.body.facultyPhone;
 
     // Connection to DB
-    require('./models/database.js');
     const facultyModel = require('./models/faculty.js');
 
     // Creating faculty model to be inserted
@@ -155,7 +143,8 @@ app.post("/insert-faculty", (req,res)=>{
 
 // Getting user submission for rd submission
 app.post("/student-form", (req,res)=>{
-
+    var projectsModel = require("./models/projects.js");
+    var studentModel  = require("./models/students.js");
     var copresenterInfo= [];
 
     // Project Info
@@ -167,16 +156,15 @@ app.post("/student-form", (req,res)=>{
     presentationType = req.body.presentaionType;
     fundedBy = req.body.fundedBy;
     waiver = req.body.waiver; 
+    onCampus = req.body.onCampus;
 
     // Lead Presenter Info
     name = `${req.body.firstName} ${req.body.lastName}`;
-    stuID = req.body.lastName;
     leadID = req.body.keanID;
     email = req.body.keanEmail+"@kean.edu";
     major = req.body.major;
     classLevel = req.body.class;
     primaryLocation = req.body.campus;
-    onCampus = req.body.onCampus;
     
     // Co Presenters
     var coCount = req.body.coPresenterCount;
@@ -200,6 +188,21 @@ app.post("/student-form", (req,res)=>{
             "primaryLocation": primaryLocation
         })
     }
+
+    // First insert student
+    var primaryStudent = new studentModel({
+
+       name: name,
+       stuID: leadID,
+       email: email,
+       major: major,
+       classLevel: classLevel,
+       primaryLocation: primaryLocation
+
+    });
+
+    console.log(primaryStudent.email);
+    studentModel.exists({"email": primaryStudent.email});
 
     res.send(req.body);
 
