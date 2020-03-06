@@ -14,8 +14,15 @@
         document.write("{% endfor %}");
         </script>
     </head>
+
+    <div id="nav-placeholder"></div>
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("/navbar");
+        });
+    </script>
+
 <body>
-    
     <div class="container p-4">
         <div class="row">
             <h1>Major Insertion Tool</h1>

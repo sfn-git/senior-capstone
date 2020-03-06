@@ -8,46 +8,21 @@
   <script src="https://apis.google.com/js/api:client.js"></script>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="/css/style.css">
 
   <title>Home</title>
 </head>
 
-<!-- Navbar -->
-<script src="/js/signin.js"></script>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">
-    <img class="img-fluid" style="height:75px;" src="/img/orsp.png">
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="contact">Contact Us </a>
-      </li>
-      <li class="nav-item ">
-        <div id="gSignInWrapper">
-          <div id="signinBtn" class="customGPlusSignIn nav-link">Sign in</div>
-          <a class="nav-link d-none" id="signout" onclick="signOut();">Sign out</a>
-        </div>
-      </li>
-      <!--
-      <li class="nav-item">
-        <a class="nav-link d-none" href="#" onclick="signOut();">Sign out</a> 
-      </li>
-      -->
-    </ul>
-  </div>
-  <div id="name"></div>
-</nav>
-<script>startApp();</script>
+<!-- Nav Bar Code -->
+<div id="nav-placeholder"></div>
+<script>
+    $(function(){
+      $("#nav-placeholder").load("/navbar");
+    });
+</script>
 
 <body>
   <!-- Container -->

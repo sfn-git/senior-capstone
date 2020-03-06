@@ -15,6 +15,8 @@ var projectSchema = new schema({
     copis: [{type: mongoose.Types.ObjectId}],
     facultyAdvisor: [{_id: mongoose.Types.ObjectId}],
     fileLoc: {type: String},
+    onCampus: {type: Boolean},
+    waiver: {type: Boolean},
     dateSubmitted: {type:Date, default:Date.now}
 
 });

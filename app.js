@@ -6,7 +6,7 @@ const dir = __dirname;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require("fs");
-const cons = require('consolidate')
+const cons = require('consolidate');
 // Database models
 // const projectModel = require('./models/projects.js');
 
@@ -88,6 +88,7 @@ app.get("*", (req,res)=>{
     if(fs.existsSync(checkFile)){
         res.render(file);
     }else{
+        res.status(404);
         res.render("404");
     }
     
