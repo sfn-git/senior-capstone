@@ -71,10 +71,16 @@ app.get("/insert-faculty", (req,res)=>{
     })
 })
 
+app.get("/navbar", (req, res)=>{
+
+    res.sendFile(__dirname + "/views/navbar.html");
+
+})
+
 //Catch all routing
 app.get("*", (req,res)=>{
     var file = req.url.split("/")[1];
-    var checkFile = htmlFile(req.url)+".html";
+    var checkFile = file+".html";
     if(fs.existsSync(checkFile)){
         res.render(file);
     }else{
@@ -142,10 +148,11 @@ app.post("/insert-faculty", (req,res)=>{
 })
 
 // Getting user submission for rd submission
-app.post("/student-form", (req,res)=>{
+app.post("/student-form", async (req,res)=>{
     var projectsModel = require("./models/projects.js");
     var studentModel  = require("./models/students.js");
-    var copresenterInfo= [];
+    var primaryMongoID;
+    var coPresenterID = [];
 
     // Project Info
     title = req.body.title;
@@ -166,53 +173,69 @@ app.post("/student-form", (req,res)=>{
     classLevel = req.body.class;
     primaryLocation = req.body.campus;
     
-    // Co Presenters
-    var coCount = req.body.coPresenterCount;
-    console.log(coCount);
-    for(var i =0; i<coCount; i++){
-        var current = i+1;
-        
-        name = `${req.body["firstName" + current]} ${req.body["lastName" + current]}`;
-        stuID = req.body["keanID" + current];
-        email = req.body["keanEmail" + current];
-        major = req.body["major" + current];
-        classLevel = req.body["class" + current];
-        primaryLocation = req.body["campus" + current];
-
-        copresenterInfo.push({
-            "name": name,
-            "stuID": stuID,
-            "email": email,
-            "major": major,
-            "classLevel": classLevel,
-            "primaryLocation": primaryLocation
-        })
-    }
 
     // First insert student
     var primaryStudent = new studentModel({
-
-       name: name,
-       stuID: leadID,
-       email: email,
-       major: major,
-       classLevel: classLevel,
-       primaryLocation: primaryLocation
-
+        name: name,
+        stuID: leadID,
+        email: email,
+        major: major,
+        classLevel: classLevel,
+        primaryLocation: primaryLocation
     });
 
-    console.log(primaryStudent.email);
-    studentModel.exists({"email": primaryStudent.email});
+    if((await studentModel.exists({'stuID' : primaryStudent.stuID})) || (await studentModel.exists({'email': email}))){
+        // Do Nothing
+        primaryMongoID = (await studentModel.findOne({'stuID' : primaryStudent.stuID}).select("_id"));
+        primaryMongoID = primaryMongoID._id
+    }else{
+        primaryMongoID = await primaryStudent.save();
+        primaryMongoID = primaryMongoID.id;
+    }
+ 
+    // Co Presenters
+    var coCount = req.body.coPresenterCount;
 
-    res.send(req.body);
+    if(coCount == 0){
+        // Do Nothing
+    }else{
+
+        for(var i =0; i<coCount; i++){
+            var current = i+1;
+            
+            var coName = `${req.body["firstName" + current]} ${req.body["lastName" + current]}`;
+            var coStuID = req.body["keanID" + current];
+            var coEmail = `${req.body["keanEmail" + current]}@kean.edu`;
+            var coMajor = req.body["major" + current];
+            var coClassLevel = req.body["class" + current];
+            var coPrimaryLocation = req.body["campus" + current];
+
+            var newCoPresenter = new studentModel({
+                name: coName,
+                stuID: coStuID,
+                email: coEmail,
+                major: coMajor,
+                classLevel: coClassLevel,
+                primaryLocation: coPrimaryLocation
+            });
+    
+            if((await studentModel.exists({'stuID': coStuID})) || (await studentModel.exists({'email': coEmail}))){
+                var temp = (await studentModel.findOne({'stuID' : coStuID}).select("_id"));
+                coPresenterID.push(temp._id);
+            }else{
+                checkCo = await newCoPresenter.save();
+                coPresenterID.push(checkCo.id);
+            }
+
+        }
+
+    }
+    
+
+    
+    // console.log(coMongoID);
+    res.send([primaryMongoID, coPresenterID]);
 
 })
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
-
-// Function to make it easier to call a page instead of having to do path.join everytime.
-function htmlFile(page){
-    viewsPath = 'views' + page;
-    return path.join(dir, viewsPath);
-}
-

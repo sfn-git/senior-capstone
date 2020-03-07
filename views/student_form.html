@@ -10,7 +10,7 @@
     <script>
         var majorJS = [];
         document.write("{% for major in major %}");
-        majorJS.push('{' + '"id": {{major.id}}, "major": {{major.major}}, "college": {{major.college}}' + "}");
+        majorJS.push('{' + '"id":{{major.id}}, "major": {{major.major}}, "college": {{major.college}}' + "}");
         document.write("{% endfor %}");
 
     </script>
