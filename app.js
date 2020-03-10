@@ -153,6 +153,20 @@ app.post("/student-form", async (req,res)=>{
     var studentModel  = require("./models/students.js");
     var primaryMongoID;
     var coPresenterID = [];
+    var waiver = req.body.waiver; 
+    var onCampus = req.body.onCampus;
+
+    if(req.body.waiver == "on"){
+        waiver = true;
+    }else{
+        waiver = false;
+    }
+
+    if(req.body.onCampus == "on"){
+        onCampus = true;
+    }else{
+        onCampus = false;
+    }
 
     // Project Info
     title = req.body.title;
@@ -162,8 +176,7 @@ app.post("/student-form", async (req,res)=>{
     campusConducted = req.body.researchCampus;
     presentationType = req.body.presentationType;
     fundedBy = req.body.fundedBy;
-    waiver = req.body.waiver; 
-    onCampus = req.body.onCampus;
+    
 
     // Lead Presenter Info
     name = `${req.body.firstName} ${req.body.lastName}`;
@@ -248,6 +261,16 @@ app.post("/student-form", async (req,res)=>{
 
     });
     
+    newProject.save((err, fun)=>{
+
+        if(err){
+            console.error(err);
+        }else{
+            console.log(fun);
+        }
+
+
+    })
     // console.log(coMongoID);
     res.send(newProject);
 
