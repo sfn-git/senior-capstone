@@ -13,16 +13,15 @@ var projectSchema = new schema({
     rdYear: {type: Number},
     submitter: {type: mongoose.Types.ObjectId},
     copis: [{type: mongoose.Types.ObjectId}],
-    facultyAdvisor: [{_id: mongoose.Types.ObjectId}],
-    fileLoc: {type: String},
+    facultyAdvisor: {type: mongoose.Types.ObjectId},
+    fileLoc: {type: String, default: ""},
     onCampus: {type: Boolean},
     waiver: {type: Boolean},
-    dateSubmitted: {type:Date, default:Date.now},
-    dateApproved: {type:Date},
-    dateDenied: {type:Date},
-    dateLastModified: {type: Date}
+    dateSubmitted: {type: Date, default: Date.now},
+    dateApproved: {type: Date, default: ""},
+    dateDenied: {type: Date, default: ""},
+    dateLastModified: {type: Date, default: ""}
 
 });
 
-const project = mongoose.model('Project', projectSchema);
-module.exports = ()=>{return project};
+module.exports = mongoose.model('Project', projectSchema);

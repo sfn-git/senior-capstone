@@ -160,7 +160,7 @@ app.post("/student-form", async (req,res)=>{
     abstract = req.body.abstract;
     advisor = req.body.advisor;
     campusConducted = req.body.researchCampus;
-    presentationType = req.body.presentaionType;
+    presentationType = req.body.presentationType;
     fundedBy = req.body.fundedBy;
     waiver = req.body.waiver; 
     onCampus = req.body.onCampus;
@@ -231,10 +231,25 @@ app.post("/student-form", async (req,res)=>{
 
     }
     
+    var newProject = new projectsModel({
 
+        presentationType: presentationType,
+        title: title,
+        abstract: abstract,
+        projectArea: projectArea,
+        researchLocation: campusConducted,
+        researchFunding: fundedBy,
+        rdYear: 2020,
+        submitter: primaryMongoID,
+        copis: coPresenterID,
+        facultyAdvisor: advisor,
+        onCampus: onCampus,
+        waiver: waiver
+
+    });
     
     // console.log(coMongoID);
-    res.send([primaryMongoID, coPresenterID]);
+    res.send(newProject);
 
 })
 
