@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
-const dir = __dirname;
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const cons = require('consolidate');
@@ -97,9 +95,11 @@ app.post("/insert-major", (req, res)=>{
     
     var formMajor = req.body.major;
     var formCollege = req.body.college;
+    var formDept = req.body.department;
 
     var newMajor = new majorModel({
         major: formMajor,
+        department: formDept,
         college: formCollege
     })
    //Saves Data into DB
@@ -109,6 +109,12 @@ app.post("/insert-major", (req, res)=>{
         res.redirect(303,'/insert-major');
     })
 })
+
+app.post("/insert-major-file", (req, res)=>{
+
+    res.send(req.body);
+
+});
 
 app.post("/insert-faculty", (req,res)=>{
 
@@ -213,7 +219,7 @@ app.post("/student-form", async (req,res)=>{
         // Do Nothing
     }else{
 
-        for(var i =0; i<coCount; i++){
+        for(var i=0; i<coCount; i++){
             var current = i+1;
             
             var coName = `${req.body["firstName" + current]} ${req.body["lastName" + current]}`;
@@ -268,11 +274,25 @@ app.post("/student-form", async (req,res)=>{
         }else{
             console.log(fun);
         }
-
-
     })
     // console.log(coMongoID);
     res.send(newProject);
+
+})
+
+app.post("/remove-major", (req,res)=>{
+    var major = require("./models/major.js");
+    console.log();
+    major.deleteOne({"_id": req.body.id}, (err, suc)=>{
+
+        if(err){
+            res.send(false);
+        }else{
+            res.send(true);
+        }
+
+    })
+
 
 })
 

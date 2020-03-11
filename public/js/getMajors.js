@@ -10,32 +10,33 @@
 //     }
 // });
 
-    console.log(dbdata);
+ 
+function deleteEntry(id, major){
 
-    var dataCount = Object.keys(dbdata).length;
-    google.charts.load('current', {'packages':['table']});
-    google.charts.setOnLoadCallback(drawTable);
+    id = {"id": id};
 
-    function drawTable() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Major');
-        data.addColumn('string', 'College');
+    if(window.confirm(`Would you like to delete ${major}?`)){
+        $.ajax({
+
+            method: "POST",
+            url: "/remove-major",
+            data: id,
+            success: (response)=>{
+                if(response){
+                    window.alert("Entry Deleted Successfully");
+                    location.reload();
+                }else{
+                    window.alert("Something Went Wrong :(");
+                    location.reload();
+                }
+            },
+            error: ()=>{
+                window.alert("An error occured");
+            }
+
+        });
+    }else{
         
-        for(index in dbdata) {
+    }
 
-            mainObject = dbdata[index].split(",");
-
-            majorObject = mainObject[1].split(":");
-            major = majorObject[1];
-
-            collegeObject = mainObject[2].split(":");
-            college = collegeObject[1].split("}")[0];
-
-            data.addRow([major, college]);
-        }
-
-        var table = new google.visualization.Table(document.getElementById('table_div'));
-
-        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
-      }
-
+}
