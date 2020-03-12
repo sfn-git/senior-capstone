@@ -88,6 +88,13 @@ app.get("*", (req,res)=>{
     
 })
 
+app.post("/insert-file", (req, res)=>{
+
+    console.log(req.body);
+    res.send("Backend reached");
+
+});
+
 // All Post Request
 // Post request after submit button is pressed on the insert-major page
 app.post("/insert-major", (req, res)=>{
@@ -109,12 +116,6 @@ app.post("/insert-major", (req, res)=>{
         res.redirect(303,'/insert-major');
     })
 })
-
-app.post("/insert-major-file", (req, res)=>{
-
-    res.send(req.body);
-
-});
 
 app.post("/insert-faculty", (req,res)=>{
 

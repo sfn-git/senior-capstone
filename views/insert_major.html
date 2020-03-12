@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script src="/js/getMajors.js"></script>
+        <script defer src="/js/getMajors.js"></script>
         <link rel="stylesheet" href="/css/style.css">
         <title>Insert Major</title>
     </head>
@@ -55,40 +55,37 @@
         <br>
 
         <h3>File Upload</h3>
-        <p>Please ensure that the file is a .csv file and is in the order of major, department, and college. Please include the header as well.</p>
-        <form action="/insert-major-file" method="POST">
-            <div class="form-group">
-                <label for="majorFile"></label>
-                <input type="file" name="majorFile" id="majorFile" accept=".csv" class="form-control">
-            </div>
-        </form>
+        <p>Please ensure that the file is a tab separated file (.txt) and is in the order of major, department, and college. Please include the header as well.</p>
+        <div class="form-group">
+            <label for="majorFile"></label>
+            <input type="file" name="majorFile" id="majorFile" accept=".txt" class="form-control">
+        </div>
 
-                <h1>Current Majors in the database</h1>
+        <h1>Current Majors in the database</h1>
 
-                <table class="table table-dark table-bordered">
-                    <thead>
-                        <tr>
-                            <td scope="col">Major</td>
-                            <td scope="col">Department</td>
-                            <td scope="col">College</td>
-                            <td scope="col">Delete</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                        {% for major in major %}
-                            <tr>
-                                <td>{{major.major}}</td>
-                                <td>{{major.department}}</td>
-                                <td>{{major.college}}</td>
-                                <td>
-                                <button class="btn btn-danger" onclick="deleteEntry('{{major.id}}', '{{major.major}}')">Delete</button>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
+        <table class="table table-dark table-bordered">
+            <thead>
+                <tr>
+                    <td scope="col">Major</td>
+                    <td scope="col">Department</td>
+                    <td scope="col">College</td>
+                    <td scope="col">Delete</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for major in major %}
+                    <tr>
+                        <td>{{major.major}}</td>
+                        <td>{{major.department}}</td>
+                        <td>{{major.college}}</td>
+                        <td>
+                        <button class="btn btn-danger" onclick="deleteEntry('{{major.id}}', '{{major.major}}')">Delete</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 </body>
