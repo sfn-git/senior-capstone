@@ -79,7 +79,7 @@ app.get("/navbar", (req, res)=>{
 app.get("*", (req,res)=>{
     var file = req.url.split("/")[1];
     var checkFile = file+".html";
-    if(fs.existsSync(checkFile)){
+    if(fs.existsSync(`${__dirname}\\views\\${checkFile}`)){
         res.render(file);
     }else{
         res.status(404);
@@ -88,10 +88,29 @@ app.get("*", (req,res)=>{
     
 })
 
-app.post("/insert-file", (req, res)=>{
+app.post("/insert-file", async (req, res)=>{
+    const majorModel = require('./models/major.js');
+    var majors = req.body;
 
-    console.log(req.body);
+    for (const key in majors) {
+        
+        var newMajor = new majorModel({
+            major:  majors[key].major,
+            department:  majors[key].dept,
+            college:  majors[key].college
+        });
+
+        if(await majorModel.exists({'major': majors[key].major})){
+            console.log(`${majors[key].major} exist in db already`);
+            // Do nothing
+        }else{
+            await newMajor.save();
+        }
+        
+    }
+
     res.send("Backend reached");
+
 
 });
 

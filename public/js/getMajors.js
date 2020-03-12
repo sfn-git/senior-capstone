@@ -72,13 +72,15 @@ function upload(){
         $.ajax({
 
             method: "POST",
-            action: "/insert-file",
+            url: "/insert-file",
             data: ajaxObject,
             success: (response)=>{
-                window.alert(response);
+                window.alert("Response from backend");
+                location.reload();
             },
             error: ()=>{
                 window.alert("An error occurred");
+                location.reload();
             }
 
         })
