@@ -316,4 +316,23 @@ app.post("/remove-major", (req,res)=>{
 
 })
 
+app.post('/', (req, res) => {
+    const CLIENT_ID = '745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com';
+    var token = req.body;
+    const { OAuth2Client } = require('google-auth-library');
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token['idtoken'],
+            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        // If request specified a G Suite domain:
+        //const domain = payload['hd'];
+        res.send(userid);
+    }
+    verify().catch(console.error)
+})
+
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
