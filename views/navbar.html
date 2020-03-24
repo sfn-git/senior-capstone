@@ -1,75 +1,6 @@
 <script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script>
-    var googleUser = {};
-    var startApp = function () {
-        gapi.load('auth2', function () {
-            // Retrieve the singleton for the GoogleAuth library and set up the client.
-            auth2 = gapi.auth2.init({
-                client_id: '745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com',
-                cookiepolicy: 'single_host_origin',
-                prompt: 'select_account',
-                hosted_domain: 'kean.edu',
-                //scope: 'additional_scope'
-            });
-            attachSignin(document.getElementById('signinBtn'));
-        });
-    };
-
-    function attachSignin(element) {
-        console.log(element.id);
-        auth2.attachClickHandler(element, {},
-            function (googleUser) {
-                var profile = googleUser.getBasicProfile();
-
-
-                console.log('ID: ' + profile.getId());
-                /*
-                console.log('Full Name: ' + profile.getName());
-                console.log('Given Name: ' + profile.getGivenName());
-                console.log('Family Name: ' + profile.getFamilyName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail());
-                */
-                // The ID token you need to pass to your backend:
-                var id_token = googleUser.getAuthResponse().id_token;
-
-                //Send ID token to server
-                authenticate(id_token, profile);
-
-            }, function (error) {
-                alert(JSON.stringify(error, undefined, 2));
-            });
-    }
-
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-            console.log('User signed out.');
-            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        });
-        document.getElementById('name').innerText = "";
-        document.getElementById("signinBtn").style.display = "block";
-        document.getElementById("signout").classList.remove("d-block");
-    }
-
-    function authenticate(token, profile) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:3000');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            console.log('Verified google id: ' + xhr.responseText);
-            if (xhr.responseText) {
-                document.getElementById("signinBtn").style.display = "none";
-                document.getElementById("signout").classList.add("d-block");
-                document.getElementById('name').innerText = "Signed in: " +
-                    profile.getName();
-                document.cookie = "username=" + profile.getName() + ";";
-            }
-        };
-        xhr.send('idtoken=' + token);
-    }
-</script>
+<script src="/js/signin.js"></script>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">
@@ -81,17 +12,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/contact">Contact Us</a>
             </li>
             <li class="nav-item ">
                 <!-- <a class="nav-link" href="login.js">Login</a> -->
                 <div id="gSignInWrapper">
-                    <div id="signinBtn" class="customGPlusSignIn nav-link">Sign In</div>
-                    <a class="nav-link d-none" id="signout" onclick="signOut();">Sign out</a>
+                    <div class="customGPlusSignIn nav-link"><a href="/signin">Login Page</a></div>
+                    <!-- <a class="nav-link d-none" id="signout" onclick="signOut();">Sign out</a> -->
                 </div>
             </li>
         </ul>
