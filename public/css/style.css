@@ -79,7 +79,7 @@ border: 1px solid blue;
   border-radius: 0px 0px 25px 25px;
 }
 
-.active,.collapsible:hover {
+.active1,.collapsible:hover {
   background-color: #555;
 }
 
@@ -91,7 +91,7 @@ border: 1px solid blue;
   overflow: visible;
 }
 
-.active:after {
+.active1:after {
   content: "Show Less \2191";
 }
 
@@ -147,10 +147,12 @@ border: 2px solid black;
 }
 
 .progress{
-border: 2px solid black;
-font-size: 20px;
-width: auto;
-margin: 15px;
-text-align: center;
-background-color: white;
+  border: 2px solid black;
+  font-size: 20px;
+  padding: 5px;
+  width: auto;
+  margin: 15px;
+  text-align: center;
+  background-color: white;
+  border-radius: 25px;
 }
