@@ -41,11 +41,14 @@ var googleUser = {};
         var auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut().then(function () {
             console.log('User signed out.');
-            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         });
         document.getElementById('name').innerText = "";
         document.getElementById("signinBtn").style.display = "block";
         document.getElementById("signout").classList.remove("d-block");
+        $.ajax({
+            url: "/logout",
+            type: "POST"
+        })
     }
 
     function authenticate(token, profile) {

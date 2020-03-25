@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
@@ -13,10 +14,20 @@ app.set('view engine', 'html');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
+app.use(session({
+    name: 'sid',
+    resave: false,
+    saveUninitialized: false,
+    secret: 'RADS', //For testing, random string const should be used
+    cookie: {
+        httpOnly: false,
+        sameSite: true,
+        secure: false //set true once into production(https)
+    }
+}));
 // All basic routes
 app.get("/", (req,res)=>{
-
+    const{userId} = req.session
     res.render('index');
 });
 
@@ -331,8 +342,20 @@ app.post('/', (req, res) => {
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
         res.send(userid);
+        req.session.userId = userid; 
+        console.log(req.session.userId)
     }
     verify().catch(console.error)
+})
+
+app.post('/logout', (req, res)=> {
+    req.session.destroy(err => {
+        if(err) {
+            console.log(err)
+        }
+        res.clearCookie('sid')
+    })
+    console.log(req.session)
 })
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));
