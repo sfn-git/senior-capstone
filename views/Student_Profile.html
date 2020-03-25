@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/Student_Box.js"></script>
+</head>
+
+<body>
+    <div id="InfoBox">
+        <div id="container">
+            <div id="Title">
+                A new algorithm for finding minimum-weight words in a linear code: application to McEliece's cryptosystem and to narrow-sense BCH codes of length 511
+            </div>
+            <div id="Status">
+                <p id="statusBar"></p>
+            </div>
+
+            <div id="clear"></div>
+        </div>
+
+        <button class="collapsible" onclick="myFunction()"></button>
+
+        <div class="content">
+
+            <div id="ContentContainer">
+
+                <div id="abstract">
+                    Abstarct
+                </div>
+                <div id="people">
+                    Contributors
+                </div>
+                <div id="clear">
+                </div>
+
+            </div>
+
+            <div>
+                <div class="AbContent">
+                    An algorithm for finding minimum-weight words in large linear codes is developed. It improves all previous attacks on the public-key cryptosystems based on codes and it notably points out some weaknesses in McEliece's (1978) cipher. We also determine with it the minimum distance of some BCH codes of length 511. An algorithm for finding minimum-weight words in large linear codes is developed. It improves all previous attacks on the public-key cryptosystems based on codes and it notably points out some weaknesses in McEliece's (1978) cipher. We also determine with it the minimum distance of some BCH codes of length 511. We also determine with it the minimum distance of some BCH codes of length 511. minimum distance of BCH codes of length 511.
+                </div>
+
+                <div class="PeContent">
+                    Advisor
+                    <hr> A. Canteaut, F. Chabaud
+                    <hr> Copresenters
+                    <hr> Fahad, Alex, Reuben, Daniel
+                </div>
+                <div id="clear">
+
+                    <div class="powerpoint" id="powerpoint"></div>
+
+                </div>
+
+                <div class="progress" id="Step"></div>
+
+            </div>
+        </div>
+
+
+        <script>
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active1");
+                    var content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            }
+
+            var step = 3;
+            if (step == 1) {
+                document.getElementById("Step").innerHTML = "Your submission is being reviwed by ORSP";
+                document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
+            } else if (step == 2) {
+                document.getElementById("Step").innerHTML = "Your submission is being checkd by all listed professors";
+                document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
+            } else if (step == 3) {
+                document.getElementById("Step").innerHTML = "PDF, Word Doc, MP4 submission required";
+                document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
+                document.getElementById("powerpoint").innerHTML = "<form action='/action_page.php'>" +
+                "<label for='myfile'>Select a file: </label>" +
+                "<input type='file' id='myfile' name='myfile>Choose File </input>" + "<br><br>"+
+                "<input type='submit value='Submit'> Submit</form>";
+
+            } else {
+                document.getElementById("Step").innerHTML = "All steps have been completed! See you at Research day";
+                document.getElementById("status").innerHTML = "<p style='color: green'><b>Complete</b></p>";
+            }
+        </script>
+
+</body>
+
+</html>
