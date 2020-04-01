@@ -2,16 +2,13 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const app = express();
-const cookieParser = require('cookie-parser');
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
 const bodyParser = require('body-parser');
 const fs = require("fs");
-const cons = require('consolidate');
 require('./models/database.js');
 
-app.engine('html', cons.swig)
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -26,7 +23,7 @@ app.use(session({
         secure: false //set true once into production(https)
     }
 }));
-app.use(cookieParser());
+
 // All basic routes
 app.get("/", (req,res)=>{
     if(req.session.userId){
@@ -40,7 +37,7 @@ app.get("/", (req,res)=>{
 });
 
 app.get("/student-form", (req, res)=>{
-    console.log(req.session);
+    if(!req.session.userId){res.render('signin')}
     const majorModel = require('./models/major.js');
     const facultyModel = require('./models/faculty.js');
 
@@ -90,14 +87,19 @@ app.get("/insert-faculty", (req,res)=>{
 
 app.get("/navbar", (req, res)=>{
 
-    res.sendFile(__dirname + "/views/navbar.html");
+    if(req.session.userId){
+        res.render('navbar', {loggedIn: true});
+    }
+    else{
+        res.render('navbar', {loggedIn: false});
+    }
 
 })
 
 //Catch all routing
 app.get("*", (req,res)=>{
     var file = req.url.split("/")[1];
-    var checkFile = file+".html";
+    var checkFile = file+".ejs";
     if(fs.existsSync(`${__dirname}\\views\\${checkFile}`)){
         res.render(file);
     }else{

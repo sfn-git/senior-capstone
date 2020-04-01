@@ -9,9 +9,10 @@
     <title>Student Submission</title>
     <script>
         var majorJS = [];
-        document.write("{% for major in major %}");
-        majorJS.push('{' + '"id":{{major.id}}, "major": {{major.major}}, "college": {{major.college}}' + "}");
-        document.write("{% endfor %}");
+        document.write("<% major.forEach((major)=>{ %>");
+        majorJS.push('{' + '"id":<%= major.id%>, "major": <%= major.major%>, "college": <%= major.college%>' + "}");
+        document.write("<% }) %>");
+
 
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
@@ -61,9 +62,9 @@
                     <label for="advisor">Faculty Advisor</label>
                     <select id="advisor" name="advisor" class="form-control" required="true">
                         <option></option>
-                        {% for faculty in faculty %}
-                        <option value='{{faculty.id}}'>{{faculty.facultyName}}</option>
-                        {% endfor %}
+                        <% faculty.forEach((faculty)=>{ %>
+                        <option value='<%= faculty.id %>'><%= faculty.facultyName %></option>
+                        <% }) %>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
@@ -125,9 +126,9 @@
                     <label for="major">Major</label>
                     <select id="major" name="major" class="form-control" required="true">
                         <option></option>
-                        {% for major in major %}
-                        <option value='{{major.id}}'>{{major.major}}</option>
-                        {% endfor %}
+                        <% major.forEach((major)=>{ %>
+                        <option value='<%= major.id%>'><%= major.major%></option>
+                        <% }) %>
                     </select>
                 </div>
                 <div class="form-group col-md-3">
@@ -162,7 +163,7 @@
                 </div>
             </div>
             <hr>
-            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;" value="{{coCount}}" >
+            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;" value="{%coCount%}" >
             <div class="form-group row mt-4 col-md-12"> </div>
             	<h4 id="co-pres">Co-Presenters</h4><br>
 

@@ -16,10 +16,11 @@
                 <a class="nav-link" href="/contact">Contact Us</a>
             </li>
             <li class="nav-item ">
-                <!-- <a class="nav-link" href="login.js">Login</a> -->
-                <div id="gSignInWrapper">
-                    <div class="customGPlusSignIn nav-link"><a href="/signin">Login Page</a></div>
-                    <!-- <a class="nav-link d-none" id="signout" onclick="signOut();">Sign out</a> -->
+                <% if (loggedIn){ %>
+                    <a class="nav-link"  href="/signout">Logout</a>
+                <%}else{%>
+                    <a class="nav-link" href="/signin">Login Page</a>
+                <%}%>
                 </div>
             </li>
         </ul>
