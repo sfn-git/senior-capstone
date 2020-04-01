@@ -27,10 +27,8 @@ app.use(session({
 // All basic routes
 app.get("/", (req,res)=>{
     if(req.session.userId){
-        console.log(true);
-        res.render('index', {loggedIn: true});
+        res.render('Student_Profile', {loggedIn: true});
     }else{
-        console.log(false);
         res.render('index', {loggedIn: false});
     }
     
