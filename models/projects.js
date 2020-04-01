@@ -6,7 +6,8 @@ var projectSchema = new schema({
     // _ID get automatically generated
     presentationType: {type: String},
     title: {type: String, unique: true},
-    abstract: {type: String},
+    abstractSubmitted: {type: String},
+    abstractApproved: {type: String},
     projectArea: {type: String},
     researchLocation: {type: String},
     researchFunding: {type: String},
@@ -20,7 +21,8 @@ var projectSchema = new schema({
     dateSubmitted: {type: Date, default: Date.now},
     dateApproved: {type: Date, default: ""},
     dateDenied: {type: Date, default: ""},
-    dateLastModified: {type: Date, default: ""}
+    dateLastModified: {type: Date, default: ""},
+    notes: {type: String}
 
 });
 
