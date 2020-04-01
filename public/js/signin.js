@@ -19,18 +19,18 @@ var googleUser = {};
             function (googleUser) {
                 var profile = googleUser.getBasicProfile();
 
-                console.log('ID: ' + profile.getId());
-                console.log('Full Name: ' + profile.getName());
-                console.log('Given Name: ' + profile.getGivenName());
-                console.log('Family Name: ' + profile.getFamilyName());
-                console.log('Image URL: ' + profile.getImageUrl());
-                console.log('Email: ' + profile.getEmail());
+                // console.log('ID: ' + profile.getId());
+                // console.log('Full Name: ' + profile.getName());
+                // console.log('Given Name: ' + profile.getGivenName());
+                // console.log('Family Name: ' + profile.getFamilyName());
+                // console.log('Image URL: ' + profile.getImageUrl());
+                // console.log('Email: ' + profile.getEmail());
                 
                 // The ID token you need to pass to your backend:
                 var id_token = googleUser.getAuthResponse().id_token;
 
                 //Send ID token to server
-                authenticate(id_token, profile);
+                authenticate(id_token);
 
             }, function (error) {
                 alert(JSON.stringify(error, undefined, 2));
@@ -51,13 +51,18 @@ var googleUser = {};
         })
     }
 
-    function authenticate(token, profile) {
+    function authenticate(id_token) {
+
+        var clientData = {"idtoken": id_token};
+
         $.ajax({
             url: "/signin",
             type: "POST",
-            data: `idtoken=${token}`,
+            data: clientData,
             success: (data)=>{
-                console.log(data);
+                if(data){
+                    window.location.replace("/");
+                }
             },
             error: ()=>{
                 console.log("An error occured");

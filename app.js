@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const app = express();
+const cookieParser = require('cookie-parser');
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement. 
 const bodyParser = require('body-parser');
 const fs = require("fs");
@@ -25,13 +26,21 @@ app.use(session({
         secure: false //set true once into production(https)
     }
 }));
+app.use(cookieParser());
 // All basic routes
 app.get("/", (req,res)=>{
-    const{userId} = req.session
-    res.render('index');
+    if(req.session.userId){
+        console.log(true);
+        res.render('index', {loggedIn: true});
+    }else{
+        console.log(false);
+        res.render('index', {loggedIn: false});
+    }
+    
 });
 
 app.get("/student-form", (req, res)=>{
+    console.log(req.session);
     const majorModel = require('./models/major.js');
     const facultyModel = require('./models/faculty.js');
 
@@ -50,7 +59,6 @@ app.get("/student-form", (req, res)=>{
     
     // res.render('student_form');
     Promise.all(promise).then(values=>{
-        console.log(values);
         res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0})
     }).catch((err)=>{
         console.log(err);
@@ -303,17 +311,14 @@ app.post("/student-form", async (req,res)=>{
         if(err){
             console.error(err);
         }else{
-            console.log(fun);
         }
     })
-    // console.log(coMongoID);
     res.send(newProject);
 
 })
 
 app.post("/remove-major", (req,res)=>{
     var major = require("./models/major.js");
-    console.log();
     major.deleteOne({"_id": req.body.id}, (err, suc)=>{
 
         if(err){
@@ -327,7 +332,7 @@ app.post("/remove-major", (req,res)=>{
 
 })
 
-app.post('/', (req, res) => {
+app.post('/signin', (req, res) => {
     const CLIENT_ID = '745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com';
     var token = req.body;
     const { OAuth2Client } = require('google-auth-library');
@@ -341,9 +346,9 @@ app.post('/', (req, res) => {
         const userid = payload['sub'];
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
-        res.send(userid);
         req.session.userId = userid; 
-        console.log(req.session.userId)
+        console.log(req.session);
+        res.send(true);
     }
     verify().catch(console.error)
 })
