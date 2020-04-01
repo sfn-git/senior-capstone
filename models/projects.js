@@ -5,7 +5,6 @@ const schema = mongoose.Schema;
 var projectSchema = new schema({
     // _ID get automatically generated
     presentationType: {type: String},
-    submissionNumber: {type: Number},
     title: {type: String, unique: true},
     abstractSubmitted: {type: String},
     abstractApproved: {type: String},
