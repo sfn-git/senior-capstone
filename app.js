@@ -27,7 +27,7 @@ app.use(session({
 // All basic routes
 app.get("/", (req,res)=>{
     if(req.session.userId){
-        res.render('Student_Profile', {loggedIn: true});
+        res.render('Student_Profile', {name: req.session.name});
     }else{
         res.render('index', {loggedIn: false});
     }
@@ -91,6 +91,13 @@ app.get("/navbar", (req, res)=>{
     else{
         res.render('navbar', {loggedIn: false});
     }
+
+})
+
+app.get("/signout", (req, res)=>{
+
+    req.session.destroy();
+    res.redirect("/");
 
 })
 
@@ -293,7 +300,7 @@ app.post("/student-form", async (req,res)=>{
 
         presentationType: presentationType,
         title: title,
-        abstract: abstract,
+        abstractSubmitted: abstract,
         projectArea: projectArea,
         researchLocation: campusConducted,
         researchFunding: fundedBy,
@@ -347,7 +354,8 @@ app.post('/signin', (req, res) => {
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
         req.session.userId = userid; 
-        console.log(req.session);
+        req.session.name = payload.name;
+        req.session.email = payload.email;
         res.send(true);
     }
     verify().catch(console.error)
