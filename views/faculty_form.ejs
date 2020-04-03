@@ -72,7 +72,32 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="rank">Rank</label>
-                    <input type="number" class="form-control" id="rank" name="rank" required="true">
+                    <input type="text" class="form-control" id="rank" name="rank" required="true">
+                </div>
+                
+            </div>
+            <div class="row">
+                <!-- May reuse for rank if needed 
+                    <div class="form-group col-md-3">
+                    <label for="class">Class Level</label>
+                    <select id="class" name="class" class="form-control" required="true">
+                        <option></option>
+                        <option value="Freshman">Freshman</option>
+                        <option value="Sophomore">Sophomore</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Graduate">Graduate</option>
+                    </select>
+                </div> -->
+                <div class="form-group col-md-3">
+                    <label for="campus">Campus</label>
+                    <select id="campus" name="campus" class="form-control" required="true">
+                        <option></option>
+                        <option value="Union" selected>Union (Main)</option>
+                        <option value="Wenzhou">Wenzhou (China)</option>
+                        <option value="Ocean">Ocean (Toms River)</option>
+                        <option value="Skylands">Skylands (Oak Ridge)</option>
+                    </select>
                 </div>
                 <div class="form-group col-md-4 ">
                     <label for="keanEmail">Email Address</label>
@@ -85,34 +110,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="class">Class Level</label>
-                    <select id="class" name="class" class="form-control" required="true">
-                        <option></option>
-                        <option value="Freshman">Freshman</option>
-                        <option value="Sophomore">Sophomore</option>
-                        <option value="Junior">Junior</option>
-                        <option value="Senior">Senior</option>
-                        <option value="Graduate">Graduate</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="campus">Campus</label>
-                    <select id="campus" name="campus" class="form-control" required="true">
-                        <option></option>
-                        <option value="Union" selected>Union (Main)</option>
-                        <option value="Wenzhou">Wenzhou (China)</option>
-                        <option value="Ocean">Ocean (Toms River)</option>
-                        <option value="Skylands">Skylands (Oak Ridge)</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="onCampus" name="onCampus">
-                        <label class="form-check-label" for="onCampus">I will be on campus during the Spring
-                            semester.</label>
+                    <div class="form-check-inline">
+                        Will you be on the main campus during the Spring semester?
+                    </div>
+                    <div class="form-check-inline">
+                        <input type="radio" required="true" class="form-check-input" id="onCampus" name="onCampus">
+                        <label class="form-check-label" for="onCampus">Yes</label>
+                    </div>
+                    <div class="form-check-inline">
+                        <input type="radio" class="form-check-input" id="onCampus" name="onCampus">
+                        <label class="form-check-label" for="onCampus">No</label>
                     </div>
                 </div>
             </div>
@@ -120,15 +128,13 @@
             <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;"
                 value="{{coCount}}">
             <div class="form-group row mt-4 col-md-12"> </div>
-            <h4 id="co-pres">Co-Presenters</h4><br>
+            <h4 id="co-pres">Additional Faculty</h4><br>
 
             <div id="dynamicInput"></div>
             <div class="row">
                 <div class="form-group col-md-8">
-                    <button type="button" onclick="AddCoPres('dynamicInput')" class="btn btn-info">Add a
-                        Co-Presenter</button>
-                    <button type='button' id='Delete' onclick='DeleteCoPres()' class='btn btn-info'>Delete a
-                        Co-Presenter</button>
+                    <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a Faculty Member</button>
+                    <button type='button' id='Delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty Member</button>
                 </div>
             </div>
 
