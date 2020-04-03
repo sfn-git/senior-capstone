@@ -29,7 +29,7 @@
   <div class="container p-4">
     <!-- Title -->
     <div class="row">
-      <h2>ORSP Research Days Portal</h2>
+      <h2>Welcome to the ORSP Research Days Portal</h2>
 
       <!-- /Title -->
     </div>
@@ -42,7 +42,12 @@
     </div>
     <div class="row mt-2">
       <div class="btn-group" role="group" ;>
-        <a class="btn btn-lg btn-outline-primary" href="/student-form" role="button">Register for Research Days</a>
+        <% if(loggedIn){ %>
+          <a class="btn btn-lg btn-outline-primary" href="/student-form" role="button">Register for Research Days</a>
+        <% }else{ %>
+          <a class="btn btn-lg btn-outline-primary" id="signinBtn" role="button">Sign In</a>
+        <% } %>
+
         <a class="btn btn-lg btn-outline-primary" href="https://kean.edu/research-days-2020/" role="button">Learn
           More</a>
       </div>

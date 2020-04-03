@@ -14,18 +14,9 @@ var googleUser = {};
     };
 
     function attachSignin(element) {
-        console.log(element.id);
         auth2.attachClickHandler(element, {},
             function (googleUser) {
-                var profile = googleUser.getBasicProfile();
-
-                // console.log('ID: ' + profile.getId());
-                // console.log('Full Name: ' + profile.getName());
-                // console.log('Given Name: ' + profile.getGivenName());
-                // console.log('Family Name: ' + profile.getFamilyName());
-                // console.log('Image URL: ' + profile.getImageUrl());
-                // console.log('Email: ' + profile.getEmail());
-                
+                                
                 // The ID token you need to pass to your backend:
                 var id_token = googleUser.getAuthResponse().id_token;
 
@@ -33,7 +24,8 @@ var googleUser = {};
                 authenticate(id_token);
 
             }, function (error) {
-                alert(JSON.stringify(error, undefined, 2));
+                console.log(JSON.stringify(error, undefined, 2))
+                alert("An error occured, please try to sign-in again");
             });
     }
 

@@ -1,7 +1,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-<script src="/js/signin.js"></script>
+<% if(!loggedIn){ %>
+<script defer src="/js/signin.js"></script>
+<%}%>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">
@@ -16,17 +18,27 @@
             <li class="nav-item">
                 <a class="nav-link" href="/contact">Contact Us</a>
             </li>
-            <li class="nav-item ">
-                <% if (loggedIn){ %>
-                    <a class="nav-link"  href="/signout">Logout</a>
-                <%}else{%>
-                    <a class="nav-link" href="/signin">Login Page</a>
-                <%}%>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="https://kean.edu/research-days-2020/">Information</a>
             </li>
+                <% if (loggedIn){ %>
+                    <li class="nav-item ">
+                        <a class="nav-link"  href="/student-form">Register New Project</a>
+                    </li>
+                <%}else{%>
+                    
+                <%}%>
+                
+            
         </ul>
     </div>
-    <div id="name"></div>
+    <% if (loggedIn){ %>
+        <div id="name">Welcome: <%= name%></div>
+        <a class="nav-link"  href="/signout">Sign Out</a>
+    <%}else{ %>
+        <a class="nav-link" id="signinBtn" href="#">Sign In</a>
+    <%}%>
+    
 </nav>
 <script>startApp();</script>
 <!-- /Navbar -->
