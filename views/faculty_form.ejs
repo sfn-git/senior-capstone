@@ -12,8 +12,7 @@
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/js/abstractCharCounter.js"></script>
     <script src="/js/descriptionCharCounter.js"></script>
-    <script src="/js/addFaculty.js"></script>
-    <script src="/js/deleteFaculty.js"></script>
+    <script src="/js/additionalFaculty.js"></script>
 
 </head>
 
@@ -88,7 +87,7 @@
                     <label for="campus">Campus</label>
                     <select id="campus" name="campus" class="form-control" required="true">
                         <option></option>
-                        <option value="Union" selected>Union (Main)</option>
+                        <option value="Union">Union (Main)</option>
                         <option value="Wenzhou">Wenzhou (China)</option>
                         <option value="Ocean">Ocean (Toms River)</option>
                         <option value="Skylands">Skylands (Oak Ridge)</option>
@@ -121,17 +120,18 @@
             </div>
             <hr>
             <input type="number" id="facultyCount" name="facultyCount" style="display: none;" value="{{coCount}}">
-            <div class="form-group row mt-4 col-md-12"> </div>
-            <h4>Additional Faculty</h4><br>
-
+            <div class="form-group row mt-4 col-md-12">
+                <h4>Additional Faculty</h4><br>
+            </div>
             <div id="dynamicInput"></div>
-            <div class="row">
-                <div class="form-group col-md-8">
-                    <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a Faculty
-                        Member</button>
-                    <button type='button' id='Delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty
-                        Member</button>
-                </div>
+
+            <div class="btn-group mt-2 mr-2">
+                <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a
+                    Faculty
+                    Member</button>
+            </div>
+            <div class="btn-group mt-2">
+                <button hidden type='button' id='delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty Member</button>
             </div>
 
             <hr>
