@@ -1,8 +1,6 @@
 var counter = 0;
 var limit = 30;
 
-console.log(majorJS);
-
 function AddCoPres(divName)
 {
    if (counter == limit)

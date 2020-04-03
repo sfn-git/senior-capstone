@@ -27,37 +27,40 @@ app.use(session({
 // All basic routes
 app.get("/", (req,res)=>{
     if(req.session.userId){
-        res.render('Student_Profile', {loggedIn: true});
+        res.render('index', {loggedIn: true, name: req.session.name});
     }else{
-        res.render('index', {loggedIn: false});
+        res.render('index', {loggedIn: false, name: ""});
     }
     
 });
 
 app.get("/student-form", (req, res)=>{
-    if(!req.session.userId){res.render('signin')}
-    const majorModel = require('./models/major.js');
-    const facultyModel = require('./models/faculty.js');
+    if(!req.session.userId){
+        res.render('signin')
+    }else{
+        const majorModel = require('./models/major.js');
+        const facultyModel = require('./models/faculty.js');
 
-    var promise = [];
-    promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
-        if(err){
-            console.error(err);
-        }
-    }));
+        var promise = [];
+        promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
+            if(err){
+                console.error(err);
+            }
+        }));
 
-    promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
-        if(err){
-            console.error(err);
-        }
-    }))
-    
-    // res.render('student_form');
-    Promise.all(promise).then(values=>{
-        res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0})
-    }).catch((err)=>{
-        console.log(err);
-    })
+        promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
+            if(err){
+                console.error(err);
+            }
+        }))
+        
+        // res.render('student_form');
+        Promise.all(promise).then(values=>{
+            res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0, fname: req.session.name.split(" ")[0], lname: req.session.name.split(" ")[1], email: req.session.email.split("@")[0]});
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
 })
 
 app.get("/insert-major", (req, res)=>{
@@ -86,11 +89,22 @@ app.get("/insert-faculty", (req,res)=>{
 app.get("/navbar", (req, res)=>{
 
     if(req.session.userId){
-        res.render('navbar', {loggedIn: true});
+        res.render('navbar', {loggedIn: true, name: req.session.name});
     }
     else{
         res.render('navbar', {loggedIn: false});
     }
+
+})
+
+app.get("/signout", (req, res)=>{
+
+    req.session.destroy((err)=>{
+        if(err){console.error(err)}
+    });
+    res.clearCookie('sid')
+    res.redirect("/");
+
 
 })
 
@@ -112,7 +126,6 @@ app.post("/insert-file", async (req, res)=>{
     var majors = req.body;
 
     for (const key in majors) {
-        
         var newMajor = new majorModel({
             major:  majors[key].major,
             department:  majors[key].dept,
@@ -129,7 +142,6 @@ app.post("/insert-file", async (req, res)=>{
     }
 
     res.send("Backend reached");
-
 
 });
 
@@ -231,7 +243,6 @@ app.post("/student-form", async (req,res)=>{
     classLevel = req.body.class;
     primaryLocation = req.body.campus;
     
-
     // First insert student
     var primaryStudent = new studentModel({
         name: name,
@@ -293,7 +304,7 @@ app.post("/student-form", async (req,res)=>{
 
         presentationType: presentationType,
         title: title,
-        abstract: abstract,
+        abstractSubmitted: abstract,
         projectArea: projectArea,
         researchLocation: campusConducted,
         researchFunding: fundedBy,
@@ -347,20 +358,11 @@ app.post('/signin', (req, res) => {
         // If request specified a G Suite domain:
         //const domain = payload['hd'];
         req.session.userId = userid; 
-        console.log(req.session);
+        req.session.name = payload.name;
+        req.session.email = payload.email;
         res.send(true);
     }
     verify().catch(console.error)
-})
-
-app.post('/logout', (req, res)=> {
-    req.session.destroy(err => {
-        if(err) {
-            console.log(err)
-        }
-        res.clearCookie('sid')
-    })
-    console.log(req.session)
 })
 
 app.listen(port, ()=>console.log(`Server now running at port ${port}`));

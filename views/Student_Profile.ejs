@@ -16,8 +16,11 @@
 </script>
 
 <body>
+    <div class="container-fluid">
+    <h1>Welcome back <%= name %></h1>
     <div id="InfoBox">
         <div id="container">
+            
             <div id="Title">
                 A new algorithm for finding minimum-weight words in a linear code: application to McEliece's cryptosystem and to narrow-sense BCH codes of length 511
             </div>
@@ -34,15 +37,9 @@
 
             <div id="ContentContainer">
 
-                <div id="abstract">
-                    Abstarct
-                </div>
-                <div id="people">
-                    Contributors
-                </div>
-                <div id="clear">
-                </div>
-
+                <div id="abstract">Abstarct</div>
+                <div id="people">Contributors</div>
+                <div id="clear"></div>
             </div>
 
             <div>
@@ -56,10 +53,9 @@
                     <hr> Copresenters
                     <hr> Fahad, Alex, Reuben, Daniel
                 </div>
+                
                 <div id="clear">
-
                     <div class="powerpoint" id="powerpoint"></div>
-
                 </div>
 
                 <div class="progress" id="Step"></div>
@@ -104,7 +100,7 @@
                 document.getElementById("status").innerHTML = "<p style='color: green'><b>Complete</b></p>";
             }
         </script>
-
+    </div>
 </body>
 
 </html>
