@@ -27,7 +27,7 @@ app.use(session({
 // All basic routes
 app.get("/", (req,res)=>{
     if(req.session.userId){
-        res.render('Student_Profile', {name: req.session.name});
+        res.render('index', {name: req.session.name});
     }else{
         res.render('index', {loggedIn: false});
     }
@@ -35,29 +35,32 @@ app.get("/", (req,res)=>{
 });
 
 app.get("/student-form", (req, res)=>{
-    if(!req.session.userId){res.render('signin')}
-    const majorModel = require('./models/major.js');
-    const facultyModel = require('./models/faculty.js');
+    if(!req.session.userId){
+        res.render('signin')
+    }else{
+        const majorModel = require('./models/major.js');
+        const facultyModel = require('./models/faculty.js');
 
-    var promise = [];
-    promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
-        if(err){
-            console.error(err);
-        }
-    }));
+        var promise = [];
+        promise.push(majorModel.find({}, null, {sort: {major: 1}}, (err, fun)=>{
+            if(err){
+                console.error(err);
+            }
+        }));
 
-    promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
-        if(err){
-            console.error(err);
-        }
-    }))
-    
-    // res.render('student_form');
-    Promise.all(promise).then(values=>{
-        res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0})
-    }).catch((err)=>{
-        console.log(err);
-    })
+        promise.push(facultyModel.find({}, null, {sort: {facultyName: 1}}, (err, fun)=>{
+            if(err){
+                console.error(err);
+            }
+        }))
+        
+        // res.render('student_form');
+        Promise.all(promise).then(values=>{
+            res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0, fname: req.session.name.split(" ")[0], lname: req.session.name.split(" ")[1], email: req.session.email.split("@")[0]});
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
 })
 
 app.get("/insert-major", (req, res)=>{
