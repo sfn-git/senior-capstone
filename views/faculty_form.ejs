@@ -12,7 +12,8 @@
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/js/abstractCharCounter.js"></script>
     <script src="/js/descriptionCharCounter.js"></script>
-    <script src="/js/CoPresenter.js"></script>
+    <script src="/js/addFaculty.js"></script>
+    <script src="/js/deleteFaculty.js"></script>
 
 </head>
 
@@ -71,24 +72,18 @@
                     <input type="text" class="form-control" id="lastName" name="lastName" required="true">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="rank">Rank</label>
-                    <input type="text" class="form-control" id="rank" name="rank" required="true">
+                    <label for="facultyPosition">Position</label>
+                    <select name="facultyPosition" required id="facultyPosition" class="form-control">
+                        <option disabled selected value></option>
+                        <option value="Tenure-Track">Tenure-Track</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="Adjunct">Adjunct</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Assistant Professor">Assistant Professor</option>
+                    </select>
                 </div>
-                
             </div>
             <div class="row">
-                <!-- May reuse for rank if needed 
-                    <div class="form-group col-md-3">
-                    <label for="class">Class Level</label>
-                    <select id="class" name="class" class="form-control" required="true">
-                        <option></option>
-                        <option value="Freshman">Freshman</option>
-                        <option value="Sophomore">Sophomore</option>
-                        <option value="Junior">Junior</option>
-                        <option value="Senior">Senior</option>
-                        <option value="Graduate">Graduate</option>
-                    </select>
-                </div> -->
                 <div class="form-group col-md-3">
                     <label for="campus">Campus</label>
                     <select id="campus" name="campus" class="form-control" required="true">
@@ -99,7 +94,7 @@
                         <option value="Skylands">Skylands (Oak Ridge)</option>
                     </select>
                 </div>
-                <div class="form-group col-md-4 ">
+                <div class="form-group col-md-3">
                     <label for="keanEmail">Email Address</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="keanEmail" name="keanEmail" required="true">
@@ -125,16 +120,17 @@
                 </div>
             </div>
             <hr>
-            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;"
-                value="{{coCount}}">
+            <input type="number" id="facultyCount" name="facultyCount" style="display: none;" value="{{coCount}}">
             <div class="form-group row mt-4 col-md-12"> </div>
-            <h4 id="co-pres">Additional Faculty</h4><br>
+            <h4>Additional Faculty</h4><br>
 
             <div id="dynamicInput"></div>
             <div class="row">
                 <div class="form-group col-md-8">
-                    <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a Faculty Member</button>
-                    <button type='button' id='Delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty Member</button>
+                    <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a Faculty
+                        Member</button>
+                    <button type='button' id='Delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty
+                        Member</button>
                 </div>
             </div>
 
