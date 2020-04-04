@@ -38,14 +38,15 @@
         <h4 class="alert-heading">Please note</h4>
         <hr>
         <p>Registration for Kean Research Days 2021 is due by Feburary xx.</p>
+        <p>Please sign-in to register or view your projects</p>
       </div>
     </div>
     <div class="row mt-2">
       <div class="btn-group" role="group" ;>
         <% if(loggedIn){ %>
-          <a class="btn btn-lg btn-outline-primary" href="/student-form" role="button">Register for Research Days</a>
+          <a class="btn btn-lg btn-outline-primary" href="/Student_Profile" role="button">View your Projects</a>
         <% }else{ %>
-          <a class="btn btn-lg btn-outline-primary" id="signinBtn" role="button">Sign In</a>
+          <a class="btn btn-lg btn-outline-primary" href="" role="button">View your Projects</a>
         <% } %>
 
         <a class="btn btn-lg btn-outline-primary" href="https://kean.edu/research-days-2020/" role="button">Learn

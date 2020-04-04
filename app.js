@@ -103,8 +103,19 @@ app.get("/signout", (req, res)=>{
         if(err){console.error(err)}
     });
     res.clearCookie('sid')
+
     res.redirect("/");
 
+
+})
+
+app.get("/Student_Profile", (req,res)=>{
+
+    if(req.session.userId){
+        res.render("Student_Profile", {name: req.session.name})
+    }else{
+        res.redirect("/")
+    }
 
 })
 

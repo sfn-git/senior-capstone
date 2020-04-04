@@ -33,10 +33,10 @@
         </ul>
     </div>
     <% if (loggedIn){ %>
-        <div id="name">Welcome: <%= name%></div>
+        <div id="name"><%= name%></div>
         <a class="nav-link"  href="/signout">Sign Out</a>
     <%}else{ %>
-        <a class="nav-link" id="signinBtn" href="#">Sign In</a>
+        <a class="nav-link" id="signinBtn" href="#">Sign In with Google</a>
     <%}%>
     
 </nav>
