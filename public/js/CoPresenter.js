@@ -10,6 +10,7 @@ function AddCoPres(divName)
    else
    {
         counter++;
+        $("#delete").attr("hidden", false);
         $("#coPresenterCount").val(counter);
         var newdiv = document.createElement('div');
         newdiv.innerHTML += "<div id=DivForCP" + counter + ">"+
@@ -89,17 +90,15 @@ function AddCoPres(divName)
         }
    }
 }
-   function DeleteCoPres()
-   {
-       if(counter<=0)
-       {
-         alert("No co-presenters added");
-       }
-       else
-       {
-           var RemLastCPform = document.getElementById("DivForCP" + counter);
-           RemLastCPform.remove();
-           counter--;
-           $("#coPresenterCount").val(counter);
-       }
-     }
+     function DeleteCoPres() {
+        $("#delete").attr("hidden", false);
+        var lastCP = document.getElementById(
+          "DivForCP" + counter
+        );
+        lastCP.remove();
+        counter--;
+        if (counter <= 0) {
+          $("#delete").attr("hidden", true);
+        }
+        $("#facultyCount").val(counter);
+      }
