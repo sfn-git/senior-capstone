@@ -62,45 +62,8 @@
 
             </div>
         </div>
-
-
-        <script>
-            var coll = document.getElementsByClassName("collapsible");
-            var i;
-
-            for (i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function() {
-                    this.classList.toggle("active1");
-                    var content = this.nextElementSibling;
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    }
-                });
-            }
-
-            // var step = 3;
-            // if (step == 1) {
-            //     document.getElementById("Step").innerHTML = "Your submission is being reviwed by ORSP";
-            //     document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
-            // } else if (step == 2) {
-            //     document.getElementById("Step").innerHTML = "Your submission is being checkd by all listed professors";
-            //     document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
-            // } else if (step == 3) {
-            //     document.getElementById("Step").innerHTML = "PDF, Word Doc, MP4 submission required";
-            //     document.getElementById("statusBar").innerHTML = "<p style='color: red' font-size: 20px><b>Incomplete</b></p>";
-            //     document.getElementById("powerpoint").innerHTML = "<form action='/action_page.php'>" +
-            //     "<label for='myfile'>Select a file: </label>" +
-            //     "<input type='file' id='myfile' name='myfile>Choose File </input>" + "<br><br>"+
-            //     "<input type='submit value='Submit'> Submit</form>";
-
-            // } else {
-            //     document.getElementById("Step").innerHTML = "All steps have been completed! See you at Research day";
-            //     document.getElementById("status").innerHTML = "<p style='color: green'><b>Complete</b></p>";
-            // }
-        </script>
     </div>
+    <script src="/js/SBN_dropdown.js"></script>
 </body>
 
 </html>
