@@ -117,7 +117,12 @@ border: 1px solid blue;
             height: auto;
         }
 
-        #people {
+        #AbstractSP {
+          font-size: 25px;
+          float: left;
+        }
+
+        #PeopleSP {
           font-size: 25px;
           float: right;
         }
