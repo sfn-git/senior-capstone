@@ -3,8 +3,8 @@
 This repository holds the code for our capstone project. Our capstone project is a system that we are developing for the Office of Research and Sponsored Programs at Kean to assist with their university-wide event Research Days. This involves student registrations, confirmations, and many more elaborate details that have been done using excels and paper. In this project, we hope to create a system that can assist with their event for the long term.
 
 # Group Members
-Front-End Development: Daniel Henriques and Reuben Hernandez  
-Back-End Development: Syed Fahad Nadeem and Alexander Reis
+Front-End Development: Daniel Henriques and Alexander Reis
+Back-End Development: Syed Fahad Nadeem and Reuben Hernandez
 
 # Instructions on how to use
 
@@ -32,4 +32,4 @@ If you are running into nodemon not found, use `(-g --force)`
 
 # How to view/modify documentation files
 
-The documentation for the database design was created using draw.io. This is a website and desktop application that allows for easy chart and system layout planning. To edit/view the file, you can go to draw.io and then load the file onto the site to view and edit it. 
+The documentation for the database design was created using [draw.io](https://app.diagrams.net/). This is a website and desktop application that allows for easy chart and system layout planning. To edit/view the file, you can go to [draw.io](https://app.diagrams.net/) and then load the file onto the site to view and edit it. 
