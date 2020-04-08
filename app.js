@@ -249,7 +249,7 @@ app.post("/student-form", async (req,res)=>{
     // Lead Presenter Info
     name = `${req.body.firstName} ${req.body.lastName}`;
     leadID = req.body.keanID;
-    email = req.body.keanEmail+"@kean.edu";
+    email = req.body.keanEmail+"@kean.edu".toLowerCase();
     major = req.body.major;
     classLevel = req.body.class;
     primaryLocation = req.body.campus;
@@ -285,7 +285,7 @@ app.post("/student-form", async (req,res)=>{
             
             var coName = `${req.body["firstName" + current]} ${req.body["lastName" + current]}`;
             var coStuID = req.body["keanID" + current];
-            var coEmail = `${req.body["keanEmail" + current]}@kean.edu`;
+            var coEmail = `${req.body["keanEmail" + current].toLowerCase()}@kean.edu`;
             var coMajor = req.body["major" + current];
             var coClassLevel = req.body["class" + current];
             var coPrimaryLocation = req.body["campus" + current];
@@ -335,7 +335,7 @@ app.post("/student-form", async (req,res)=>{
         }else{
         }
     })
-    res.send(newProject);
+    res.redirect("/");
 
 })
 
@@ -371,6 +371,9 @@ app.post('/signin', (req, res) => {
         req.session.userId = userid; 
         req.session.name = payload.name;
         req.session.email = payload.email;
+        req.session.isStudent = true;
+        req.session.isFaculty = true;
+        req.session.isORSP = true;
         res.send(true);
     }
     verify().catch(console.error)

@@ -5,7 +5,7 @@ const schema = mongoose.Schema;
 var projectSchema = new schema({
     // _ID get automatically generated
     presentationType: {type: String},
-    title: {type: String, unique: true},
+    title: {type: String},
     abstractSubmitted: {type: String},
     abstractApproved: {type: String},
     projectArea: {type: String},
