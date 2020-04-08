@@ -8,8 +8,8 @@
   <script src="https://apis.google.com/js/api:client.js"></script>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="/css/style.css">
 
@@ -19,9 +19,9 @@
 <!-- Nav Bar Code -->
 <div id="nav-placeholder"></div>
 <script>
-    $(function(){
-      $("#nav-placeholder").load("/navbar");
-    });
+  $(function () {
+    $("#nav-placeholder").load("/navbar");
+  });
 </script>
 
 <body>
@@ -38,19 +38,19 @@
         <h4 class="alert-heading">Please note</h4>
         <hr>
         <p>Registration for Kean Research Days 2021 is due by Feburary xx.</p>
-        <p>Please sign-in to register or view your projects</p>
+        <p>Please sign-in to register for Research Days or view your previous submissions</p>
       </div>
     </div>
     <div class="row mt-2">
       <div class="btn-group" role="group" ;>
         <% if(loggedIn){ %>
-          <a class="btn btn-lg btn-outline-primary" href="/Student_Profile" role="button">View your Projects</a>
+        <a class="btn btn-lg btn-outline-primary" href="/Student_Profile" role="button">View your Projects</a>
         <% }else{ %>
-          <a class="btn btn-lg btn-outline-primary" href="" role="button">View your Projects</a>
+        <a class="btn btn-lg btn-outline-primary" href="" role="button">Register for Research Days</a>
         <% } %>
 
-        <a class="btn btn-lg btn-outline-primary" href="https://kean.edu/research-days-2020/" role="button">Learn
-          More</a>
+        <a class="btn btn-lg btn-outline-primary" href="https://kean.edu/research-days-2020/" role="button">Learn more
+          about Research Days</a>
       </div>
       <!-- /Button Group -->
     </div>
