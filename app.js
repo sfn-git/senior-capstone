@@ -56,7 +56,7 @@ app.get("/student-form", (req, res)=>{
         
         // res.render('student_form');
         Promise.all(promise).then(values=>{
-            res.render('student_form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0, fname: req.session.name.split(" ")[0], lname: req.session.name.split(" ")[1], email: req.session.email.split("@")[0]});
+            res.render('student-form', {major: values[0], majorJS: JSON.stringify(values[0]), faculty: values[1], coCount: 0, fname: req.session.name.split(" ")[0], lname: req.session.name.split(" ")[1], email: req.session.email.split("@")[0]});
         }).catch((err)=>{
             console.log(err);
         })

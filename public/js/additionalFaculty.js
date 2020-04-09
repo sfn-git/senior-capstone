@@ -9,7 +9,7 @@ function addFaculty(divName) {
   } else {
     counter++;
     $("#delete").attr("hidden", false);
-    $("#facultyCount").val(counter);
+    $("#additionalFacultyCount").val(counter);
     var newdiv = document.createElement("div");
     newdiv.innerHTML +=
       `<div id=additionalFaculty` +

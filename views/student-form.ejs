@@ -18,15 +18,15 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/js/abstractCharCounter.js"></script>
-    <script src="/js/CoPresenter.js"></script>
+    <script src="/js/additionalPresenters.js"></script>
 
 </head>
 
 
 <div id="nav-placeholder"></div>
 <script>
-    $(function(){
-      $("#nav-placeholder").load("/navbar");
+    $(function () {
+        $("#nav-placeholder").load("/navbar");
     });
 </script>
 
@@ -53,7 +53,8 @@
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="abstract">Abstract</label>
-                    <textarea class="form-control" id="abstract" name="abstract" rows=8 required="true" maxlength="750"></textarea>
+                    <textarea class="form-control" id="abstract" name="abstract" rows=8 required="true"
+                        maxlength="750"></textarea>
                     <small class="text-muted" id="abstractCharRemaining"></small>
                 </div>
             </div>
@@ -101,20 +102,24 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="firstName">First name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required="true" readonly placeholder="<%= fname%>" value="<%= fname%>">
+                    <input type="text" class="form-control" id="firstName" name="firstName" required="true" readonly
+                        placeholder="<%= fname%>" value="<%= fname%>">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="lastName">Last name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required="true" readonly placeholder="<%= lname%>" value="<%= lname%>">
+                    <input type="text" class="form-control" id="lastName" name="lastName" required="true" readonly
+                        placeholder="<%= lname%>" value="<%= lname%>">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="keanID">Student ID</label>
-                    <input type="number" class="form-control" id="keanID" name="keanID" min="0" max="9999999" required="true">
+                    <input type="number" class="form-control" id="keanID" name="keanID" min="0" max="9999999"
+                        required="true">
                 </div>
                 <div class="form-group col-md-4 ">
                     <label for="keanEmail">Email Address</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="keanEmail" name="keanEmail" required="true" readonly placeholder="<%= email%>" value="<%= email%>">
+                        <input type="text" class="form-control" id="keanEmail" name="keanEmail" required="true" readonly
+                            placeholder="<%= email%>" value="<%= email%>">
                         <div class="input-group-append">
                             <span class="input-group-text" id="keanEmail">@kean.edu</span>
                         </div>
@@ -163,22 +168,21 @@
                 </div>
             </div>
             <hr>
-            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;" value="{%coCount%}" >
-            <div class="form-group row mt-4 col-md-12"> </div>
-            	<h4 id="co-pres">Co-Presenters</h4><br>
+            <input type="number" id="coPresenterCount" name="coPresenterCount" style="display: none;"
+                value="{%coCount%}">
+            <div class="form-group row mt-4 col-md-12">
+                <h4>Co-Presenters</h4><br>
+            </div>
+            <div id="dynamicInput"></div>
 
-                <div id="dynamicInput"></div>
-            <div class="row">
-            	<div class="btn-group mt-2 mr-2">
-                <button type="button" onclick="AddCoPres('dynamicInput')" class="btn btn-info">Add a Co-Presenter</button>
+            <div class="btn-group mt-2 mr-2">
+                <button type="button" onclick="additionalPresenter('dynamicInput')" class="btn btn-info">Add a
+                    Co-Presenter</button>
             </div>
             <div class="btn-group mt-2">
-                <button hidden type='button' id='delete' onclick='DeleteCoPres()' class='btn btn-info'>Delete a Co-Presenter</button>
+                <button hidden type='button' id='delete' onclick='deleteAdditionalPresenter()' class='btn btn-info'>Delete a
+                    Co-Presenter</button>
             </div>
-            </div>
-
-            
-
             <hr>
             <div class="row mb-2">
                 <div class="form-group col">
@@ -199,4 +203,5 @@
         </form>
     </div>
 </body>
+
 </html>
