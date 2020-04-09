@@ -16,9 +16,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-            <% if (loggedIn){ %>
+            <% if (loggedIn == true && isORSP != true){ %>
                 <li class="nav-item ">
-                    <a class="nav-link"  href="/submissions">My Submissions</a>
+                    <a class="nav-link"  href="/submission">New Submission</a>
                 </li>
             <%}else{%>
                 

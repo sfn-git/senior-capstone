@@ -60,10 +60,10 @@ app.get("/submission", (req, res) => {
       })
     );
 
-    if (req.session.isFaculty) {
+    if (req.session.isStudent) {
       Promise.all(promise)
         .then((values) => {
-          res.render("faculty-form", {
+          res.render("student-form", {
             major: values[0],
             majorJS: JSON.stringify(values[0]),
             faculty: values[1],
@@ -76,10 +76,10 @@ app.get("/submission", (req, res) => {
         .catch((err) => {
           console.log(err);
         });
-    } else if (req.session.isStudent) {
+    } else if (req.session.isFaculty) {
       Promise.all(promise)
         .then((values) => {
-          res.render("student-form", {
+          res.render("faculty-form", {
             major: values[0],
             majorJS: JSON.stringify(values[0]),
             faculty: values[1],
@@ -123,9 +123,9 @@ app.get("/insert-faculty", (req, res) => {
 
 app.get("/navbar", (req, res) => {
   if (req.session.userId) {
-    res.render("navbar", { loggedIn: true, name: req.session.name });
+    res.render("navbar", { loggedIn: true, name: req.session.name, isORSP: req.session.isORSP});
   } else {
-    res.render("navbar", { loggedIn: false });
+    res.render("navbar", { loggedIn: false, isORSP: false});
   }
 });
 
@@ -395,8 +395,8 @@ app.post("/signin", (req, res) => {
     req.session.name = payload.name;
     req.session.email = payload.email;
     req.session.isStudent = true;
-    req.session.isFaculty = true;
-    req.session.isORSP = true;
+    req.session.isFaculty = false;
+    req.session.isORSP = false;
     res.send(true);
   }
   verify().catch(console.error);
