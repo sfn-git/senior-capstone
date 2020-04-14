@@ -270,9 +270,9 @@ app.post("/student-form", async (req, res) => {
   fundedBy = req.body.fundedBy;
 
   // Lead Presenter Info
-  name = `${req.body.firstName} ${req.body.lastName}`;
+  name = req.session.name;
   leadID = req.body.keanID;
-  email = req.body.keanEmail + "@kean.edu".toLowerCase();
+  email = req.session.email;
   major = req.body.major;
   classLevel = req.body.class;
   primaryLocation = req.body.campus;
