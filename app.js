@@ -29,7 +29,7 @@ app.use(
 // All basic routes
 app.get("/", (req, res) => {
   if (req.session.userId) {
-    res.render("index", { loggedIn: true, name: req.session.name });
+    res.render("student-profile", {name: req.session.name });
   } else {
     res.render("index", { loggedIn: false, name: "" });
   }
@@ -98,6 +98,23 @@ app.get("/submission", (req, res) => {
   }
 });
 
+// End Point to view all projects of student/faculty
+app.get("/projects", (req,res)=>{
+
+    if(!req.session.userId){
+      res.render("signin");
+    }
+
+    res.render("student-profile", {name: req.session.name});
+
+})
+
+app.get("/admin", (req,res)=>{
+
+
+
+})
+
 app.get("/insert-major", (req, res) => {
   const majorModel = require("./models/major.js");
   majorModel.find({}, null, { sort: { major: 1 } }, function (err, fun) {
@@ -109,17 +126,17 @@ app.get("/insert-major", (req, res) => {
   });
 });
 
-app.get("/insert-faculty", (req, res) => {
-  const facultyModel = require("./models/faculty.js");
-  facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
-    if (err) {
-      res.send(err);
-    } else {
-      console.log(fun);
-      res.render("insert-faculty", { faculty: fun });
-    }
-  });
-});
+// app.get("/insert-faculty", (req, res) => {
+//   const facultyModel = require("./models/faculty.js");
+//   facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       console.log(fun);
+//       res.render("insert-faculty", { faculty: fun });
+//     }
+//   });
+// });
 
 app.get("/navbar", (req, res) => {
   if (req.session.userId) {
