@@ -1,69 +1,108 @@
 <!DOCTYPE html>
-<html>
 
 <head>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/Student_Box.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 </head>
 
 <div id="nav-placeholder"></div>
 <script>
-    $(function(){
-      $("#nav-placeholder").load("/navbar");
+    $(function () {
+        $("#nav-placeholder").load("/navbar");
     });
 </script>
 
-<body onload="statusFunction('4')">
-    <div class="container-fluid">
-    <h1>Welcome back <%= name %></h1>
-    <div id="InfoBox">
-        <div id="container">
-            
-            <div id="Title">
-                A new algorithm for finding minimum-weight words in a linear code: application to McEliece's cryptosystem and to narrow-sense BCH codes of length 511
-            </div>
-            <div id="Status">
-                <p id="statusBar"></p>
-            </div>
+<div class="container p-4">
+    <h2>Your Submissions</h2>
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Date Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="input" data-toggle="modal" href="#">
+                    <td>Pending ORSP</td>
+                    <td>3919837</td>
+                    <td>A Quantitative Analysis of Economic Theory in China</td>
+                    <td>04/15/2020</td>
+                </tr>
+                <tr>
+                    <td>Pending ORSP</td>
+                    <td>3919837</td>
+                    <td>A Quantitative Analysis of Economic Theory in China</td>
+                    <td>04/15/2020</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <div id="clear"></div>
-        </div>
+    <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
 
-        <button class="collapsible" onclick="myFunction()"></button>
 
-        <div class="content">
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="container">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-10">
+                                <h3>A Quantitative Analysis of Economic Theory in China</h3>
+                            </div>
+                            <div class="col">
+                                <span class="badge badge-info">Pending ORSP: #3919837 </span>
+                            </div>
+                        </div>
 
-            <div id="ContentContainer">
 
-                <div id="AbstractSP">Abstarct</div>
-                <div id="PeopleSP">Contributors</div>
-                <div id="clear"></div>
-            </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-            <div>
-                <div class="AbContent">
-                    An algorithm for finding minimum-weight words in large linear codes is developed. It improves all previous attacks on the public-key cryptosystems based on codes and it notably points out some weaknesses in McEliece's (1978) cipher. We also determine with it the minimum distance of some BCH codes of length 511. An algorithm for finding minimum-weight words in large linear codes is developed. It improves all previous attacks on the public-key cryptosystems based on codes and it notably points out some weaknesses in McEliece's (1978) cipher. We also determine with it the minimum distance of some BCH codes of length 511. We also determine with it the minimum distance of some BCH codes of length 511. minimum distance of BCH codes of length 511.
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-8 mr-auto">
+                                <h5>Abstract</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sodales gravida
+                                    augue vitae accumsan. In ultricies enim vel lectus sodales, in venenatis lacus
+                                    sollicitudin. In at risus cursus, convallis augue sit amet, commodo dolor. Morbi
+                                    venenatis felis neque, non accumsan nisi finibus malesuada. Nunc semper non massa id
+                                    tempus. Etiam blandit lobortis orci in convallis. Pellentesque mattis finibus nunc
+                                    in cursus. Ut in turpis dapibus, fringilla orci sit amet, molestie erat. Vestibulum
+                                    aliquam tempor porta. In finibus risus et sem venenatis, eget dictum felis aliquam.
+                                    Fusce pretium, justo eu elementum porta, lectus dui posuere ante, id tristique arcu
+                                    lectus a augue. Praesent et odio nisl. Aliquam erat volutpat. Sed et magna nulla.
+                                    Sed dictum augue accumsan est egestas, in fringilla diam aliquam. Curabitur pharetra
+                                    sapien neque, sit amet lacinia sem commodo ut. </p>
+                            </div>
+                            <div class="col-3">
+                                <h5>Primary Presenter</h5>
+                                <p>Daniel Henriques</p>
+                                <h5 class="mt-4">Additional Presenters</h5>
+                                <p>Syed Nadeem</p>
+                                <h5 class="mt-4">Faculty</h5>
+                                <p>Ching-yu "Austin" Huang</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <p class="mr-auto small text-muted">
+                            Last edited on 04/15/20
+                        </p>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-
-                <div class="PeContent">
-                    Advisor
-                    <hr> A. Canteaut, F. Chabaud
-                    <hr> Copresenters
-                    <hr> Fahad, Alex, Reuben, Daniel
-                </div>
-                
-                <div id="clear">
-                    <div class="powerpoint" id="powerpoint"></div>
-                </div>
-
-                <div class="progress" id="Step"></div>
-
             </div>
         </div>
     </div>
-    <script src="/js/SBN_dropdown.js"></script>
-</body>
+
+</div>
 
 </html>

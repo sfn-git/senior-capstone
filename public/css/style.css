@@ -5,21 +5,23 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
-  -moz-appearance:textfield;
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
-body {
-background-color: #f8f9fa;
+nav {
+  background-color: #f8f9fa;
 }
 
-.navbar {
-  background-color: #eeeeee !important;
-}
-
-#signinBtn:hover{
+#signinBtn:hover {
   cursor: pointer;
 }
+
+tbody {
+  background-color: #f8f9fa !important;
+}
+
+
 
 /* student info box
 #InfoBox
