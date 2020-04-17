@@ -1,4 +1,7 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+/>
 <script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -7,40 +10,46 @@
 <%}%>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">
-        <img class="img-fluid" style="height:75px;" src="/img/orsp.png">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <% if (loggedIn == true && isORSP != true){ %>
-                <li class="nav-item ">
-                    <a class="nav-link"  href="/submission">New Submission</a>
-                </li>
-            <%}else{%>
-                
-            <%}%>
-            
-            <li class="nav-item">
-                <a class="nav-link" href="https://kean.edu/research-days-2020/">About</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">Contact Us</a>
-            </li>
-            
-        </ul>
-            <% if (loggedIn){ %>
-                <div id="name"><%= name%></div>
-                <a class="nav-link"  href="/signout">Sign Out</a>
-            <%}else{ %>
-                <a class="nav-link p-0" id="signinBtn" href="#">Sign In with Google</a>
-            <%}%>
-    </div>
-    
-    
+  <a class="navbar-brand" href="/">
+    <img class="img-fluid" style="height: 75px;" src="/img/orsp.png" />
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">
+          Home
+        </a>
+      </li>
+      <% if (loggedIn == true && isORSP != true){ %>
+      <li class="nav-item">
+        <a class="nav-link" href="/submission">New Submission</a>
+      </li>
+      <%}else{%> <%}%>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/contact">Contact Us</a>
+      </li>
+    </ul>
+    <% if (loggedIn){ %>
+    <div id="name"><%= name%></div>
+    <a class="nav-link" href="/signout">Sign Out</a>
+    <%}else{ %>
+    <a class="nav-link p-0" id="signinBtn" href="#">Sign In with Google</a>
+    <%}%>
+  </div>
 </nav>
-<script>startApp();</script>
+<script>
+  startApp();
+</script>
 <!-- /Navbar -->

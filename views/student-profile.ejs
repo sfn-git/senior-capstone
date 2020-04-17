@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
@@ -13,96 +15,105 @@
     });
 </script>
 
-<div class="container p-4">
-    <h2>Your Submissions</h2>
-    <div class="table-responsive">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Date Submitted</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr onclick="input" data-toggle="modal" href="#">
-                    <td>Pending ORSP</td>
-                    <td>3919837</td>
-                    <td>A Quantitative Analysis of Economic Theory in China</td>
-                    <td>04/15/2020</td>
-                </tr>
-                <tr>
-                    <td>Pending ORSP</td>
-                    <td>3919837</td>
-                    <td>A Quantitative Analysis of Economic Theory in China</td>
-                    <td>04/15/2020</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<body>
+    <div class="container p-4">
+        <h2>Your Submissions</h2>
+        <div class="table-responsive mt-4">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Status</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="input" data-toggle="modal" href="#">
+                        <td>Pending ORSP</td>
+                        <td>3919837</td>
+                        <td>A Quantitative Analysis of Economic Theory in China</td>
+                        <td>04/15/2020</td>
+                    </tr>
+                    <tr>
+                        <td>Pending ORSP</td>
+                        <td>3919837</td>
+                        <td>A Quantitative Analysis of Economic Theory in China</td>
+                        <td>04/15/2020</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
+        <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
 
 
-    <div id="myModal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="container">
-                    <div class="modal-header">
-                        <div class="row">
-                            <div class="col-10">
-                                <h3>A Quantitative Analysis of Economic Theory in China</h3>
+        <div id="myModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="container">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h3>A Quantitative Analysis of Economic Theory in China</h3>
+                                </div>
+                                <div class="col">
+                                    <span class="badge badge-info">Pending ORSP: #3919837 </span>
+                                </div>
                             </div>
-                            <div class="col">
-                                <span class="badge badge-info">Pending ORSP: #3919837 </span>
-                            </div>
+
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
 
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-8 mr-auto">
-                                <h5>Abstract</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sodales gravida
-                                    augue vitae accumsan. In ultricies enim vel lectus sodales, in venenatis lacus
-                                    sollicitudin. In at risus cursus, convallis augue sit amet, commodo dolor. Morbi
-                                    venenatis felis neque, non accumsan nisi finibus malesuada. Nunc semper non massa id
-                                    tempus. Etiam blandit lobortis orci in convallis. Pellentesque mattis finibus nunc
-                                    in cursus. Ut in turpis dapibus, fringilla orci sit amet, molestie erat. Vestibulum
-                                    aliquam tempor porta. In finibus risus et sem venenatis, eget dictum felis aliquam.
-                                    Fusce pretium, justo eu elementum porta, lectus dui posuere ante, id tristique arcu
-                                    lectus a augue. Praesent et odio nisl. Aliquam erat volutpat. Sed et magna nulla.
-                                    Sed dictum augue accumsan est egestas, in fringilla diam aliquam. Curabitur pharetra
-                                    sapien neque, sit amet lacinia sem commodo ut. </p>
-                            </div>
-                            <div class="col-3">
-                                <h5>Primary Presenter</h5>
-                                <p>Daniel Henriques</p>
-                                <h5 class="mt-4">Additional Presenters</h5>
-                                <p>Syed Nadeem</p>
-                                <h5 class="mt-4">Faculty</h5>
-                                <p>Ching-yu "Austin" Huang</p>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-8 mr-auto">
+                                    <h5>Abstract</h5>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sodales gravida
+                                        augue vitae accumsan. In ultricies enim vel lectus sodales, in venenatis lacus
+                                        sollicitudin. In at risus cursus, convallis augue sit amet, commodo dolor. Morbi
+                                        venenatis felis neque, non accumsan nisi finibus malesuada. Nunc semper non
+                                        massa id
+                                        tempus. Etiam blandit lobortis orci in convallis. Pellentesque mattis finibus
+                                        nunc
+                                        in cursus. Ut in turpis dapibus, fringilla orci sit amet, molestie erat.
+                                        Vestibulum
+                                        aliquam tempor porta. In finibus risus et sem venenatis, eget dictum felis
+                                        aliquam.
+                                        Fusce pretium, justo eu elementum porta, lectus dui posuere ante, id tristique
+                                        arcu
+                                        lectus a augue. Praesent et odio nisl. Aliquam erat volutpat. Sed et magna
+                                        nulla.
+                                        Sed dictum augue accumsan est egestas, in fringilla diam aliquam. Curabitur
+                                        pharetra
+                                        sapien neque, sit amet lacinia sem commodo ut. </p>
+                                </div>
+                                <div class="col-3">
+                                    <h5>Primary Presenter</h5>
+                                    <p>Daniel Henriques</p>
+                                    <h5 class="mt-4">Additional Presenters</h5>
+                                    <p>Syed Nadeem</p>
+                                    <h5 class="mt-4">Faculty</h5>
+                                    <p>Ching-yu "Austin" Huang</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <p class="mr-auto small text-muted">
-                            Last edited on 04/15/20
-                        </p>
-                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="modal-footer">
+                            <p class="mr-auto small text-muted">
+                                Last edited on 04/15/20
+                            </p>
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
+</body>
 
 </html>
