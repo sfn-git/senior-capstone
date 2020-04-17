@@ -29,7 +29,7 @@ app.use(
 // All basic routes
 app.get("/", (req, res) => {
   if (req.session.userId) {
-    res.render("student-profile", {name: req.session.name });
+    res.render("student-dashboard", {name: req.session.name });
   } else {
     res.render("index", { loggedIn: false, name: "" });
   }
