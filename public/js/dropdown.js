@@ -1,11 +1,5 @@
 $.ajax({
-
-    url: "/get-dropdowns",
-    type: "POST",
-    success:(dbdata)=>{
-
-        
-
-    }
-
-})
+  url: "/get-dropdowns",
+  type: "POST",
+  success: (dbdata) => {},
+});
