@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="/js/launchModel.js"></script>
+
 </head>
 
 <div id="nav-placeholder"></div>
@@ -19,7 +21,7 @@
     <div class="container p-4">
         <h2>Your Submissions, <%= name%></h2>
         <div class="table-responsive mt-4">
-            <table class="table">
+            <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Status</th>
@@ -29,10 +31,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr onclick="input" data-toggle="modal" href="#">
+                    <tr>
                         <td>Pending ORSP</td>
                         <td>3919837</td>
-                        <td>A Quantitative Analysis of Economic Theory in China</td>
+                        <td>
+                            <button class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                                A Quantitative Analysis of Economic Theory in China
+                            </button>
+                        </td>
                         <td>04/15/2020</td>
                     </tr>
                     <tr>
@@ -45,8 +51,7 @@
             </table>
         </div>
 
-        <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
-
+        <div id="output"></div>
 
         <div id="myModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
