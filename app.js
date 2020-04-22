@@ -27,9 +27,51 @@ app.use(
 );
 
 // All basic routes
-app.get("/", (req, res) => {
+app.get("/", async (req, res)  => {
   if (req.session.userId) {
-    res.render("student-dashboard", {name: req.session.name });
+    var studentModel = require("./models/students");
+    var projectsModel = require("./models/projects");
+    var facultyModel = require("./models/faculty");
+    var fullProjects = []; //This will contain the projects that will be sent to the front end
+
+    var studentID = await studentModel.find({email: req.session.email}, '_id');
+    var projects = await projectsModel.find({submitter: studentID}); //This is the projects from the database that have ids instead of names
+
+    for(index in projects){
+
+      console.log(projects[index]);
+      facultyInfo = await facultyModel.findById(projects[index].facultyAdvisor, 'facultyName');
+      facultyName = facultyInfo.facultyName;
+      
+      var thisProject = {
+
+        id: projects[index]._id,
+        primaryPresenter: req.session.name,
+        coPresenter: [],
+        faculty: facultyName,
+        title: projects[index].title,
+        abstract: projects[index].abstractSubmitted,
+        dateSubmitted: projects[index].dateSubmitted,
+        dateApproved: null,
+        dataDenied: null,
+        dataLastModified: null,
+      }
+
+      for(coIndex in projects[index].copis){
+
+        coPresenterName = await studentModel.findById(projects[index].copis[coIndex], 'name');
+        if(coPresenterName == null){
+        }else{
+          thisProject.coPresenter.push(coPresenterName.name);
+        }
+
+      }
+      fullProjects.push(thisProject);
+    }
+
+    console.log(fullProjects);
+
+    res.render("student-dashboard", {name: req.session.name, projects: fullProjects});
   } else {
     res.render("index", { loggedIn: false, name: "" });
   }
