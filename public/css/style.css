@@ -24,3 +24,8 @@ tbody {
 #save, #cancel {
   display:none;
   }
+
+#abstract{
+  border: thin solid white;
+  padding: 2px;
+}

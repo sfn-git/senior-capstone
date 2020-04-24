@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/style.css">
     <!-- test if needed -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="/js/launchModal.js"></script>
@@ -102,9 +102,9 @@
                             <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                             <div>
                                 <div>
-                                    <input id="edit" onclick="editable()" class="edit btn btn-primary" type="button" value="Edit" />
-                                    <input id="save" onclick="noteditable()" class="btn btn-primary" type="button" value="Save" /> 
-                                    <input id="cancel" onclick="noteditable()" class="btn btn-danger" type="button" value="Cancel" />
+                                    <input id="edit" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" value="Edit" />
+                                    <input id="save" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" value="Save" /> 
+                                    <input id="cancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger" type="button" value="Cancel" />
                                 </div>
                             </div>
 
@@ -122,24 +122,3 @@
 <!-- edit to save/cancel function -->
 <script src="/js/editModal.js"></script>
 </html>
-
-<script type="text/javascript">
-
-    function editable() {
-    var h1 = document.getElementsByTagName("p")[0];
-    var att = document.createAttribute("contenteditable");
-    att.value = "true";
-    h1.setAttributeNode(att);
-    }
-    
-    function noteditable() {
-    var h1 = document.getElementsByTagName("p")[0];
-    var att = document.createAttribute("contenteditable");
-    att.value = "flase";
-    h1.setAttributeNode(att);
-    }
-    
-    $('edit btn btn-primary').click(function() {
-    $(".my-textbox").focus()
-    });
-    </script>
