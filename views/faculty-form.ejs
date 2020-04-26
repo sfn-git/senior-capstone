@@ -1,161 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
     <title>Faculty Submission</title>
 
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
     <script src="/js/abstractCharCounter.js"></script>
     <script src="/js/descriptionCharCounter.js"></script>
     <script src="/js/additionalFaculty.js"></script>
+  </head>
 
-</head>
-
-
-<div id="nav-placeholder"></div>
-<script>
+  <div id="nav-placeholder"></div>
+  <script>
     $(function () {
-        $("#nav-placeholder").load("/navbar");
+      $("#nav-placeholder").load("/navbar");
     });
-</script>
+  </script>
 
-<body>
+  <body>
     <!-- Container -->
     <div class="container p-4">
-        <div class="row">
-            <h2>Faculty Submission</h2>
+      <h2>Faculty Submission</h2>
+      <form action="/faculty-form" method="POST">
+        <div class="form-group row mt-4 col-md-12">
+          <h4>Research Project</h4>
         </div>
-        <form action="/faculty-form" method="POST">
-            <div class="form-group row mt-4 col-md-12">
-                <h4>Research Project</h4>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required="true">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="abstract">Abstract</label>
-                    <textarea class="form-control" id="abstract" name="abstract" rows=8 required="true"
-                        maxlength="750"></textarea>
-                    <small class="text-muted" id="abstractCharRemaining"></small>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows=8 required="true"
-                        maxlength="3500"></textarea>
-                    <small class="text-muted" id="descriptionCharRemaining"></small>
-                </div>
-            </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              required="true"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label for="abstract">Abstract</label>
+            <textarea
+              class="form-control"
+              id="abstract"
+              name="abstract"
+              rows="8"
+              required="true"
+              maxlength="750"
+            ></textarea>
+            <small class="text-muted" id="abstractCharRemaining"></small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label for="description">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              name="description"
+              rows="8"
+              required="true"
+              maxlength="3500"
+            ></textarea>
+            <small class="text-muted" id="descriptionCharRemaining"></small>
+          </div>
+        </div>
 
-            <hr>
-            <div class="form-group row mt-4 col-md-12">
-                <h4>Primary Faculty</h4>
+        <hr />
+        <div class="form-group row mt-4 col-md-12">
+          <h4>Primary Faculty</h4>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label for="firstName">First name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              name="firstName"
+              required="true"
+              required="true"
+              readonly
+              placeholder="<%= fname%>"
+              value="<%= fname%>"
+            />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="lastName">Last name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              name="lastName"
+              required="true"
+              readonly
+              placeholder="<%= lname%>"
+              value="<%= lname%>"
+            />
+          </div>
+          <div class="form-group col-md-2">
+            <label for="facultyPosition">Position</label>
+            <select
+              name="facultyPosition"
+              required
+              id="facultyPosition"
+              class="form-control"
+            >
+              <option disabled selected value></option>
+              <option value="Tenure-Track">Tenure-Track</option>
+              <option value="Lecturer">Lecturer</option>
+              <option value="Adjunct">Adjunct</option>
+              <option value="Staff">Staff</option>
+              <option value="Assistant Professor">Assistant Professor</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label for="campus">Campus</label>
+            <select
+              id="campus"
+              name="campus"
+              class="form-control"
+              required="true"
+            >
+              <option disabled selected value></option>
+              <option value="Union">Union (Main)</option>
+              <option value="Wenzhou">Wenzhou (China)</option>
+              <option value="Ocean">Ocean (Toms River)</option>
+              <option value="Skylands">Skylands (Oak Ridge)</option>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="keanEmail">Email Address</label>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                id="keanEmail"
+                name="keanEmail"
+                required="true"
+                readonly
+                placeholder="<%= email%>"
+                value="<%= email%>"
+              />
+              <div class="input-group-append">
+                <span class="input-group-text" id="keanEmail">@kean.edu</span>
+              </div>
             </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="firstName">First name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required="true" required="true" readonly
-                    placeholder="<%= fname%>" value="<%= fname%>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="lastName">Last name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required="true" readonly
-                    placeholder="<%= lname%>" value="<%= lname%>">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="facultyPosition">Position</label>
-                    <select name="facultyPosition" required id="facultyPosition" class="form-control">
-                        <option disabled selected value></option>
-                        <option value="Tenure-Track">Tenure-Track</option>
-                        <option value="Lecturer">Lecturer</option>
-                        <option value="Adjunct">Adjunct</option>
-                        <option value="Staff">Staff</option>
-                        <option value="Assistant Professor">Assistant Professor</option>
-                    </select>
-                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col">
+            <div class="form-check-inline">
+              Will you be on the main campus during the Spring semester?
             </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="campus">Campus</label>
-                    <select id="campus" name="campus" class="form-control" required="true">
-                        <option disabled selected value></option>
-                        <option value="Union">Union (Main)</option>
-                        <option value="Wenzhou">Wenzhou (China)</option>
-                        <option value="Ocean">Ocean (Toms River)</option>
-                        <option value="Skylands">Skylands (Oak Ridge)</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="keanEmail">Email Address</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="keanEmail" name="keanEmail" required="true" readonly
-                        placeholder="<%= email%>" value="<%= email%>">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="keanEmail">@kean.edu</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-check-inline">
+              <input
+                type="radio"
+                required="true"
+                class="form-check-input"
+                id="onCampus"
+                name="onCampus"
+              />
+              <label class="form-check-label" for="onCampus">Yes</label>
             </div>
-            <div class="row">
-                <div class="form-group col">
-                    <div class="form-check-inline">
-                        Will you be on the main campus during the Spring semester?
-                    </div>
-                    <div class="form-check-inline">
-                        <input type="radio" required="true" class="form-check-input" id="onCampus" name="onCampus">
-                        <label class="form-check-label" for="onCampus">Yes</label>
-                    </div>
-                    <div class="form-check-inline">
-                        <input type="radio" class="form-check-input" id="onCampus" name="onCampus">
-                        <label class="form-check-label" for="onCampus">No</label>
-                    </div>
-                </div>
+            <div class="form-check-inline">
+              <input
+                type="radio"
+                class="form-check-input"
+                id="onCampus"
+                name="onCampus"
+              />
+              <label class="form-check-label" for="onCampus">No</label>
             </div>
-            <hr>
-            <input type="number" id="additionalFacultyCount" name="additionalFacultyCount" style="display: none;" value="{{coCount}}">
-            <div class="form-group row mt-4 col-md-12">
-                <h4>Additional Faculty</h4><br>
-            </div>
-            <div id="dynamicInput"></div>
+          </div>
+        </div>
+        <hr />
+        <input
+          type="number"
+          id="additionalFacultyCount"
+          name="additionalFacultyCount"
+          style="display: none;"
+          value="{{ coCount }}"
+        />
+        <div class="form-group row mt-4 col-md-12">
+          <h4>Additional Faculty</h4>
+          <br />
+        </div>
+        <div id="dynamicInput"></div>
 
-            <div class="btn-group mt-2 mr-2">
-                <button type="button" onclick="addFaculty('dynamicInput')" class="btn btn-info">Add a
-                    Faculty
-                    Member</button>
+        <div class="btn-group mt-2 mr-2">
+          <button
+            type="button"
+            onclick="addFaculty('dynamicInput')"
+            class="btn btn-info"
+          >
+            Add a Faculty Member
+          </button>
+        </div>
+        <div class="btn-group mt-2">
+          <button
+            hidden
+            type="button"
+            id="delete"
+            onclick="deleteFaculty()"
+            class="btn btn-info"
+          >
+            Delete a Faculty Member
+          </button>
+        </div>
+        <hr />
+        <div class="row mb-2">
+          <div class="form-group col">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="waiver"
+                name="waiver"
+                required="true"
+              />
+              <label class="form-check-label" for="waiver"
+                >I hereby grant Kean University the permission to display a
+                digital copy of my poster on the Research Days Website and in
+                the Kean Quest online journal.
+              </label>
             </div>
-            <div class="btn-group mt-2">
-                <button hidden type='button' id='delete' onclick='deleteFaculty()' class='btn btn-info'>Delete a Faculty
-                    Member</button>
-            </div>
-            <hr>
-            <div class="row mb-2">
-                <div class="form-group col">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="waiver" name="waiver" required="true">
-                        <label class="form-check-label" for="waiver">I hereby grant Kean University the
-                            permission to display a digital copy of my poster on the Research Days Website
-                            and in the Kean Quest online journal.
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
-        </form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
     </div>
-</body>
-
+  </body>
 </html>
