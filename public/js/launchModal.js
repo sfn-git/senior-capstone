@@ -4,7 +4,7 @@ function launchModal(title, status, abstract, primary, coPres, faculty, lastEdit
   var lastEdit = lastEdit;
   document.getElementById("title").innerHTML = title
   document.getElementById("status").innerHTML =  "Pending ORSP: #" + status
-  document.getElementById("abstract").innerHTML = abstract
+  document.getElementById("abstractLaunchModal").innerHTML = abstract
 
   document.getElementById("primary").innerHTML = primary
   document.getElementById("coPres").innerHTML = coPres
@@ -13,11 +13,11 @@ function launchModal(title, status, abstract, primary, coPres, faculty, lastEdit
   } 
 
 function editAbstarct(){
-  document.getElementById("abstract").style.borderColor = "grey";
+  document.getElementById("abstractLaunchModal").style.borderColor = "grey";
 }
 
 function doneEditAbstarct(){
-  document.getElementById("abstract").style.borderColor = "white";
+  document.getElementById("abstractLaunchModal").style.borderColor = "white";
 }
 
 function editable(){
