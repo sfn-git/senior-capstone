@@ -11,6 +11,8 @@
     <script src="/js/launchModal.js"></script>
 </head>
 
+
+
 <div id="nav-placeholder"></div>
 <script>
     $(function () {
@@ -19,6 +21,12 @@
 </script>
 
 <body>
+    <% if(count == 0){%>
+        <div class="container p-4">
+            <h2> You do not have any submissions. <a href="/submission">Click here </a>to start a submission.</h2>
+        </div>
+    <%}else{%>
+
     <div class="container p-4">
         <h2>Your Submissions, <%= name%></h2>
         <div class="table-responsive mt-4">
@@ -33,34 +41,21 @@
                 </thead>
 
                 <tbody>
+                    <% for(var element in projects){%>
                     <tr>
                         <td>Pending ORSP</td>
-                        <td>391983785</td>
-                        <td>
-                            <button onclick="launchModal('A Quantitative Analysis of Economic Theory in China','391983785','textABSTRACTtext','Daniel Henriques','Reuben Hernandez','Ching-yu Austin Huang','04/15/20')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
-                                A Quantitative Analysis of Economic Theory in China
-                            </button>
-                        </td>
-                        <td>04/15/2020</td>
+                        <td><%= projects[element].id %></td>
+                        <td><button onclick="launchModal('<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                            <%= projects[element].title %>
+                        </button></td>
+                        <td><%= projects[element].dateSubmitted %></td>
                     </tr>
-                </tbody>
-                
-                <tbody>
-                    <tr>
-                        <td>Pending ORSP</td>
-                        <td>420111024</td>
-                        <td>
-                            <button onclick="launchModal('An Analysis of Egypts Monarchy','420111024','AbstractTEXTgoHERE','Syed Nadeem','Reuben Hernandez','Dr. Mira A. Franke', '02/31/2023')" class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
-                                An Analysis of Egypts Monarchy
-                            </button>
-                        </td>
-                        <td>02/31/2023</td>
-                    </tr>
+                    <%}%>
                 </tbody>
 
             </table>
         </div>
-
+        <% }%>
 
         <div id="myModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-xl" role="document">

@@ -69,9 +69,7 @@ app.get("/", async (req, res) => {
             fullProjects.push(thisProject);
         }
 
-        console.log(fullProjects);
-
-        res.render("student-dashboard", { name: req.session.name, projects: fullProjects });
+        res.render("student-dashboard", { name: req.session.name, projects: fullProjects, count: fullProjects.length});
     } else {
         res.render("index", { loggedIn: false, name: "" });
     }
