@@ -69,7 +69,16 @@ app.get("/", async (req, res) => {
             fullProjects.push(thisProject);
         }
 
-        res.render("student-dashboard", { name: req.session.name, projects: fullProjects, count: fullProjects.length});
+        if(req.session.isStudent){
+          res.render("student-dashboard", { name: req.session.name, projects: fullProjects, count: fullProjects.length});
+        }
+        else if(req.session.isFaculty){
+          res.render("faculty-dashboard", { name: req.session.name, projects: fullProjects, count: fullProjects.length});
+        }
+        else if(req.session.isORSP){
+          res.render("orsp-dashboard", { name: req.session.name, projects: fullProjects, count: fullProjects.length});
+        }
+
     } else {
         res.render("index", { loggedIn: false, name: "" });
     }
@@ -487,8 +496,8 @@ app.post("/signin", (req, res) => {
         req.session.userId = userid;
         req.session.name = payload.name;
         req.session.email = payload.email;
-        req.session.isStudent = true;
-        req.session.isFaculty = false;
+        req.session.isStudent = false;
+        req.session.isFaculty = true;
         req.session.isORSP = false;
         res.send(true);
     }
