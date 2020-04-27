@@ -184,27 +184,34 @@ app.get("/projects", (req, res) => {
 app.get("/admin", (req, res) => {});
 
 app.get("/insert-major", (req, res) => {
-  const majorModel = require("./models/major.js");
-  majorModel.find({}, null, { sort: { major: 1 } }, function (err, fun) {
-    if (err) {
-      res.send(err);
-    } else {
-      res.render("insert_major", { major: fun });
-    }
-  });
+  if(req.session.isORSP){
+    const majorModel = require("./models/major.js");
+    majorModel.find({}, null, { sort: { major: 1 } }, function (err, fun) {
+      if (err) {
+        res.render('error', {error: `${err}`});
+      } else {
+        res.render("insert-major", { major: fun});
+      }
+    });
+  }else{
+    res.render("error", {error: "You are not authorized to access this page."});
+  }
 });
 
-// app.get("/insert-faculty", (req, res) => {
-//   const facultyModel = require("./models/faculty.js");
-//   facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       console.log(fun);
-//       res.render("insert-faculty", { faculty: fun });
-//     }
-//   });
-// });
+app.get("/insert-faculty", (req, res) => {
+  if(req.session.isORSP){
+    const facultyModel = require("./models/faculty.js");
+    facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.render("insert-faculty", { faculty: fun });
+      }
+    });
+  }else{
+    res.render("error", {error: "You are not authorized to access this page."});
+  }
+});
 
 app.get("/navbar", (req, res) => {
   if (req.session.userId) {
@@ -276,7 +283,6 @@ app.post("/insert-major", (req, res) => {
   //Saves Data into DB
   newMajor.save((err, fun) => {
     if (err) console.error(err);
-    console.log(fun);
     res.redirect(303, "/insert-major");
   });
 });
@@ -310,7 +316,6 @@ app.post("/insert-faculty", (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(fun);
       res.redirect(303, "/insert-faculty");
     }
   });
