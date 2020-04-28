@@ -10,6 +10,9 @@ function launchModal(step, title, status, abstract, primary, coPres, faculty, la
   if(step == "Upload Required"){
     document.getElementById("IPO").style.visibility = "visible";
   }
+  else if (step == "Faculty Review"){
+    document.getElementById("edit").style.visibility = "visible";
+  }
   
   document.getElementById("abstractLaunchModal").innerHTML = abstract
 

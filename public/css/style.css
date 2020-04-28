@@ -37,3 +37,7 @@ max-width: 300px;
 #IPO {
   visibility: hidden;
 }
+
+#edit{
+  visibility: hidden;
+}
