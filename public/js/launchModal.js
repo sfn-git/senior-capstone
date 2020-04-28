@@ -9,10 +9,15 @@ function launchModal(step, title, status, abstract, primary, coPres, faculty, la
   // need to know what status their are
   if(step == "Upload Required")
   {
-    document.getElementById("IPF").innerHTML = `<input type="text" id="inputFile" class="form-control" placeholder='Upload your file...' />
+    document.getElementById("IPF").innerHTML = `<div class="input-group input-file" name="Fichier1">
+    <span class="input-group-btn">
+        <button class="btn btn-default btn-choose btn-secondary" type="button">Choose</button>
+    </span>
+    <input type="text" id="inputFile" class="form-control" placeholder='Choose a file...' />
     <span class="input-group-btn">
         <button type="submit" class="btn btn-primary">Submit</button>
-    </span>`;
+    </span>
+</div>`;
   }
   document.getElementById("abstractLaunchModal").innerHTML = abstract
 
@@ -47,7 +52,6 @@ function noteditable(){
   att.value = "flase";
   h1.setAttributeNode(att);
   }
-  
   
   $('edit btn btn-primary').click(function(){
   $(".my-textbox").focus()
