@@ -1,11 +1,19 @@
 
 // output information into modal
-function launchModal(title, status, abstract, primary, coPres, faculty, lastEdit) 
+function launchModal(step, title, status, abstract, primary, coPres, faculty, lastEdit) 
 {
   var status = status;
   var lastEdit = lastEdit;
   document.getElementById("title").innerHTML = title
-  document.getElementById("status").innerHTML =  "Pending ORSP: #" + status
+  document.getElementById("status").innerHTML = step + ": #" + status
+  // need to know what status their are
+  if(step == "Upload Required")
+  {
+    document.getElementById("IPF").innerHTML = `<input type="text" id="inputFile" class="form-control" placeholder='Upload your file...' />
+    <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </span>`;
+  }
   document.getElementById("abstractLaunchModal").innerHTML = abstract
 
   document.getElementById("primary").innerHTML = primary
@@ -43,4 +51,34 @@ function noteditable(){
   
   $('edit btn btn-primary').click(function(){
   $(".my-textbox").focus()
+  });
+
+  function bs_input_file() {
+    $(".input-file").before(
+      function() {
+        if ( ! $(this).prev().hasClass('input-ghost') ) {
+          var element = $("<input type='file' class='input-ghost' style='visibility:hidden; height:0'>");
+          element.attr("name",$(this).attr("name"));
+          element.change(function(){
+            element.next(element).find('input').val((element.val()).split('\\').pop());
+          });
+          $(this).find("button.btn-choose").click(function(){
+            element.click();
+          });
+          $(this).find("button.btn-reset").click(function(){
+            element.val(null);
+            $(this).parents(".input-file").find('input').val('');
+          });
+          $(this).find('input').css("cursor","pointer");
+          $(this).find('input').mousedown(function() {
+            $(this).parents('.input-file').prev().click();
+            return false;
+          });
+          return element;
+        }
+      }
+    );
+  }
+  $(function() {
+    bs_input_file();
   });

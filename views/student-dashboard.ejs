@@ -43,9 +43,9 @@
                 <tbody>
                     <% for(var element in projects){%>
                     <tr>
-                        <td>Pending ORSP</td>
+                        <td>Upload Required</td>
                         <td><%= projects[element].id %></td>
-                        <td><button onclick="launchModal('<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                        <td><button onclick="launchModal('Upload Required','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                             <%= projects[element].title %>
                         </button></td>
                         <td><%= projects[element].dateSubmitted %></td>
@@ -55,6 +55,7 @@
 
             </table>
         </div>
+    </div>
         <% }%>
 
         <div id="myModal" class="modal" tabindex="-1" role="dialog">
@@ -90,7 +91,8 @@
                                     <h5 class="mt-4">Faculty</h5>
                                     <p id="faculty"></p>
                                 </div>
-                            </div>
+
+                            <div id="IPF" class="input-group input-file m-2" name="Fichier1"></div>
                         </div>
                         <div class="modal-footer">
                             <p class="mr-auto small text-muted" id="lastEdit"></p> 

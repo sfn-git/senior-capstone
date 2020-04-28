@@ -29,3 +29,7 @@ tbody {
   border: thin solid white;
   padding: 2px;
 }
+#inputFile
+{
+max-width: 450px;
+}

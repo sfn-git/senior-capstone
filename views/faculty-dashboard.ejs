@@ -43,10 +43,10 @@
                 <tbody>
                     <% for(var element in projects){%>
                     <tr>
-                        <td>Pending ORSP</td>
+                        <td>Faculty Review</td>
                         <td><%= projects[element].id %></td>
                         <td><button
-                                onclick="launchModal('<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
+                                onclick="launchModal('Faculty Review','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                                 <%= projects[element].title %>
                             </button></td>
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-<!-- warning message and edit -->
+                        <!-- warning message and edit -->
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -99,6 +99,7 @@
                                     <h5 class="mt-4">Faculty</h5>
                                     <p id="faculty"></p>
                                 </div>
+                                <div id="IPF" class="input-group input-file m-2" name="Fichier1"></div>
                             </div>
                         </div>
                         <div class="modal-footer">
