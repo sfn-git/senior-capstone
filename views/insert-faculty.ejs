@@ -9,9 +9,9 @@
     <title>Insert Faculty Portal</title>
     <script>
         var facultyData = [];
-        document.write("{% for faculty in faculty %}");
-        facultyData.push({'facultyName': '{{faculty.facultyName}}', 'email': '{{faculty.email}}', 'position': '{{faculty.position}}', 'department': '{{faculty.department}}', 'college': '{{faculty.college}}', 'officeLocation': '{{faculty.officeLocation}}', 'officePhone': '{{faculty.officePhone}}'});
-        document.write("{% endfor %}");
+        document.write("<% for (element in faculty){ %>");
+        facultyData.push({'facultyName': '<%= faculty[element].facultyName%>', 'email': '<%= faculty[element].email%>', 'position': '<%= faculty[element].position %>', 'department': '<%= faculty[element].department%>', 'college': '<%= faculty[element].college%>', 'officeLocation': '<%= faculty[element].officeLocation%>', 'officePhone': '<%= faculty[element].officePhone%>'});
+        document.write("<% } %>");
     </script>
 </head>
 
