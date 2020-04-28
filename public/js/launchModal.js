@@ -7,18 +7,10 @@ function launchModal(step, title, status, abstract, primary, coPres, faculty, la
   document.getElementById("title").innerHTML = title
   document.getElementById("status").innerHTML = step + ": #" + status
   // need to know what status their are
-  if(step == "Upload Required")
-  {
-    document.getElementById("IPF").innerHTML = `<div class="input-group input-file" name="Fichier1">
-    <span class="input-group-btn">
-        <button class="btn btn-default btn-choose btn-secondary" type="button">Choose</button>
-    </span>
-    <input type="text" id="inputFile" class="form-control" placeholder='Choose a file...' />
-    <span class="input-group-btn">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </span>
-</div>`;
+  if(step == "Upload Required"){
+    document.getElementById("IPO").style.visibility = "visible";
   }
+  
   document.getElementById("abstractLaunchModal").innerHTML = abstract
 
   document.getElementById("primary").innerHTML = primary
