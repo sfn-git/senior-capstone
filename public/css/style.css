@@ -41,3 +41,7 @@ max-width: 300px;
 #edit{
   visibility: hidden;
 }
+
+#approve{
+  visibility: hidden;
+}

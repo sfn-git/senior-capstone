@@ -12,6 +12,7 @@ function launchModal(step, title, status, abstract, primary, coPres, faculty, la
   }
   else if (step == "Faculty Review"){
     document.getElementById("edit").style.visibility = "visible";
+    document.getElementById("approve").style.visibility = "visible";
   }
   
   document.getElementById("abstractLaunchModal").innerHTML = abstract
