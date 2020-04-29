@@ -29,13 +29,14 @@ tbody {
   border: thin solid white;
   padding: 2px;
 }
-#inputFile
+/* #customFile
 {
 max-width: 300px;
-}
+} */
 
 #IPO {
   visibility: hidden;
+  max-width: 525px;
 }
 
 #edit{
