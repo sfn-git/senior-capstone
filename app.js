@@ -74,14 +74,32 @@ app.get("/", async (req, res) => {
       fullProjects.push(thisProject);
     }
 
-    if (
-      req.session.isStudent &&
-      (req.session.isORSP || req.session.isFaculty)
-    ) {
+    var arr = [
+      { bool: req.session.isFaculty },
+      { bool: req.session.isORSP },
+      { bool: req.session.isORSPAdmin },
+      { bool: req.session.isStudent },
+    ];
+    const count = (arr, condition = true) => arr.filter(condition).length;
+
+    if (count(arr, (o) => o.bool) > 1) {
       res.render("choose-dashboard", {
         isStudent: req.session.isStudent,
         isORSP: req.session.isORSP,
         isFaculty: req.session.isFaculty,
+        isORSPAdmin: req.session.isORSPAdmin,
+      });
+    } else if (req.session.isORSPAdmin) {
+      res.render("orspadmin-dashboard", {
+        name: req.session.name,
+        projects: fullProjects,
+        count: fullProjects.length,
+      });
+    } else if (req.session.isORSP) {
+      res.render("orsp-dashboard", {
+        name: req.session.name,
+        projects: fullProjects,
+        count: fullProjects.length,
       });
     } else if (req.session.isStudent) {
       res.render("student-dashboard", {
@@ -91,12 +109,6 @@ app.get("/", async (req, res) => {
       });
     } else if (req.session.isFaculty) {
       res.render("faculty-dashboard", {
-        name: req.session.name,
-        projects: fullProjects,
-        count: fullProjects.length,
-      });
-    } else if (req.session.isORSP) {
-      res.render("orsp-dashboard", {
         name: req.session.name,
         projects: fullProjects,
         count: fullProjects.length,
@@ -184,22 +196,24 @@ app.get("/projects", (req, res) => {
 app.get("/admin", (req, res) => {});
 
 app.get("/insert-major", (req, res) => {
-  if(req.session.isORSP){
+  if (req.session.isORSP) {
     const majorModel = require("./models/major.js");
     majorModel.find({}, null, { sort: { major: 1 } }, function (err, fun) {
       if (err) {
-        res.render('error', {error: `${err}`});
+        res.render("error", { error: `${err}` });
       } else {
-        res.render("insert-major", { major: fun});
+        res.render("insert-major", { major: fun });
       }
     });
-  }else{
-    res.render("error", {error: "You are not authorized to access this page."});
+  } else {
+    res.render("error", {
+      error: "You are not authorized to access this page.",
+    });
   }
 });
 
 app.get("/insert-faculty", (req, res) => {
-  if(req.session.isORSP){
+  if (req.session.isORSP) {
     const facultyModel = require("./models/faculty.js");
     facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
       if (err) {
@@ -208,8 +222,10 @@ app.get("/insert-faculty", (req, res) => {
         res.render("insert-faculty", { faculty: fun });
       }
     });
-  }else{
-    res.render("error", {error: "You are not authorized to access this page."});
+  } else {
+    res.render("error", {
+      error: "You are not authorized to access this page.",
+    });
   }
 });
 
@@ -521,6 +537,7 @@ app.post("/signin", (req, res) => {
     req.session.isStudent = true;
     req.session.isFaculty = true;
     req.session.isORSP = true;
+    req.session.isORSPAdmin = true;
     res.send(true);
   }
   verify().catch(console.error);
@@ -532,6 +549,7 @@ app.get("/student", (req, res) => {
   req.session.isStudent = true;
   req.session.isFaculty = false;
   req.session.isORSP = false;
+  req.session.isORSPAdmin = false;
   res.redirect("/");
 });
 
@@ -539,6 +557,15 @@ app.get("/orsp", (req, res) => {
   req.session.isStudent = false;
   req.session.isFaculty = false;
   req.session.isORSP = true;
+  req.session.isORSPAdmin = false;
+  res.redirect("/");
+});
+
+app.get("/orspadmin", (req, res) => {
+  req.session.isStudent = false;
+  req.session.isFaculty = false;
+  req.session.isORSP = false;
+  req.session.isORSPAdmin = true;
   res.redirect("/");
 });
 
@@ -546,6 +573,7 @@ app.get("/faculty", (req, res) => {
   req.session.isStudent = false;
   req.session.isFaculty = true;
   req.session.isORSP = false;
+  req.session.isORSPAdmin = false;
   res.redirect("/");
 });
 

@@ -38,6 +38,11 @@
             <form action="/orsp" method="get">
                 <button type="submit" class="btn btn-outline-primary btn-block btn-lg mt-3">ORSP</button>
             </form>
+          <% } %>
+          <% if (isORSPAdmin){ %> 
+            <form action="/orspadmin" method="get">
+                <button type="submit" class="btn btn-outline-primary btn-block btn-lg mt-3">ORSP Admin</button>
+            </form>
           <% } %> 
           <% if (isFaculty){ %> 
             <form action="/faculty" method="get">
