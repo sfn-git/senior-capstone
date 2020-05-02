@@ -22,6 +22,7 @@ var projectSchema = new schema({
     dateApproved: {type: Date, default: ""},
     dateDenied: {type: Date, default: ""},
     dateLastModified: {type: Date, default: ""},
+    status: {type: String, default:"Awaiting ORSP Approval"},
     notes: {type: String}
 
 });

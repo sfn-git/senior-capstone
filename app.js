@@ -1,3 +1,6 @@
+// =================================================//
+//             All packages required                //
+//==================================================//
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
@@ -6,6 +9,11 @@ const port = process.env.PORT || 3000; //3000 for Development. Can be changed wh
 const bodyParser = require("body-parser");
 const fs = require("fs");
 require("./models/database.js");
+const config = require('./config.json');
+
+// =================================================//
+//                  Express Configs                 //
+//==================================================//
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -17,7 +25,7 @@ app.use(
     name: "sid",
     resave: false,
     saveUninitialized: false,
-    secret: "RADS", //For testing, random string const should be used
+    secret:  config.sessionSecret, //For testing, random string const should be used
     cookie: {
       httpOnly: false,
       sameSite: true,
@@ -26,54 +34,22 @@ app.use(
   })
 );
 
-// All basic routes
+// =================================================//
+//                  All Get Request                 //
+//==================================================//
+
+/*
+  Index Endpoint that handles first request and logged in request
+*/
 app.get("/", async (req, res) => {
+  // -----------------------
+  // Checks if session exist
+  // -----------------------
   if (req.session.userId) {
-    var studentModel = require("./models/students");
-    var projectsModel = require("./models/projects");
-    var facultyModel = require("./models/faculty");
-    var fullProjects = []; //This will contain the projects that will be sent to the front end
-
-    var studentID = await studentModel.find(
-      { email: req.session.email },
-      "_id"
-    );
-    var projects = await projectsModel.find({ submitter: studentID }); //This is the projects from the database that have ids instead of names
-
-    for (index in projects) {
-      console.log(projects[index]);
-      facultyInfo = await facultyModel.findById(
-        projects[index].facultyAdvisor,
-        "facultyName"
-      );
-      facultyName = facultyInfo.facultyName;
-
-      var thisProject = {
-        id: projects[index]._id,
-        primaryPresenter: req.session.name,
-        coPresenter: [],
-        faculty: facultyName,
-        title: projects[index].title,
-        abstract: projects[index].abstractSubmitted,
-        dateSubmitted: projects[index].dateSubmitted,
-        dateApproved: null,
-        dataDenied: null,
-        dataLastModified: null,
-      };
-
-      for (coIndex in projects[index].copis) {
-        coPresenterName = await studentModel.findById(
-          projects[index].copis[coIndex],
-          "name"
-        );
-        if (coPresenterName == null) {
-        } else {
-          thisProject.coPresenter.push(coPresenterName.name);
-        }
-      }
-      fullProjects.push(thisProject);
-    }
-
+    /*
+      Puts all checking variables in an array to 
+      see if more than one of them are true
+    */
     var arr = [
       { bool: req.session.isFaculty },
       { bool: req.session.isORSP },
@@ -82,6 +58,11 @@ app.get("/", async (req, res) => {
     ];
     const count = (arr, condition = true) => arr.filter(condition).length;
 
+    /*
+      If the user logged in is more than one rank,
+      they are sent to a page where they choose who
+      they would like to log in as. 
+    */
     if (count(arr, (o) => o.bool) > 1) {
       res.render("choose-dashboard", {
         isStudent: req.session.isStudent,
@@ -89,45 +70,111 @@ app.get("/", async (req, res) => {
         isFaculty: req.session.isFaculty,
         isORSPAdmin: req.session.isORSPAdmin,
       });
+    //------------------------------------------------------------
+    //Will send user to orspadmin-dashboard if they an ORSP Admin
+    //------------------------------------------------------------
     } else if (req.session.isORSPAdmin) {
       res.render("orspadmin-dashboard", {
         name: req.session.name,
-        projects: fullProjects,
-        count: fullProjects.length,
       });
+    //---------------------------------------------------------
+    //Will send user to orsp-dashboard if they are ORSP Staff
+    //---------------------------------------------------------
     } else if (req.session.isORSP) {
       res.render("orsp-dashboard", {
-        name: req.session.name,
-        projects: fullProjects,
-        count: fullProjects.length,
+        name: req.session.name
       });
+    //----------------------------------------------------------
+    //Will send user to student-dashboard if they are a student
+    //----------------------------------------------------------
     } else if (req.session.isStudent) {
+      var studentModel = require("./models/students");
+      var projectsModel = require("./models/projects");
+      var facultyModel = require("./models/faculty");
+      var fullProjects = []; //This will contain the projects that will be sent to the front end
+
+      var studentID = await studentModel.find({ email: req.session.email },"_id");
+      var projects = await projectsModel.find({ submitter: studentID }); //This is the projects from the database that have ids instead of names
+
+      for (index in projects) {
+        console.log(projects[index]);
+        facultyInfo = await facultyModel.findById(projects[index].facultyAdvisor,"facultyName");
+        facultyName = facultyInfo.facultyName;
+
+        var thisProject = {
+          id: projects[index]._id,
+          primaryPresenter: req.session.name,
+          coPresenter: [],
+          faculty: facultyName,
+          title: projects[index].title,
+          abstract: projects[index].abstractSubmitted,
+          dateSubmitted: projects[index].dateSubmitted,
+          dateApproved: null,
+          dataDenied: null,
+          dataLastModified: null,
+        };
+
+        for (coIndex in projects[index].copis) {
+          coPresenterName = await studentModel.findById(
+            projects[index].copis[coIndex],
+            "name"
+          );
+          if (coPresenterName == null) {
+          } else {
+            thisProject.coPresenter.push(coPresenterName.name);
+          }
+        }
+        fullProjects.push(thisProject);
+      }
+      
       res.render("student-dashboard", {
         name: req.session.name,
         projects: fullProjects,
         count: fullProjects.length,
       });
+    //-----------------------------------------------------------------
+    //Will send user to faculty-dashboard if they are a faculty member
+    //-----------------------------------------------------------------
     } else if (req.session.isFaculty) {
+
+      var facultyProjectModel = require("./models/facultyProjects.js");
+      var facultyModel = require("./models/faculty.js");
+
+      var facultyID = await facultyModel.find({"email": req.session.email}).select("_id");
+      var facultyProjects = await facultyProjectModel.find({"primaryInvestigator": facultyID});
+
       res.render("faculty-dashboard", {
         name: req.session.name,
-        projects: fullProjects,
-        count: fullProjects.length,
+        count: facultyProjects.length,
+        projects: facultyProjects
       });
     }
+    //---------------------------------------------------------
+    //If user is not logged in, will send to information index
+    //---------------------------------------------------------
   } else {
     res.render("index", { loggedIn: false, name: "" });
   }
 });
 
+/*
+  Submission endpoint that sends users to the project submission page
+  with all of the information needed. 
+*/
 app.get("/submission", (req, res) => {
+  // If user is not signed in, send to signin page.
   if (!req.session.userId) {
     res.render("signin");
   } else {
-    // Get majors and faculty members for the dropdowns
+    // Models required to get majors and faculty
     const majorModel = require("./models/major.js");
     const facultyModel = require("./models/faculty.js");
 
     var promise = [];
+
+    // -----------------------
+    // Getting all Majors
+    // -----------------------
     promise.push(
       majorModel.find({}, null, { sort: { major: 1 } }, (err, fun) => {
         if (err) {
@@ -136,6 +183,9 @@ app.get("/submission", (req, res) => {
       })
     );
 
+    // -----------------------
+    // Getting all Faculty
+    // -----------------------
     promise.push(
       facultyModel.find({}, null, { sort: { facultyName: 1 } }, (err, fun) => {
         if (err) {
@@ -144,6 +194,9 @@ app.get("/submission", (req, res) => {
       })
     );
 
+    // -----------------------------------------
+    // Checks if student then sends student page
+    // -----------------------------------------
     if (req.session.isStudent) {
       Promise.all(promise)
         .then((values) => {
@@ -158,8 +211,14 @@ app.get("/submission", (req, res) => {
           });
         })
         .catch((err) => {
-          console.log(err);
+          res.render("error", {
+            error: "Something went wrong when determining user access level.",
+          });
         });
+
+    // -----------------------------------------
+    // Checks if Faculty then sends Faculty page
+    // -----------------------------------------
     } else if (req.session.isFaculty) {
       Promise.all(promise)
         .then((values) => {
@@ -184,19 +243,17 @@ app.get("/submission", (req, res) => {
   }
 });
 
-// End Point to view all projects of student/faculty
-app.get("/projects", (req, res) => {
-  if (!req.session.userId) {
-    res.render("signin");
-  }
-
-  res.render("student-profile", { name: req.session.name });
-});
-
+/* 
+  TO-DO, Setup admin page
+*/
 app.get("/admin", (req, res) => {});
 
+/*
+  End Point for ORSP-Admins to modify majors database
+*/
 app.get("/insert-major", (req, res) => {
-  if (req.session.isORSP) {
+  // If they are apart of ORSP, then they will be allowed to enter the page. 
+  if (req.session.isORSPAdmin) {
     const majorModel = require("./models/major.js");
     majorModel.find({}, null, { sort: { major: 1 } }, function (err, fun) {
       if (err) {
@@ -205,6 +262,7 @@ app.get("/insert-major", (req, res) => {
         res.render("insert-major", { major: fun });
       }
     });
+  // If they are not apart of ORSP, they will be sent to an error page. 
   } else {
     res.render("error", {
       error: "You are not authorized to access this page.",
@@ -212,8 +270,11 @@ app.get("/insert-major", (req, res) => {
   }
 });
 
+/*
+  End Point for ORSP-Admins to modify the faculty database
+*/
 app.get("/insert-faculty", (req, res) => {
-  if (req.session.isORSP) {
+  if (req.session.isORSPAdmin) {
     const facultyModel = require("./models/faculty.js");
     facultyModel.find({}, null, { sort: { faculty: 1 } }, (err, fun) => {
       if (err) {
@@ -229,6 +290,9 @@ app.get("/insert-faculty", (req, res) => {
   }
 });
 
+/*
+  Used to render the sitewide navbar. 
+*/
 app.get("/navbar", (req, res) => {
   if (req.session.userId) {
     res.render("navbar", {
@@ -241,24 +305,74 @@ app.get("/navbar", (req, res) => {
   }
 });
 
+/*
+  End point that allows user to signout
+*/
 app.get("/signout", (req, res) => {
+  // Destroys the session
   req.session.destroy((err) => {
     if (err) {
-      console.error(err);
+      res.render('error', {error: err});
     }
   });
-  res.clearCookie("sid");
 
+  // Clears all cookies and redirect user
+  res.clearCookie("sid");
   res.redirect("/");
 });
 
-app.get("/Student_Profile", (req, res) => {
-  if (req.session.userId) {
-    res.render("Student_Profile", { name: req.session.name });
+/*
+  Routing for Rank Selector.
+*/
+app.get("/student", (req, res) => {
+  req.session.isStudent = true;
+  req.session.isFaculty = false;
+  req.session.isORSP = false;
+  req.session.isORSPAdmin = false;
+  res.redirect("/");
+});
+
+app.get("/orsp", (req, res) => {
+  req.session.isStudent = false;
+  req.session.isFaculty = false;
+  req.session.isORSP = true;
+  req.session.isORSPAdmin = false;
+  res.redirect("/");
+});
+
+app.get("/orspadmin", (req, res) => {
+  req.session.isStudent = false;
+  req.session.isFaculty = false;
+  req.session.isORSP = false;
+  req.session.isORSPAdmin = true;
+  res.redirect("/");
+});
+
+app.get("/faculty", (req, res) => {
+  req.session.isStudent = false;
+  req.session.isFaculty = true;
+  req.session.isORSP = false;
+  req.session.isORSPAdmin = false;
+  res.redirect("/");
+});
+
+/*
+Catch all routing
+*/
+app.get("*", (req, res) => {
+  var file = req.url.split("/")[1];
+  var checkFile = file + ".ejs";
+  if (fs.existsSync(`${__dirname}\\views\\${checkFile}`)) {
+    res.render(file);
   } else {
-    res.redirect("/");
+    res.status(404);
+    res.render("404");
   }
 });
+
+// =================================================//
+//                  All Post Request                //
+//==================================================//
 
 app.post("/insert-file", async (req, res) => {
   const majorModel = require("./models/major.js");
@@ -282,7 +396,6 @@ app.post("/insert-file", async (req, res) => {
   res.send("Backend reached");
 });
 
-// All Post Request
 // Post request after submit button is pressed on the insert-major page
 app.post("/insert-major", (req, res) => {
   const majorModel = require("./models/major.js");
@@ -472,7 +585,7 @@ app.post("/student-form", async (req, res) => {
     service: "gmail",
     auth: {
       user: "orsptemp20@gmail.com",
-      pass: "hedgehog20",
+      pass: config.emailPass,
     },
   });
   var emailMessage =
@@ -504,6 +617,58 @@ app.post("/student-form", async (req, res) => {
   });
   res.redirect("/");
 });
+
+app.post("/faculty-form", async (req,res)=>{
+  if(req.session.userId){
+  var facultyProjectModel = require('./models/facultyProjects');
+  var faculty = require('./models/faculty.js');
+
+  var facultyProject = new facultyProjectModel({
+    title: req.body.title,
+    abstract: req.body.abstract,
+    description: req.body.description,
+    primaryInvestigator: "",
+    onCampus: false,
+    coFacultyInvestigator: [],
+    coStudentInvestigator: [],
+    consent: false,
+  })
+
+  var facultyEmail = `${req.body.keanEmail}@kean.edu`;
+  var facultyInfo = await faculty.findOne({"email": facultyEmail}).select("_id");
+  facultyProject.primaryInvestigator = facultyInfo.id;
+
+  var coFacultyInvestigatorCount = req.body.additionalFacultyCount;
+
+  if(coFacultyInvestigatorCount == 0){
+    // Do Nothing
+    console.log(false);
+  }else{
+    for(var i=0; i<coFacultyInvestigatorCount; i++){
+
+      facultyProject.coFacultyInvestigator.push({
+        name: `${req.body["firstName"+(i+1)]} ${req.body["lastName"+(i+1)]}`,
+        position: req.body["facultyPosition"+(i+1)],
+        campus: req.body["campus"+(i+1)],
+        email: `${req.body["keanEmail"+(i+1)]}@kean.edu`
+      })
+    }
+  }
+
+  if(req.body.onCampus == "on"){
+    facultyProject.onCampus = true;
+  }
+  if(req.body.waiver == "on"){
+    facultyProject.consent = true;
+  }
+
+  facultyProject.save();
+  res.redirect("/");
+  
+  }else{
+    res.render('error', {error: "Please login to continue"});
+  }
+})
 
 app.post("/remove-major", (req, res) => {
   var major = require("./models/major.js");
@@ -544,47 +709,3 @@ app.post("/signin", (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server now running at port ${port}`));
-
-app.get("/student", (req, res) => {
-  req.session.isStudent = true;
-  req.session.isFaculty = false;
-  req.session.isORSP = false;
-  req.session.isORSPAdmin = false;
-  res.redirect("/");
-});
-
-app.get("/orsp", (req, res) => {
-  req.session.isStudent = false;
-  req.session.isFaculty = false;
-  req.session.isORSP = true;
-  req.session.isORSPAdmin = false;
-  res.redirect("/");
-});
-
-app.get("/orspadmin", (req, res) => {
-  req.session.isStudent = false;
-  req.session.isFaculty = false;
-  req.session.isORSP = false;
-  req.session.isORSPAdmin = true;
-  res.redirect("/");
-});
-
-app.get("/faculty", (req, res) => {
-  req.session.isStudent = false;
-  req.session.isFaculty = true;
-  req.session.isORSP = false;
-  req.session.isORSPAdmin = false;
-  res.redirect("/");
-});
-
-//Catch all routing
-app.get("*", (req, res) => {
-  var file = req.url.split("/")[1];
-  var checkFile = file + ".ejs";
-  if (fs.existsSync(`${__dirname}\\views\\${checkFile}`)) {
-    res.render(file);
-  } else {
-    res.status(404);
-    res.render("404");
-  }
-});

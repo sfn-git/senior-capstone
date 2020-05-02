@@ -107,3 +107,4 @@ dist
 .vscode
 dbconfig.json
 /models/private
+config.json

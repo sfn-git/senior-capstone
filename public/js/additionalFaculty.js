@@ -1,5 +1,5 @@
-var counter = 1;
-var limit = 30;
+var counter = 0;
+var limit = 29;
 
 function addFaculty(divName) {
   if (counter == limit) {
@@ -105,7 +105,7 @@ function deleteFaculty() {
   );
   lastAdditionalFaculty.remove();
   counter--;
-  if (counter <= 1) {
+  if (counter <= 0) {
     $("#delete").attr("hidden", true);
   }
   $("#facultyCount").val(counter);
