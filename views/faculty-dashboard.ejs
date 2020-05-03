@@ -43,10 +43,20 @@
                 <tbody>
                     <% for(var element in projects){%>
                     <tr>
-                        <% if(projects[element].status == 'Submitted'){%>
+                        <% if(projects[element].status == 'Pending ORSP'){%>
                             <td class="badge badge-primary"><%= projects[element].status%></td>
-                            <%}%>
-                        <!-- <td><%= projects[element].status%></td> -->
+                        <%}else if (projects[element].status == 'Pending Faculty Approval'){%>
+                            <td class="badge badge-Secondary"><%= projects[element].status%></td>
+                        <%}else if (projects[element].status == 'Pending Upload Required' || projects[element].status == 'Pending Upload Required(Submission Edited)'){%>
+                            <td class="badge badge-Warning"><%= projects[element].status%></td>
+                        <%}else if (projects[element].status == 'Complete'){%>
+                            <td class="badge badge-success"><%= projects[element].status%></td>
+                        <%}else if (projects[element].status == 'Denied'){%>
+                            <td class="badge badge-danger"><%= projects[element].status%></td>
+                        <%}else{%>
+                            <td class="badge badge-info">Error, Contact ORSP</td>
+                        <%}%>
+
                         <td><%= projects[element].id %></td>
                         <td><button
                                 onclick="launchModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
