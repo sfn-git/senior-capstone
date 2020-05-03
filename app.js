@@ -291,6 +291,28 @@ app.get("/insert-faculty", (req, res) => {
 });
 
 /*
+  End Point for ORSP-Admin to modify ORSP database
+*/
+
+app.get("/orsp-staff", (req, res)=>{
+
+  if(req.session.isORSPAdmin){
+
+    var orspModel = require("./models/orsp.js");
+    orspModel.find({}, (err, fun)=>{
+      if(err){res.render("error", {error: err});}
+      res.render('add-staff', {orspStaff: fun});
+    })
+
+  }else{
+    res.render("error", {
+      error: "You are not authorized to access this page.",
+    });
+  }
+
+})
+
+/*
   Used to render the sitewide navbar. 
 */
 app.get("/navbar", (req, res) => {
@@ -498,6 +520,66 @@ app.post("/remove-faculty", async (req,res)=>{
   }else{
     res.render('error', {error: "You are not authorized to access this endpoint."});
   }
+})
+
+// Insert ORSP Staff Post End-Point
+app.post("/insert-orsp-staff", (req,res)=>{
+
+  if(req.session.userId && req.session.isORSPAdmin){
+
+    var orspStaffModel = require("./models/orsp");
+
+    var newStaff = new orspStaffModel({
+      name: req.body['staff-name'],
+      email: req.body['staff-email'],
+      isAdmin: false
+    })
+
+    if(req.body.onCampus == "on"){
+      newStaff.isAdmin = true;
+    }
+    
+    newStaff.save((err, fun)=>{
+
+      if(err){
+        res.render("error", {error: `An error occurred when trying to add ${req.body['staff-name']} to the database: ${err}`});
+      }else{
+        res.redirect(303, "/orsp-staff");
+      }
+    })
+
+  }else{
+    res.render("error", {error: "You are not authorized to view this page"});
+  }
+
+})
+
+// Endpoint to remove ORSP Staff
+app.post("/remove-orsp-staff", async (req,res)=>{
+
+  if(req.session.userId && req.session.isORSPAdmin){
+
+    var orspStaffModel = require("./models/orsp.js");
+
+    if(await orspStaffModel.count({isAdmin: true}) <= 1){
+      res.send({status: false, message:"You must assign another user as admin before removing the last admin."});
+    }else if(req.session.email == req.body.email){
+      res.send({status: false, message:"You must get another user to remove yourself. You cannot remove yourself as admin."});
+    }else{
+      orspStaffModel.findByIdAndDelete(req.body.id, (err)=>{
+        if(err){
+          res.send({status: false, message:`Something went wrong ${err}`})
+        }else{
+          res.send({status: true, message:`User removed from table`})
+        }
+      })
+    }
+
+
+  }else{
+    res.render("error", {error: "You are not authorized to view this page."})
+  }
+
 })
 
 // Getting user submission for rd submission

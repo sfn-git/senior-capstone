@@ -1,18 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-        <script defer src="/js/getMajors.js"></script>
-        <link rel="stylesheet" href="/css/style.css">
-        <title>Add Staff</title>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/getORSP.js"></script>
+    <title>Add Staff</title>
+</head>
 
-    <div id="nav-placeholder"></div>
-    <script>
-        $(function(){
-            $("#nav-placeholder").load("/navbar");
-        });
-    </script>
+<div id="nav-placeholder"></div>
+<script>
+    $(function(){
+        $("#nav-placeholder").load("/navbar");
+    });
+</script>
+
+<body>
+    <div class="container">
+        <h1>ORSP Staff Management Page</h1>
+        <hr>
+        <h3>Add ORSP Staff</h3>
+        <div class="form-group">
+            <form action="/insert-orsp-staff" method="POST" >
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="staff-name">Name:</label>
+                        <input type="text" name="staff-name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="staff-email">Email:</label>
+                        <input type="text" name="staff-email" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="onCampus" name="onCampus">
+                            <label class="form-check-label" for="onCampus">Will this person have admin level access? (Warning: This will be the same access you currently have)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br>
+        <h3>Modify Current Staff</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Is Admin?</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(element in orspStaff) {%>
+
+                    <tr>
+                        <td><%= orspStaff[element].name%></td>
+                        <td><%= orspStaff[element].email%></td>
+                        <td><%= orspStaff[element].isAdmin%></td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteEntry('<%= orspStaff[element].id %>', '<%= orspStaff[element].email%>')">Delete</button>
+                        </td>
+                    </tr>
+
+                 <%}%>   
+            </tbody>
+        </table>
+    </div>
+</body>
