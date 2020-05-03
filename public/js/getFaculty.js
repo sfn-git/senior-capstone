@@ -1,31 +1,25 @@
-google.charts.load("current", { packages: ["table"] });
-google.charts.setOnLoadCallback(drawTable);
+function deleteEntry (id, name){
 
-function drawTable() {
-  var data = new google.visualization.DataTable();
-  data.addColumn("string", "Name");
-  data.addColumn("string", "Email");
-  data.addColumn("string", "Position");
-  data.addColumn("string", "Department");
-  data.addColumn("string", "College");
-  data.addColumn("string", "Office");
-  data.addColumn("string", "Phone");
+  if(window.confirm(`Are you sure you would like to remove ${name} from the faculty database?`)){
 
-  for (index in facultyData) {
-    data.addRow([
-      facultyData[index].facultyName,
-      facultyData[index].email,
-      facultyData[index].position,
-      facultyData[index].department,
-      facultyData[index].college,
-      facultyData[index].officeLocation,
-      facultyData[index].officePhone,
-    ]);
+    $.ajax({
+      method: "POST",
+      url: "/remove-faculty",
+      data: {"id": id},
+      success: (res)=>{
+        if(res.status){
+          window.alert(`${name} has been removed from the database`);
+          location.reload();
+        } else{
+          window.alert(res.message);
+          location.reload();
+        }
+      },
+      error:()=>{
+        window.alert("An error occurred");
+      }
+    })
+
   }
 
-  var table = new google.visualization.Table(
-    document.getElementById("table_div")
-  );
-
-  table.draw(data, { showRowNumber: true, width: "100%", height: "100%" });
 }

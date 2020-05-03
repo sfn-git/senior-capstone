@@ -6,13 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/getFaculty.js"></script>
     <title>Insert Faculty Portal</title>
-    <script>
-        var facultyData = [];
-        document.write("<% for (element in faculty){ %>");
-        facultyData.push({'facultyName': '<%= faculty[element].facultyName%>', 'email': '<%= faculty[element].email%>', 'position': '<%= faculty[element].position %>', 'department': '<%= faculty[element].department%>', 'college': '<%= faculty[element].college%>', 'officeLocation': '<%= faculty[element].officeLocation%>', 'officePhone': '<%= faculty[element].officePhone%>'});
-        document.write("<% } %>");
-    </script>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -84,11 +79,37 @@
     <hr>
     <div class="container">
 
-        <h1>Current Majors in the database</h1>
-        <script type="text/javascript" src="/js/lib/loader.js"></script>
-        <script src="/js/getFaculty.js"></script>
-        <div id="table_div"></div>
-
+        <h1>Current Faculty in the database</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td scope="col">Name</td>
+                    <td scope="col">Email</td>
+                    <td scope="col">Position</td>
+                    <td scope="col">Department</td>
+                    <td scope="col">College</td>
+                    <td scope="col">Office</td>
+                    <td scope="col">Phone Ext</td>
+                    <td scope="col">Delete</td>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(element in faculty){ %>
+                    <tr>
+                        <td><%=faculty[element].facultyName%></td>
+                        <td><%=faculty[element].email%></td>
+                        <td><%=faculty[element].position%></td>
+                        <td><%=faculty[element].department%></td>
+                        <td><%=faculty[element].college%></td>
+                        <td><%=faculty[element].officeLocation%></td>
+                        <td><%=faculty[element].officePhone%></td>
+                        <td>
+                        <button class="btn btn-danger" onclick="deleteEntry('<%= faculty[element].id %>', '<%= faculty[element].facultyName %>')">Delete</button>
+                        </td>
+                    </tr>
+                    <% } %>
+            </tbody>
+        </table>
     </div>
 
 </body>

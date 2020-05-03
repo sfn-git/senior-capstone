@@ -28,7 +28,7 @@ function deleteEntry(id, major) {
         }
       },
       error: () => {
-        window.alert("An error occured");
+        window.alert("An error occurred");
       },
     });
   } else {

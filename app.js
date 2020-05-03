@@ -398,228 +398,278 @@ app.post("/insert-file", async (req, res) => {
 
 // Post request after submit button is pressed on the insert-major page
 app.post("/insert-major", (req, res) => {
-  const majorModel = require("./models/major.js");
+  
+  if(req.session.isORSPAdmin){
+    const majorModel = require("./models/major.js");
 
-  var formMajor = req.body.major;
-  var formCollege = req.body.college;
-  var formDept = req.body.department;
+    var formMajor = req.body.major;
+    var formCollege = req.body.college;
+    var formDept = req.body.department;
 
-  var newMajor = new majorModel({
-    major: formMajor,
-    department: formDept,
-    college: formCollege,
-  });
-  //Saves Data into DB
-  newMajor.save((err, fun) => {
-    if (err) console.error(err);
-    res.redirect(303, "/insert-major");
-  });
+    var newMajor = new majorModel({
+      major: formMajor,
+      department: formDept,
+      college: formCollege,
+    });
+    //Saves Data into DB
+    newMajor.save((err, fun) => {
+      if (err) console.error(err);
+      res.redirect(303, "/insert-major");
+    });
+  }
+});
+
+app.post("/remove-major", (req, res) => {
+  if(req.session.isORSPAdmin){
+    var major = require("./models/major.js");
+    major.deleteOne({ _id: req.body.id }, (err, suc) => {
+      if (err) {
+        res.send(false);
+      } else {
+        res.send(true);
+      }
+    });
+  }else{
+    res.send("You are not authorized to access this endpoint.");
+  }
 });
 
 app.post("/insert-faculty", (req, res) => {
-  // Getting Variable from from
-  var facultyName = req.body.facultyName;
-  var facultyEmail = req.body.facultyEmail;
-  var facultyPosition = req.body.facultyPosition;
-  var facultyDepartment = req.body.facultyDepartment;
-  var facultyCollege = req.body.facultyCollege;
-  var facultyOffice = req.body.facultyOffice;
-  var facultyPhone = req.body.facultyPhone;
+  
+  if(req.session.isORSPAdmin){
+    // Getting Variable from from
+    var facultyName = req.body.facultyName;
+    var facultyEmail = req.body.facultyEmail;
+    var facultyPosition = req.body.facultyPosition;
+    var facultyDepartment = req.body.facultyDepartment;
+    var facultyCollege = req.body.facultyCollege;
+    var facultyOffice = req.body.facultyOffice;
+    var facultyPhone = req.body.facultyPhone;
 
-  // Connection to DB
-  const facultyModel = require("./models/faculty.js");
+    // Connection to DB
+    const facultyModel = require("./models/faculty.js");
 
-  // Creating faculty model to be inserted
-  var newFaculty = new facultyModel({
-    facultyName: facultyName,
-    email: facultyEmail,
-    position: facultyPosition,
-    department: facultyDepartment,
-    college: facultyCollege,
-    officeLocation: facultyOffice,
-    officePhone: facultyPhone,
-  });
+    // Creating faculty model to be inserted
+    var newFaculty = new facultyModel({
+      facultyName: facultyName,
+      email: facultyEmail,
+      position: facultyPosition,
+      department: facultyDepartment,
+      college: facultyCollege,
+      officeLocation: facultyOffice,
+      officePhone: facultyPhone,
+    });
 
-  // Makes connection to db and inserts
-  newFaculty.save((err, fun) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect(303, "/insert-faculty");
-    }
-  });
+    // Makes connection to db and inserts
+    newFaculty.save((err, fun) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect(303, "/insert-faculty");
+      }
+    });
+  }else{
+    res.render('error', {error: "You are not authorized to access this page"});
+  }
 });
+
+app.post("/remove-faculty", async (req,res)=>{
+
+  if(req.session.isORSPAdmin){
+    var projectsModel = require("./models/projects.js");
+    var facultyProjectsModel = require("./models/facultyProjects.js");
+    var facultyModel = require("./models/faculty.js");
+
+    console.log(await projectsModel.find({facultyAdvisor: req.body.id}));
+
+    if(await projectsModel.exists({facultyAdvisor: req.body.id})){
+      res.send({status: false, message: "Unable to remove faculty as they are apart of student's project"});
+    }else if(await facultyProjectsModel.exists({primaryInvestigator: req.body.id})){
+      res.send({status: false, message: "Unable to remove faculty as they are apart of faculty projects"});
+    }else{
+      facultyModel.remove({_id: req.body.id}, (err)=>{
+        if(err){
+          res.send({status: false, message: "Something went wrong"});
+        }else{
+          res.send({status: true, message: "Removed"});
+        }
+      })
+    }
+  }else{
+    res.render('error', {error: "You are not authorized to access this endpoint."});
+  }
+})
 
 // Getting user submission for rd submission
 app.post("/student-form", async (req, res) => {
-  var projectsModel = require("./models/projects.js");
-  var studentModel = require("./models/students.js");
-  var primaryMongoID;
-  var coPresenterID = [];
-  var waiver = req.body.waiver;
-  var onCampus = req.body.onCampus;
-  var ccList = "";
-  var coPresenters = "";
+  
+  if(req.session.userId && req.session.isStudent){
+    var projectsModel = require("./models/projects.js");
+    var studentModel = require("./models/students.js");
+    var primaryMongoID;
+    var coPresenterID = [];
+    var waiver = req.body.waiver;
+    var onCampus = req.body.onCampus;
+    var ccList = "";
+    var coPresenters = "";
 
-  if (req.body.waiver == "on") {
-    waiver = true;
-  } else {
-    waiver = false;
-  }
+    if (req.body.waiver == "on") {
+      waiver = true;
+    } else {
+      waiver = false;
+    }
 
-  if (req.body.onCampus == "on") {
-    onCampus = true;
-  } else {
-    onCampus = false;
-  }
+    if (req.body.onCampus == "on") {
+      onCampus = true;
+    } else {
+      onCampus = false;
+    }
 
-  // Project Info
-  title = req.body.title;
-  projectArea = req.body.projectArea;
-  abstract = req.body.abstract;
-  advisor = req.body.advisor;
-  campusConducted = req.body.researchCampus;
-  presentationType = req.body.presentationType;
-  fundedBy = req.body.fundedBy;
+    // Project Info
+    title = req.body.title;
+    projectArea = req.body.projectArea;
+    abstract = req.body.abstract;
+    advisor = req.body.advisor;
+    campusConducted = req.body.researchCampus;
+    presentationType = req.body.presentationType;
+    fundedBy = req.body.fundedBy;
 
-  // Lead Presenter Info
-  name = req.session.name;
-  leadID = req.body.keanID;
-  email = req.session.email;
-  major = req.body.major;
-  classLevel = req.body.class;
-  primaryLocation = req.body.campus;
+    // Lead Presenter Info
+    name = req.session.name;
+    leadID = req.body.keanID;
+    email = req.session.email;
+    major = req.body.major;
+    classLevel = req.body.class;
+    primaryLocation = req.body.campus;
 
-  // First insert student
-  var primaryStudent = new studentModel({
-    name: name,
-    stuID: leadID,
-    email: email,
-    major: major,
-    classLevel: classLevel,
-    primaryLocation: primaryLocation,
-  });
-
-  if (
-    (await studentModel.exists({ stuID: primaryStudent.stuID })) ||
-    (await studentModel.exists({ email: email }))
-  ) {
-    // Do Nothing
-    primaryMongoID = await studentModel
-      .findOne({ stuID: primaryStudent.stuID })
-      .select("_id");
-    primaryMongoID = primaryMongoID._id;
-  } else {
-    primaryMongoID = await primaryStudent.save();
-    primaryMongoID = primaryMongoID.id;
-  }
-
-  // Co Presenters
-  var coCount = req.body.coPresenterCount;
-
-  if (coCount == 0) {
-    // Do Nothing
-  } else {
-    for (var i = 0; i < coCount; i++) {
-      var current = i + 1;
-
-      var coName = `${req.body["firstName" + current]} ${
-        req.body["lastName" + current]
-      }`;
-      var coStuID = req.body["keanID" + current];
-      var coEmail = `${req.body["keanEmail" + current].toLowerCase()}@kean.edu`;
-      var coMajor = req.body["major" + current];
-      var coClassLevel = req.body["class" + current];
-      var coPrimaryLocation = req.body["campus" + current];
-
-      ccList += coEmail + ", ";
-      coPresenters += coName + ", ";
-
-      var newCoPresenter = new studentModel({
-        name: coName,
-        stuID: coStuID,
-        email: coEmail,
-        major: coMajor,
-        classLevel: coClassLevel,
-        primaryLocation: coPrimaryLocation,
+    if(await studentModel.exists({email: email })){
+      primaryMongoID = await studentModel.findOne({email: email});
+      primaryMongoID = primaryMongoID.id;
+    } else {
+      // First insert student
+      var primaryStudent = new studentModel({
+        name: name,
+        stuID: leadID,
+        email: email,
+        major: major,
+        classLevel: classLevel,
+        primaryLocation: primaryLocation,
       });
+      primaryMongoID = await primaryStudent.save();
+      primaryMongoID = primaryMongoID.id;
+    }
 
-      if (
-        (await studentModel.exists({ stuID: coStuID })) ||
-        (await studentModel.exists({ email: coEmail }))
-      ) {
-        var temp = await studentModel.findOne({ stuID: coStuID }).select("_id");
-        coPresenterID.push(temp._id);
-      } else {
-        checkCo = await newCoPresenter.save();
-        coPresenterID.push(checkCo.id);
+    // Co Presenters
+    var coCount = req.body.coPresenterCount;
+
+    if (coCount == 0) {
+      // Do Nothing
+    } else {
+      for (var i = 0; i < coCount; i++) {
+        var current = i + 1;
+
+        var coName = `${req.body["firstName" + current]} ${
+          req.body["lastName" + current]
+        }`;
+        var coStuID = req.body["keanID" + current];
+        var coEmail = `${req.body["keanEmail" + current].toLowerCase()}@kean.edu`;
+        var coMajor = req.body["major" + current];
+        var coClassLevel = req.body["class" + current];
+        var coPrimaryLocation = req.body["campus" + current];
+
+        ccList += coEmail + ", ";
+        coPresenters += coName + ", ";
+
+        if (
+          (await studentModel.exists({ email: coEmail }))
+        ) {
+          var temp = await studentModel.findOne({ email: coEmail }).select("_id");
+          coPresenterID.push(temp._id);
+        } else {
+          var newCoPresenter = new studentModel({
+            name: coName,
+            stuID: coStuID,
+            email: coEmail,
+            major: coMajor,
+            classLevel: coClassLevel,
+            primaryLocation: coPrimaryLocation,
+          });
+          checkCo = await newCoPresenter.save();
+          coPresenterID.push(checkCo.id);
+        }
       }
     }
+
+    var newProject = new projectsModel({
+      presentationType: presentationType,
+      title: title,
+      abstractSubmitted: abstract,
+      projectArea: projectArea,
+      researchLocation: campusConducted,
+      researchFunding: fundedBy,
+      rdYear: 2020,
+      submitter: primaryMongoID,
+      copis: coPresenterID,
+      facultyAdvisor: advisor,
+      onCampus: onCampus,
+      waiver: waiver,
+    });
+
+    newProject.save((err, fun) => {
+      if (err) {
+        console.error(err);
+      } else {
+      }
+    });
+
+    var facultyModel = require("./models/faculty.js");
+    var facultyDB = await facultyModel.findOne({_id: advisor});
+    var facultyName = facultyDB.facultyName;
+
+    var nodemailer = require("nodemailer");
+
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "orsptemp20@gmail.com",
+        pass: config.emailPass,
+      },
+    });
+    var emailMessage =
+      "Your project: " +
+      title +
+      ", has been submitted!\n\n" +
+      "Abstract: " +
+      abstract +
+      "\n" +
+      "Primary Presenter: " +
+      name +
+      "\n" +
+      "Faculty Advisor: " +
+      facultyName +
+      "\n" +
+      "Co-Presenter(s): " +
+      coPresenters;
+    var mailOptions = {
+      from: "orsptemp20@gmail.com",
+      to: email,
+      cc: ccList,
+      subject: "Your Project Has Been Submitted!",
+      text: emailMessage,
+    };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err) console.log(err);
+      else console.log(info);
+    });
+    res.redirect("/");
+  }else{
+    res.render('signin');
   }
-
-  var newProject = new projectsModel({
-    presentationType: presentationType,
-    title: title,
-    abstractSubmitted: abstract,
-    projectArea: projectArea,
-    researchLocation: campusConducted,
-    researchFunding: fundedBy,
-    rdYear: 2020,
-    submitter: primaryMongoID,
-    copis: coPresenterID,
-    facultyAdvisor: advisor,
-    onCampus: onCampus,
-    waiver: waiver,
-  });
-
-  newProject.save((err, fun) => {
-    if (err) {
-      console.error(err);
-    } else {
-    }
-  });
-
-  var nodemailer = require("nodemailer");
-
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "orsptemp20@gmail.com",
-      pass: config.emailPass,
-    },
-  });
-  var emailMessage =
-    "Your project: " +
-    title +
-    ", has been submitted!\n\n" +
-    "Abstract: " +
-    abstract +
-    "\n" +
-    "Primary Presenter: " +
-    name +
-    "\n" +
-    "Faculty Advisor: " +
-    facultyName +
-    "\n" +
-    "Co-Presenter(s): " +
-    coPresenters;
-  var mailOptions = {
-    from: "orsptemp20@gmail.com",
-    to: email,
-    cc: ccList,
-    subject: "Your Project Has Been Submitted!",
-    text: emailMessage,
-  };
-
-  transporter.sendMail(mailOptions, function (err, info) {
-    if (err) console.log(err);
-    else console.log(info);
-  });
-  res.redirect("/");
 });
 
 app.post("/faculty-form", async (req,res)=>{
-  if(req.session.userId){
+  if(req.session.userId && req.session.isFaculty){
   var facultyProjectModel = require('./models/facultyProjects');
   var faculty = require('./models/faculty.js');
 
@@ -670,18 +720,7 @@ app.post("/faculty-form", async (req,res)=>{
   }
 })
 
-app.post("/remove-major", (req, res) => {
-  var major = require("./models/major.js");
-  major.deleteOne({ _id: req.body.id }, (err, suc) => {
-    if (err) {
-      res.send(false);
-    } else {
-      res.send(true);
-    }
-  });
-});
-
-app.post("/signin", (req, res) => {
+app.post("/signin", async (req, res) => {
   const CLIENT_ID =
     "745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com";
   var token = req.body;
@@ -696,13 +735,34 @@ app.post("/signin", (req, res) => {
     const userid = payload["sub"];
     // If request specified a G Suite domain:
     //const domain = payload['hd'];
+
+    // All user info
     req.session.userId = userid;
     req.session.name = payload.name;
     req.session.email = payload.email;
+
+    // Checking if they exist in db.
+    var studentModel = require('./models/students.js');
+    var facultyModel = require('./models/faculty.js');
+    var orspModel = require('./models/orsp.js');
+
     req.session.isStudent = true;
     req.session.isFaculty = true;
     req.session.isORSP = true;
     req.session.isORSPAdmin = true;
+
+    req.session.isStudent = await studentModel.exists({email: req.session.email});
+    req.session.isFaculty = await facultyModel.exists({email: req.session.email});
+
+    // orspInfo = await orspModel.findOne({email: req.session.email});
+
+    // if(orspInfo == null){
+    //   req.session.isORSP = false;
+    //   req.session.isORSPAdmin = false;
+    // }else{
+
+    // }
+
     res.send(true);
   }
   verify().catch(console.error);
