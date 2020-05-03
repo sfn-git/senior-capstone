@@ -828,13 +828,21 @@ app.post("/signin", async (req, res) => {
     var facultyModel = require('./models/faculty.js');
     var orspModel = require('./models/orsp.js');
 
-    req.session.isStudent = true;
-    req.session.isFaculty = true;
-    req.session.isORSP = true;
-    req.session.isORSPAdmin = true;
+    req.session.isORSP = false;
+    req.session.isORSPAdmin = false;
 
     req.session.isStudent = await studentModel.exists({email: req.session.email});
     req.session.isFaculty = await facultyModel.exists({email: req.session.email});
+
+    if(await orspModel.exists({email: req.session.email})){
+
+      req.session.isORSP = true;
+      var orspCheck = await orspModel.findOne({email:  req.session.email});
+      if(orspCheck.isAdmin){
+        req.session.isORSPAdmin = true;
+      }
+
+    }
 
     // orspInfo = await orspModel.findOne({email: req.session.email});
 
