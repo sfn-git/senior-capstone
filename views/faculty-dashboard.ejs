@@ -43,7 +43,10 @@
                 <tbody>
                     <% for(var element in projects){%>
                     <tr>
-                        <td><%= projects[element].status%></td>
+                        <% if(projects[element].status == 'Submitted'){%>
+                            <td class="badge badge-primary"><%= projects[element].status%></td>
+                            <%}%>
+                        <!-- <td><%= projects[element].status%></td> -->
                         <td><%= projects[element].id %></td>
                         <td><button
                                 onclick="launchModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
