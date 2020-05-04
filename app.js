@@ -830,13 +830,17 @@ app.post("/signin", async (req, res) => {
 
     req.session.isORSP = false;
     req.session.isORSPAdmin = false;
+    req.session.isStudent = true;
 
-    req.session.isStudent = await studentModel.exists({email: req.session.email});
-    req.session.isFaculty = await facultyModel.exists({email: req.session.email});
+    if(await facultyModel.exists({email: req.session.email})){
+      req.session.isFaculty = true;
+      req.session.isStudent = await facultyModel.exists({email: req.session.email});
+    }
 
     if(await orspModel.exists({email: req.session.email})){
 
       req.session.isORSP = true;
+      req.session.isStudent = await facultyModel.exists({email: req.session.email});
       var orspCheck = await orspModel.findOne({email:  req.session.email});
       if(orspCheck.isAdmin){
         req.session.isORSPAdmin = true;
