@@ -108,3 +108,4 @@ dist
 dbconfig.json
 /models/private
 config.json
+/uploads/

@@ -19,6 +19,7 @@ var projectSchema = new schema({
     onCampus: {type: Boolean},
     waiver: {type: Boolean},
     dateSubmitted: {type: Date, default: Date.now},
+    datePosterSubmitted: {type: Date, default: ""},
     dateApproved: {type: Date, default: ""},
     dateDenied: {type: Date, default: ""},
     dateLastModified: {type: Date, default: ""},

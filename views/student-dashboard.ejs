@@ -43,9 +43,9 @@
                 <tbody>
                     <% for(var element in projects){%>
                     <tr>
-                        <td>Upload Required</td>
+                        <td><%= projects[element].status%></td>
                         <td><%= projects[element].id %></td>
-                        <td><button onclick="launchModal('Upload Required','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                        <td><button onclick="launchModal('Upload Required','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateLastModified %>')"class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                             <%= projects[element].title %>
                         </button></td>
                         <td><%= projects[element].dateSubmitted %></td>
@@ -92,16 +92,17 @@
                                     <p id="faculty"></p>
                                 </div>
 
-                                <div id="IPO" class="input-group input-file m-3" name="Fichier1">
-                                    
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" accept=".ppt,.pptx" id="customFile" name="filename">
-                                        <label class="custom-file-label" for="customFile">Choose file (.ppt,.pptx only)</label>
-                                    </div>
-
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default btn-choose btn-primary" type="button">Submit</button>
-                                    </span>
+                                <div id="IPO" class="input-group input-file m-3">
+                                    <form action="/file-upload" method="post" enctype="multipart/form-data">
+                                        <div class="custom-file">
+                                            <input type="file" accept=".ppt,.pptx" id="customFile" name="filename" required>
+                                            <!-- <label class="custom-file-label" for="customFile">Choose file (.ppt,.pptx only)</label> -->
+                                            <span class="input-group-btn">
+                                                <input class="btn btn-default btn-choose btn-primary" type="submit" value="Submit"/>
+                                            </span>
+                                        </div>
+                                        <input type="text" value="" name="fileID" id="fileID" style="display: none;">
+                                    </form>
                                 </div>
                         </div>
                         <div class="modal-footer">

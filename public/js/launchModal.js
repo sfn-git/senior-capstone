@@ -2,25 +2,28 @@
 // output information into modal
 function launchModal(step, title, status, abstract, primary, coPres, faculty, lastEdit) 
 {
-  var status = status;
-  var lastEdit = lastEdit;
-  document.getElementById("title").innerHTML = title
-  document.getElementById("status").innerHTML = step + ": #" + status
+  
+  document.getElementById("title").innerHTML = title;
+  document.getElementById("status").innerHTML = step + ": #" + status;
   // need to know what status their are
   if(step == "Upload Required"){
     document.getElementById("IPO").style.visibility = "visible";
+    $("#customFile").on('change', ()=>{
+      console.log(status);
+      $("input[id^='fileID']").attr('value', status);
+    })
   }
   else if (step == "Faculty Review"){
     document.getElementById("edit").style.visibility = "visible";
     document.getElementById("approve").style.visibility = "visible";
   }
   
-  document.getElementById("abstractLaunchModal").innerHTML = abstract
+  document.getElementById("abstractLaunchModal").innerHTML = abstract;
 
-  document.getElementById("primary").innerHTML = primary
-  document.getElementById("coPres").innerHTML = coPres
-  document.getElementById("faculty").innerHTML = faculty
-  document.getElementById("lastEdit").innerHTML = "Last edited on " + lastEdit
+  document.getElementById("primary").innerHTML = primary;
+  document.getElementById("coPres").innerHTML = coPres;
+  document.getElementById("faculty").innerHTML = faculty;
+  document.getElementById("lastEdit").innerHTML = "Last edited on " + lastEdit;
   } 
 
 // Make div border grey to see it when in edit mode
@@ -52,3 +55,4 @@ function noteditable(){
   $('edit btn btn-primary').click(function(){
   $(".my-textbox").focus()
   });
+

@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement.
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
+const fileupload = require("express-fileupload");
 const fs = require("fs");
 require("./models/database.js");
 const config = require('./config.json');
@@ -21,6 +22,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(fileupload());
 app.use(
   session({
     name: "sid",
@@ -38,7 +40,7 @@ app.use(
 // =================================================//
 //          Nodemailer Transport Config             //
 //==================================================//
-var transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "orsptemp20@gmail.com",
@@ -121,9 +123,10 @@ app.get("/", async (req, res) => {
           title: projects[index].title,
           abstract: projects[index].abstractSubmitted,
           dateSubmitted: projects[index].dateSubmitted,
-          dateApproved: null,
-          dataDenied: null,
-          dataLastModified: null,
+          dateApproved: projects[index].dateApproved,
+          dateDenied: projects[index].dateDenied,
+          dateLastModified: projects[index].dateLastModified,
+          datePosterSubmitted:  projects[index].datePosterSubmitted
         };
 
         for (coIndex in projects[index].copis) {
@@ -770,23 +773,23 @@ app.post("/student-form", async (req, res) => {
 });
 
 app.post("/file-upload", (req,res)=>{
+  
+  const file = req.files.filename;
+  var projectID = req.body.fileID
+  var fileExt = file.name.split('.')[1];
+  const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
 
-  const formidable = require('formidable')
-
-  new formidable.IncomingForm().parse(req, (err, fields, files)=>{
+  file.mv(path, async (err)=>{
 
     if(err){
-      res.render('error', {error: err});
+      res.render('error', {error: `Something went wrong uploading your file: ${err}`});
     }
 
-    console.log('Fields', fields);
-    console.log('Files', files);
-    for(const file of Object.entries(files)){
-      console.log(file)
-    }
+    var projectsModel = require('./models/projects');
+    await projectsModel.findOneAndUpdate({"id": projectID}, {"fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()});
 
   })
-  console.log(req.body);
+
   res.redirect("/")
 
 })
