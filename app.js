@@ -747,7 +747,9 @@ app.post("/student-form", async (req, res) => {
       facultyName +
       "\n" +
       "Co-Presenter(s): " +
-      coPresenters;
+      coPresenters +
+      "\n\n\n" +
+      "Please DO NOT reply to this email";
     var mailOptions = {
       from: "orsptemp20@gmail.com",
       to: emailList,
@@ -866,7 +868,9 @@ app.post("/faculty-form", async (req,res)=>{
     description +
     "\n" +
     "Co-Faculty(s) Investigator: " +
-    coFacultyList;
+    coFacultyList +
+    "\n\n\n" +
+    "Please DO NOT reply to this email";
   
   var mailOptions = {
     from: "orsptemp20@gmail.com",
