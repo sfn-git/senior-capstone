@@ -337,9 +337,10 @@ app.get("/navbar", (req, res) => {
       loggedIn: true,
       name: req.session.name,
       isORSP: req.session.isORSP,
+      isORSPAdmin: req.session.isORSPAdmin,
     });
   } else {
-    res.render("navbar", { loggedIn: false, isORSP: false });
+    res.render("navbar", { loggedIn: false, isORSP: false, isORSPAdmin: false});
   }
 });
 
