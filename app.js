@@ -7,6 +7,7 @@ const path = require("path");
 const app = express();
 const port = process.env.PORT || 3000; //3000 for Development. Can be changed when we are ready to implement.
 const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
 const fs = require("fs");
 require("./models/database.js");
 const config = require('./config.json');
@@ -33,6 +34,17 @@ app.use(
     },
   })
 );
+
+// =================================================//
+//          Nodemailer Transport Config             //
+//==================================================//
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "orsptemp20@gmail.com",
+    pass: config.emailPass,
+  },
+});
 
 // =================================================//
 //                  All Get Request                 //
@@ -659,8 +671,13 @@ app.post("/student-form", async (req, res) => {
         var coClassLevel = req.body["class" + current];
         var coPrimaryLocation = req.body["campus" + current];
 
-        ccList += coEmail + ", ";
-        coPresenters += coName + ", ";
+        if(i == (coCount-1)){
+          ccList += coEmail;
+          coPresenters += coName;
+        } else {
+          ccList += coEmail + ", ";
+          coPresenters += coName + ", ";
+        }
 
         if (
           (await studentModel.exists({ email: coEmail }))
@@ -707,16 +724,10 @@ app.post("/student-form", async (req, res) => {
     var facultyModel = require("./models/faculty.js");
     var facultyDB = await facultyModel.findOne({_id: advisor});
     var facultyName = facultyDB.facultyName;
+    var facultyEmail = facultyDB.email;
 
-    var nodemailer = require("nodemailer");
+    var emailList = email + ", " + facultyEmail;
 
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "orsptemp20@gmail.com",
-        pass: config.emailPass,
-      },
-    });
     var emailMessage =
       "Your project: " +
       title +
@@ -734,15 +745,18 @@ app.post("/student-form", async (req, res) => {
       coPresenters;
     var mailOptions = {
       from: "orsptemp20@gmail.com",
-      to: email,
+      to: emailList,
       cc: ccList,
       subject: "Your Project Has Been Submitted!",
       text: emailMessage,
     };
 
     transporter.sendMail(mailOptions, function (err, info) {
-      if (err) console.log(err);
-      else console.log(info);
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
     });
     res.redirect("/");
   }else{
@@ -754,6 +768,12 @@ app.post("/faculty-form", async (req,res)=>{
   if(req.session.userId && req.session.isFaculty){
   var facultyProjectModel = require('./models/facultyProjects');
   var faculty = require('./models/faculty.js');
+
+
+  // Project Info
+  title = req.body.title;
+  abstract = req.body.abstract;
+  description = req.body.description;
 
   var facultyProject = new facultyProjectModel({
     title: req.body.title,
@@ -771,6 +791,8 @@ app.post("/faculty-form", async (req,res)=>{
   facultyProject.primaryInvestigator = facultyInfo.id;
 
   var coFacultyInvestigatorCount = req.body.additionalFacultyCount;
+  var ccList;
+  var coFacultyList; 
 
   if(coFacultyInvestigatorCount == 0){
     // Do Nothing
@@ -784,8 +806,18 @@ app.post("/faculty-form", async (req,res)=>{
         campus: req.body["campus"+(i+1)],
         email: `${req.body["keanEmail"+(i+1)]}@kean.edu`
       })
+      if(i == (coFacultyInvestigatorCount - 1)){
+        ccList += facultyProject.coFacultyInvestigator[i].email;
+        coFacultyList += facultyProject.coFacultyInvestigator[i].name;
+
+      } else {
+        ccList += facultyProject.coFacultyInvestigator[i].email + ", ";
+        coFacultyList += facultyProject.coFacultyInvestigator[i].name + ", ";
+      }
+      
     }
   }
+  console.log(ccList);
 
   if(req.body.onCampus == "on"){
     facultyProject.onCampus = true;
@@ -795,6 +827,35 @@ app.post("/faculty-form", async (req,res)=>{
   }
 
   facultyProject.save();
+
+  var emailMessage =
+    "Your project: " +
+    title +
+    ", has been submitted!\n\n" +
+    "Abstract: " +
+    abstract +
+    "\n" +
+    "Description" +
+    description +
+    "\n" +
+    "Co-Faculty(s) Investigator: " +
+    coFacultyList;
+  
+  var mailOptions = {
+    from: "orsptemp20@gmail.com",
+    to: facultyEmail,
+    cc: ccList,
+    subject: "Your Project Has Been Submitted!",
+    text: emailMessage,
+  };
+  
+  transporter.sendMail(mailOptions, function (err, info) {
+    if (err) {
+      console.log(err);
+    } else { 
+      console.log(info);
+    }
+  });
   res.redirect("/");
   
   }else{
