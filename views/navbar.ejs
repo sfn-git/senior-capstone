@@ -1,7 +1,4 @@
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
 <script src="https://apis.google.com/js/api:client.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -31,22 +28,28 @@
           Home
         </a>
       </li>
-      <% if (loggedIn == true && isORSP != true){ %>
-      <li class="nav-item">
-        <a class="nav-link" href="/submission">New Submission</a>
-      </li>
-      <%}else{%> <%}%>
 
-      <li class="nav-item">
-        <a class="nav-link" href="/contact">Contact Us</a>
-      </li>
+      <% if (loggedIn == true && isORSP != true && isORSPAdmin != true){ %>
+<li class="nav-item">
+  <a class="nav-link" href="/submission">New Submission</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/contact">Contact Us</a>
+</li>
+<%}%>
+
+      <% if(!loggedIn){ %>
+<a class="nav-link" href="/contact">Contact Us</a>
+</li>
+<%}%>
+
     </ul>
     <% if (loggedIn){ %>
-    <div id="name"><%= name%></div>
-    <a class="nav-link" href="/signout">Sign Out</a>
-    <%}else{ %>
-    <a class="nav-link p-0" id="signinBtn" href="#">Sign In with Google</a>
-    <%}%>
+<div id="name"><%= name%></div>
+<a class="nav-link" href="/signout">Sign Out</a>
+<%}else{ %>
+<a class="nav-link p-0" id="signinBtn" href="#">Sign In with Google</a>
+<%}%>
   </div>
 </nav>
 <script>
