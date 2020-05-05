@@ -159,8 +159,6 @@ app.get("/", async (req, res) => {
         facultyProjects[index].primaryInvestigator = facultyID.facultyName;
       }
 
-      console.log(facultyProjects);
-
       res.render("faculty-dashboard", {
         name: req.session.name,
         count: facultyProjects.length,
