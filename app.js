@@ -152,8 +152,14 @@ app.get("/", async (req, res) => {
       var facultyProjectModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
 
-      var facultyID = await facultyModel.find({"email": req.session.email}).select("_id");
-      var facultyProjects = await facultyProjectModel.find({"primaryInvestigator": facultyID});
+      var facultyID = await facultyModel.findOne({"email": req.session.email}, ['_id', 'facultyName']);
+      var facultyProjects = await facultyProjectModel.find({"primaryInvestigator": facultyID.id}).lean();
+
+      for(index in facultyProjects){
+        facultyProjects[index].primaryInvestigator = facultyID.facultyName;
+      }
+
+      console.log(facultyProjects);
 
       res.render("faculty-dashboard", {
         name: req.session.name,
