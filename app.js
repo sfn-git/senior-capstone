@@ -771,7 +771,23 @@ app.post("/student-form", async (req, res) => {
 
 app.post("/file-upload", (req,res)=>{
 
+  const formidable = require('formidable')
+
+  new formidable.IncomingForm().parse(req, (err, fields, files)=>{
+
+    if(err){
+      res.render('error', {error: err});
+    }
+
+    console.log('Fields', fields);
+    console.log('Files', files);
+    for(const file of Object.entries(files)){
+      console.log(file)
+    }
+
+  })
   console.log(req.body);
+  res.redirect("/")
 
 })
 
