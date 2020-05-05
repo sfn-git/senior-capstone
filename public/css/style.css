@@ -46,3 +46,7 @@ max-width: 300px;
 #approve{
   visibility: hidden;
 }
+
+td {
+  vertical-align: middle !important;
+}

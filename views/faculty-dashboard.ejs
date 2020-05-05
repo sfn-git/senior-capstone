@@ -42,27 +42,27 @@
 
                 <tbody>
                     <% for(var element in projects){%>
-                    <tr>
-                        <% if(projects[element].status == 'Pending ORSP'){%>
-                            <td class="badge badge-primary"><%= projects[element].status%></td>
-                        <%}else if (projects[element].status == 'Pending Faculty Approval'){%>
-                            <td class="badge badge-Secondary"><%= projects[element].status%></td>
-                        <%}else if (projects[element].status == 'Pending Upload Required' || projects[element].status == 'Pending Upload Required(Submission Edited)'){%>
-                            <td class="badge badge-Warning"><%= projects[element].status%></td>
-                        <%}else if (projects[element].status == 'Complete'){%>
-                            <td class="badge badge-success"><%= projects[element].status%></td>
+                    <tr><td>
+                        <% if(projects[element].status == 'Submitted'){%>
+                            <span class="badge badge-info"><%= projects[element].status%></span>
+                        <%}else if (projects[element].status == 'Approved'){%>
+                            <span class="badge badge-success"><%= projects[element].status%></span>
                         <%}else if (projects[element].status == 'Denied'){%>
-                            <td class="badge badge-danger"><%= projects[element].status%></td>
+                            <span class="badge badge-warning"><%= projects[element].status%></span>
                         <%}else{%>
-                            <td class="badge badge-info">Error, Contact ORSP</td>
+                            <span class="badge badge-info">Error, Contact ORSP</span>
                         <%}%>
+                        </td>
 
-                        <td><%= projects[element].id %></td>
-                        <td><button
-                                onclick="launchModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
+                        <td><%= projects[element]._id %></td>
+                        <td>
+                            <button
+                                onclick="launchModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstract%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                                 <%= projects[element].title %>
-                            </button></td>
+                            </button>
+                        
+                        </td>
                         <td><%= projects[element].dateSubmitted %></td>
                     </tr>
                     <%}%>
