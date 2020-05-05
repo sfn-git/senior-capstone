@@ -109,12 +109,12 @@ app.get("/", async (req, res) => {
       var projects = await projectsModel.find({ submitter: studentID }); //This is the projects from the database that have ids instead of names
 
       for (index in projects) {
-        console.log(projects[index]);
         facultyInfo = await facultyModel.findById(projects[index].facultyAdvisor,"facultyName");
         facultyName = facultyInfo.facultyName;
 
         var thisProject = {
           id: projects[index]._id,
+          status:projects[index].status,
           primaryPresenter: req.session.name,
           coPresenter: [],
           faculty: facultyName,
@@ -767,6 +767,12 @@ app.post("/student-form", async (req, res) => {
     res.render('signin');
   }
 });
+
+app.post("/file-upload", (req,res)=>{
+
+  console.log(req.body);
+
+})
 
 app.post("/faculty-form", async (req,res)=>{
   if(req.session.userId && req.session.isFaculty){
