@@ -43,6 +43,23 @@ $('#ORSPcancel').click(function() {
     $(this).hide();
 });
 
-$('#ORSPapprove').click(function() {
-    confirm("Do you confirm that this is the project is aproved");
+$('#ORSPapprove').click(()=> {
+    if(window.confirm(`Approve Project ID: ${idGlobal}?`)){
+        console.log("test");
+        $.ajax({
+
+            method: "POST",
+            url: "/orsp-approve-student",
+            data: {id: idGlobal},
+            success: (res) => {
+                if(res.status){
+                    window.alert(`${idGlobal} has been marked as approved.`)
+                    location.reload();
+                }else{
+                    window.alert(res.message);
+                }
+            }
+
+        })
+    }
 });

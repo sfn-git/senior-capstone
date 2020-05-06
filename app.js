@@ -830,13 +830,31 @@ app.post("/file-upload", (req,res)=>{
     if(err){
       res.render('error', {error: `Something went wrong uploading your file: ${err}`});
     }
-
     var projectsModel = require('./models/projects');
     await projectsModel.findOneAndUpdate({"id": projectID}, {"fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()});
 
   })
 
   res.redirect("/")
+})
+
+app.post("/orsp-approve-student", (req,res)=>{
+
+  if(req.session.isORSP){
+    var projectModel = require("./models/projects.js");
+    var projectID = req.body.id;
+    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty Adviser", 'dateLastModified': Date.now()}, (err)=>{
+
+      if(err){
+        res.send({status: false, message: `An error occured ${err.message}`});
+      }else{
+        res.send({status: true, message: `Project ID: ${projectID} has been updated`});
+      }
+    });
+
+  }else{
+    res.send({message: "You are not authorized to access this page."});
+  }
 
 })
 

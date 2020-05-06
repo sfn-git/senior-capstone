@@ -1,3 +1,4 @@
+var idGlobal;
 function launchORSPModal(
   note,
   status,
@@ -9,6 +10,7 @@ function launchORSPModal(
   faculty,
   lastEdit
 ) {
+  idGlobal = id;
   document.getElementById("studentTitle").innerHTML = title;
   document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
   if (status == "Pending ORSP"){
