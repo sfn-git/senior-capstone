@@ -15,7 +15,7 @@ function addFaculty(divName) {
       `<div id=additionalFaculty` +
       counter +
       `><div class="form-group row mt-4 col-md-12">
-        <h5>Faculty Member ` +
+        <h5>Co-Investigator ` +
       counter +
       `</h5>
     </div>
