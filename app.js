@@ -843,7 +843,7 @@ app.post("/orsp-approve-student", (req,res)=>{
   if(req.session.isORSP){
     var projectModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty Adviser", 'dateLastModified': Date.now()}, (err)=>{
+    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty", 'dateLastModified': Date.now()}, (err)=>{
 
       if(err){
         res.send({status: false, message: `An error occured ${err.message}`});
