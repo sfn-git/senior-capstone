@@ -112,15 +112,13 @@ app.get("/", async (req, res) => {
         projects[index].submitterName = studentName.name;
         projects[index].facultyAdvisorName = facultyName.facultyName;
 
-        for(index in projects[index].copis){
+        // for(index in projects[index].copis){
 
-          var copi
+        //   var copi
 
-        }
+        // }
 
       }
-
-      console.log(projects);
 
       res.render("orsp-dashboard", {
         name: req.session.name,
@@ -295,7 +293,9 @@ app.get("/submission", (req, res) => {
           });
         })
         .catch((err) => {
-          console.log(err);
+          res.render("error", {
+            error: "Something went wrong when determining user access level.",
+          });
         });
     } else {
       res.render("error", {
@@ -471,7 +471,6 @@ app.post("/insert-file", async (req, res) => {
     });
 
     if (await majorModel.exists({ major: majors[key].major })) {
-      console.log(`${majors[key].major} exist in db already`);
       // Do nothing
     } else {
       await newMajor.save();
@@ -486,6 +485,10 @@ app.post("/insert-major", (req, res) => {
   
   if(req.session.isORSPAdmin){
     const majorModel = require("./models/major.js");
+
+    // var formMajor = sanitize.value(req.body.major, String);
+    // var formCollege = sanitize.value(req.body.college, String);
+    // var formDept = sanitize.value(req.body.department, String);
 
     var formMajor = req.body.major;
     var formCollege = req.body.college;
@@ -548,7 +551,7 @@ app.post("/insert-faculty", (req, res) => {
     // Makes connection to db and inserts
     newFaculty.save((err, fun) => {
       if (err) {
-        console.log(err);
+        res.render("error", {error: "Something went wrong when adding the faculty member. Please try again."})
       } else {
         res.redirect(303, "/insert-faculty");
       }
@@ -564,8 +567,6 @@ app.post("/remove-faculty", async (req,res)=>{
     var projectsModel = require("./models/projects.js");
     var facultyProjectsModel = require("./models/facultyProjects.js");
     var facultyModel = require("./models/faculty.js");
-
-    console.log(await projectsModel.find({facultyAdvisor: req.body.id}));
 
     if(await projectsModel.exists({facultyAdvisor: req.body.id})){
       res.send({status: false, message: "Unable to remove faculty as they are apart of student's project"});
@@ -767,7 +768,7 @@ app.post("/student-form", async (req, res) => {
 
     newProject.save((err, fun) => {
       if (err) {
-        console.error(err);
+        res.render('error', {error: `Something went wrong when submitting your project: ${err.message}`});
       } else {
       }
     });
@@ -871,7 +872,6 @@ app.post("/faculty-form", async (req,res)=>{
 
   if(coFacultyInvestigatorCount == 0){
     // Do Nothing
-    console.log(false);
   }else{
     for(var i=0; i<coFacultyInvestigatorCount; i++){
 
