@@ -8,7 +8,7 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="/js/launchModalFaculty.js"></script>
+    <script src="/js/launchModalORSP.js"></script>
     <script defer src="/js/orspSearch.js"></script>
 </head>
 
@@ -19,52 +19,52 @@
     });
 </script>
 
-    <div class="container">
-        <h1>ORSP Dashboard</h1>
-        <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
-        <div class="table-responsive mt-4">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Status</th>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Primary Presenter</th>
-                        <th scope="col">Date Submitted</th>
-                    </tr>
-                </thead>
+<div class="container">
+    <h1>ORSP Dashboard</h1>
+    <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
+    <div class="table-responsive mt-4">
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Primary Presenter</th>
+                    <th scope="col">Date Submitted</th>
+                </tr>
+            </thead>
 
-                <tbody id="studentProjects">
-                    <% for(var element in projects){%>
-                    <tr>
-                        <td>
-                            <% if(projects[element].status == 'Pending ORSP'){%>
-                            <span class="badge badge-info"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Approved'){%>
-                            <span class="badge badge-success"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Denied'){%>
-                            <span class="badge badge-danger"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Pending Faculty'){%>
-                            <span class="badge badge-info"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Pending PPT'){%>
-                            <span class="badge badge-warning"><%= projects[element].status%></span>
-                            <%}else{%>
-                            <span class="badge badge-warning">Error: Please contact ORSP</span>
-                            <%}%>
+            <tbody id="studentProjects">
+                <% for(var element in projects){%>
+                <tr>
+                    <td>
+                        <% if(projects[element].status == 'Pending ORSP'){%>
+                        <span class="badge badge-info"><%= projects[element].status%></span>
+                        <%}else if (projects[element].status == 'Approved'){%>
+                        <span class="badge badge-success"><%= projects[element].status%></span>
+                        <%}else if (projects[element].status == 'Denied'){%>
+                        <span class="badge badge-danger"><%= projects[element].status%></span>
+                        <%}else if (projects[element].status == 'Pending Faculty'){%>
+                        <span class="badge badge-info"><%= projects[element].status%></span>
+                        <%}else if (projects[element].status == 'Pending PPT'){%>
+                        <span class="badge badge-warning"><%= projects[element].status%></span>
+                        <%}else{%>
+                        <span class="badge badge-warning">Error: Please contact ORSP</span>
+                        <%}%>
                         </td>
 
                         <td><%= projects[element]._id %></td>
-                        <td>
-                            <button
-                                onclick="launchStudentModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
-                                class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
-                                <%= projects[element].title %>
-                            </button>
-                        </td>
-                        <td><%= projects[element].submitterName %></td>
-                        <td><%= projects[element].dateSubmitted %></td>
-                    </tr>
-                    <%}%>
+                    <td>
+                        <button
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
+                            <%= projects[element].title %>
+                        </button>
+                    </td>
+                    <td><%= projects[element].submitterName %></td>
+                    <td><%= projects[element].dateSubmitted %></td>
+                </tr>
+                <%}%>
                 </tbody>
 
             </table>
@@ -72,7 +72,7 @@
     </div>
 
 <!-- Student Modal -->
-<div id="myStudentModal" class="modal" tabindex="-1" role="dialog">
+<div id="myORSPModal" class="modal" tabindex="-1" role="dialog">
 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
         <div class="container">
@@ -96,7 +96,10 @@
                 <div class="row">
                     <div class="col-8 mr-auto">
                         <h5>Abstract</h5>
-                        <p class="my-textbox" id="studentAbstractLaunchModal" contenteditable="false">
+                        <p  id="StudentAbstractLaunchModal" contenteditable="false">
+                        </p>
+                        <h5>ORSP Notes</h5>
+                        <p.orsp min-width: class="my-textbox" id="abstractLaunchModal" contenteditable="false">
                         </p>
                     </div>
                     <div class="col-3">
@@ -107,33 +110,26 @@
                         <h5 class="mt-4">Faculty</h5>
                         <p id="studentFaculty"></p>
                     </div>
-
-                    <div id="IPO" class="input-group input-file m-3">
-                        <form action="/file-upload" method="post" enctype="multipart/form-data">
-                            <div class="custom-file">
-                                <input type="file" accept=".ppt,.pptx" id="customFile"
-                                    name="filename" required>
-                                 <!-- <label class="custom-file-label" for="customFile">Choose file (.ppt,.pptx only)</label> -->
-                                <span class="input-group-btn">
-                                    <input class="btn btn-default btn-choose btn-primary"
-                                        type="submit" value="Submit" />
-                                </span>
-                            </div>
-                            <input type="text" value="" name="fileID" id="fileID"
-                                style="display: none;">
-                        </form>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <p class="mr-auto small text-muted" id="studentLastEdit"></p>
-                    <span id="edit"></span>
-                    <span id="approve"></span>
-                    <button type="button" class="btn btn-secondary"
-                        data-dismiss="modal">Close</button>
+                    <input id="ORSPedit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
+                        type="button" value="Add Note" />
+                    <input id="ORSPapprove" class="edit btn btn-success" type="button" data-dismiss="modal"
+                        value="Approve" />
+                    <input id="ORSPsave" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary"
+                        type="button" value="Save Note & Approve" />
+                    <input id="ORSPremove" class="edit btn btn-warning" type="button" data-dismiss="modal"
+                        value="Redact" />
+                    <input id="ORSPcancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger"
+                        type="button" data-dismiss="modal" value="Close" />
+                    <input id="ORSPclose" class="btn btn-secondary" type="button" data-dismiss="modal"
+                        value="Close" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="/js/editModal.js"></script>
 
 </html>
