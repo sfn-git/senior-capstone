@@ -17,11 +17,6 @@ function launchStudentModal(
     document.getElementById("studentCoPres").innerHTML = coPres;
     document.getElementById("studentFaculty").innerHTML = faculty;
     document.getElementById("studentLastEdit").innerHTML = "Last edited on " + lastEdit;
-    editAbstarct();
-    doneEditAbstarct();
-    editable();
-    noteditable();
-
   }
   
   function launchFacultySubmissionModal(
