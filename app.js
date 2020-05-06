@@ -95,9 +95,39 @@ app.get("/", async (req, res) => {
     //Will send user to orsp-dashboard if they are ORSP Staff
     //---------------------------------------------------------
     } else if (req.session.isORSP) {
+      var projectsModel = require("./models/projects.js");
+      var studentModel = require("./models/students.js"); 
+      var facultyProjectsModel = require("./models/facultyProjects.js");
+      var facultyModel = require("./models/faculty.js");
+
+      var projects = await projectsModel.find({}).lean();
+      var facultyProjects = await facultyProjectsModel.find({}).lean();
+
+      for(index in projects){
+
+        var stuID = projects[index].submitter;
+        var facultyID = projects[index].facultyAdvisor;
+        var studentName = await studentModel.findById(stuID).lean();
+        var facultyName = await facultyModel.findById(facultyID).lean();
+        projects[index].submitterName = studentName.name;
+        projects[index].facultyAdvisorName = facultyName.facultyName;
+
+        for(index in projects[index].copis){
+
+          var copi
+
+        }
+
+      }
+
+      console.log(projects);
+
       res.render("orsp-dashboard", {
-        name: req.session.name
+        name: req.session.name,
+        projects: projects,
+        facultyProjects: facultyProjects
       });
+
     //----------------------------------------------------------
     //Will send user to student-dashboard if they are a student
     //----------------------------------------------------------
@@ -154,18 +184,31 @@ app.get("/", async (req, res) => {
 
       var facultyProjectModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
+      var projectModel = require("./models/projects.js");
+      var studentModel = require("./models/students.js");
 
       var facultyID = await facultyModel.findOne({"email": req.session.email}, ['_id', 'facultyName']);
       var facultyProjects = await facultyProjectModel.find({"primaryInvestigator": facultyID.id}).lean();
+      var studentsProjects = await projectModel.find({"facultyAdvisor": facultyID}).lean();
 
       for(index in facultyProjects){
         facultyProjects[index].primaryInvestigator = facultyID.facultyName;
       }
 
+      for(index in studentsProjects){
+
+        var studentInfo = await studentModel.findById(studentsProjects[index].submitter);
+        studentsProjects[index].submitter = studentInfo.name;
+        studentsProjects[index].facultyAdvisor = facultyID.facultyName;
+
+      }
+
       res.render("faculty-dashboard", {
         name: req.session.name,
-        count: facultyProjects.length,
-        projects: facultyProjects
+        facCount: facultyProjects.length,
+        stuCount: studentsProjects.length,
+        projects: facultyProjects,
+        studentProjects: studentsProjects
       });
     }
     //---------------------------------------------------------

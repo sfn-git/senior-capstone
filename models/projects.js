@@ -22,8 +22,8 @@ var projectSchema = new schema({
     datePosterSubmitted: {type: Date, default: ""},
     dateApproved: {type: Date, default: ""},
     dateDenied: {type: Date, default: ""},
-    dateLastModified: {type: Date, default: ""},
-    status: {type: String, default:"Awaiting ORSP Approval"},
+    dateLastModified: {type: Date, default: Date.now},
+    status: {type: String, enum:["Pending ORSP", "Approved", "Denied", "Pending PPT"] ,default:"Pending ORSP"},
     notes: {type: String}
 
 });
