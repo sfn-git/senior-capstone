@@ -25,6 +25,10 @@ tbody {
   display:none;
   }
 
+#ORSPsave, #ORSPcancel {
+  display:none;
+  }
+
 #abstractLaunchModal{
   border: thin solid white;
   padding: 2px;
@@ -44,6 +48,14 @@ max-width: 300px;
 }
 
 #approve{
+  visibility: hidden;
+}
+
+#ORSPedit{
+  visibility: hidden;
+}
+
+#ORSPapprove{
   visibility: hidden;
 }
 

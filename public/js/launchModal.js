@@ -54,6 +54,35 @@ function launchFacultySubmissionModal(
   document.getElementById("lastEdit").innerHTML = "Last edited on " + lastEdit;
 }
 
+function LaunchORSP(
+  step,
+  title,
+  id,
+  abstract,
+  notes,
+  primary,
+  coPres,
+  faculty,
+  lastEdit
+) {
+  document.getElementById("title").innerHTML = title;
+  document.getElementById("status").innerHTML = step + ": #" + id;
+  if (step == "Pending ORSP"){
+    document.getElementById("ORSPedit").style.visibility = "visible";
+    document.getElementById("ORSPapprove").style.visibility = "visible";
+  }
+  else{
+    document.getElementById("ORSPedit").style.visibility = "hidden";
+    document.getElementById("ORSPapprove").style.visibility = "hidden";
+  }
+  document.getElementById("abstractLaunchModal").innerHTML = abstract;
+  document.getElementById("OrspNotes").innerHTML = notes;
+  document.getElementById("primary").innerHTML = primary;
+  document.getElementById("coPres").innerHTML = coPres;
+  document.getElementById("faculty").innerHTML = faculty;
+  document.getElementById("lastEdit").innerHTML = "Last edited on " + lastEdit;
+}
+
 // Make div border grey to see it when in edit mode
 function editAbstarct() {
   document.getElementById("abstractLaunchModal").style.borderColor = "grey";

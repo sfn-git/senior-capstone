@@ -18,9 +18,170 @@
     });
 </script>
 
-    <div class="container">
-        <h1>ORSP Dashboard</h1>
-    
+<body>
+
+    <!-- < if(count == 0){>
+        <div class="container p-4">
+            <h2>Their are no active projects!</h2>
+        </div>
+        <}else{> -->
+
+    <!-- < for(var element in projects){> -->
+    <!-- if(status == Pending ORSP){> -->
+    <div class="container p-4">
+        <h2>Pending ORSP</h2>
+        <div class="table-responsive mt-4">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Status</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Submitted</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <!-- < if(projects[element].status == 'Pending ORSP'){>
+                                <span class="badge badge-info"><= projects[element].status></span>
+                                <}else{> -->
+                            <span class="badge badge-info">Error: Please contact ORSP</span>
+                            <!-- <}> -->
+                        </td>
+
+                        <!-- <td><= projects[element]._id ></td> -->
+                        <td>10</td>
+                        <td>
+                            <button onclick="LaunchORSP('Pending ORSP',
+                                'KFC',
+                                '159484848',
+                                'chicken is good',
+                                'im a vegan',
+                                'beedyBhato',
+                                'Book',
+                                'Dodge dog',
+                                'ban, 56 1958')" class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                                <!-- class="btn btn-link text-left" data-toggle="modal" data-target="#myModal"> -->
+                                <!-- <= projects[element].title > -->
+                                testtesttesttesttesttesttesttesttesttesttesttesttesttest
+                            </button>
+                        </td>
+                        <!-- <td><= projects[element].dateSubmitted ></td> -->
+                        <td>10</td>
+                    </tr>
+                    <!-- <}> -->
+                </tbody>
+            </table>
+        </div>
     </div>
+    <!-- <}else{> -->
+    <div class="container p-4">
+        <h2>Open Projects</h2>
+        <div class="table-responsive mt-4">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Status</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Submitted</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>
+                            <!-- < if(projects[element].status == 'Pending ORSP'){>
+                                <span class="badge badge-info"><= projects[element].status></span>
+                                <}else{> -->
+                            <span class="badge badge-info">Error: Please contact ORSP</span>
+                            <!-- <}> -->
+                        </td>
+
+                        <td>10</td>
+                        <td>
+                            <button onclick="LaunchORSP('step',
+                                'title',
+                                'id',
+                                'abstract',
+                                'Notes',
+                                'primary',
+                                'coPres',
+                                'faculty',
+                                '10')" class="btn btn-link text-left" data-toggle="modal" data-target="#myModal"> test
+                            </button>
+                        </td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <!-- < }> -->
+
+    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="container">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-10">
+                                <h3 id="title"></h3>
+                            </div>
+                            <div class="col">
+                                <span class="badge badge-info" id="status"></span>
+                            </div>
+                        </div>
+
+                        <!-- warning message and edit -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-8 mr-auto">
+                                <h5>Abstract</h5>
+                                <p class="my-textbox" id="abstractLaunchModal" contenteditable="false">
+                                </p>
+                                <h5>ORSP Notes</h5>
+                                <p class="my-textbox" id="OrspNotes" contenteditable="false">
+                                </p>
+                            </div>
+                            <div class="col-3">
+                                <h5>Primary Presenter</h5>
+                                <p id="primary"></p>
+                                <h5 class="mt-4">Additional Presenters</h5>
+                                <p id="coPres"></p>
+                                <h5 class="mt-4">Faculty</h5>
+                                <p id="faculty"></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <p class="mr-auto small text-muted" id="lastEdit"></p>
+                            <input id="ORSPedit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
+                                type="button" value="Add Note" />
+                            <input id="ORSPapprove" class="edit btn btn-success" type="button" data-dismiss="modal"
+                                value="Approve" />
+                            <input id="ORSPsave" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary"
+                                type="button" value="Save Note & Approve" />
+                            <input id="ORSPcancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger"
+                                type="button" data-dismiss="modal" value="Close" />
+                            <input id="ORSPclose" class="btn btn-secondary" type="button" data-dismiss="modal"
+                                value="Close" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+<!-- edit to save/cancel function -->
+<script src="/js/editModal.js"></script>
 
 </html>
