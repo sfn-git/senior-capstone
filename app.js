@@ -95,9 +95,39 @@ app.get("/", async (req, res) => {
     //Will send user to orsp-dashboard if they are ORSP Staff
     //---------------------------------------------------------
     } else if (req.session.isORSP) {
+      var projectsModel = require("./models/projects.js");
+      var studentModel = require("./models/students.js"); 
+      var facultyProjectsModel = require("./models/facultyProjects.js");
+      var facultyModel = require("./models/faculty.js");
+
+      var projects = await projectsModel.find({}).lean();
+      var facultyProjects = await facultyProjectsModel.find({}).lean();
+
+      for(index in projects){
+
+        var stuID = projects[index].submitter;
+        var facultyID = projects[index].facultyAdvisor;
+        var studentName = await studentModel.findById(stuID).lean();
+        var facultyName = await facultyModel.findById(facultyID).lean();
+        projects[index].submitterName = studentName.name;
+        projects[index].facultyAdvisorName = facultyName.facultyName;
+
+        for(index in projects[index].copis){
+
+          var copi
+
+        }
+
+      }
+
+      console.log(projects);
+
       res.render("orsp-dashboard", {
-        name: req.session.name
+        name: req.session.name,
+        projects: projects,
+        facultyProjects: facultyProjects
       });
+
     //----------------------------------------------------------
     //Will send user to student-dashboard if they are a student
     //----------------------------------------------------------
