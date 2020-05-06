@@ -154,18 +154,31 @@ app.get("/", async (req, res) => {
 
       var facultyProjectModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
+      var projectModel = require("./models/projects.js");
+      var studentModel = require("./models/students.js");
 
       var facultyID = await facultyModel.findOne({"email": req.session.email}, ['_id', 'facultyName']);
       var facultyProjects = await facultyProjectModel.find({"primaryInvestigator": facultyID.id}).lean();
+      var studentsProjects = await projectModel.find({"facultyAdvisor": facultyID}).lean();
 
       for(index in facultyProjects){
         facultyProjects[index].primaryInvestigator = facultyID.facultyName;
       }
 
+      for(index in studentsProjects){
+
+        var studentInfo = await studentModel.findById(studentsProjects[index].submitter);
+        studentsProjects[index].submitter = studentInfo.name;
+        studentsProjects[index].facultyAdvisor = facultyID.facultyName;
+
+      }
+
       res.render("faculty-dashboard", {
         name: req.session.name,
-        count: facultyProjects.length,
-        projects: facultyProjects
+        facCount: facultyProjects.length,
+        stuCount: studentsProjects.length,
+        projects: facultyProjects,
+        studentProjects: studentsProjects
       });
     }
     //---------------------------------------------------------
