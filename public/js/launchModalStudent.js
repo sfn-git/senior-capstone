@@ -11,7 +11,30 @@ function launchStudentModal(
   lastEdit
 ) {
   document.getElementById("title").innerHTML = title;
+  
+  //change badge color in modal
+  if(status == 'Pending ORSP') {
+    document.getElementById("submissionID").className = "badge badge-info";
+  }
+  else if(status == 'Approved') {
+    document.getElementById("submissionID").className = "badge badge-success";
+  }
+  else if(status == 'Denied') {
+    document.getElementById("submissionID").className = "badge badge-danger";
+  }
+  else if(status == 'Pending Faculty') {
+    document.getElementById("submissionID").className = "badge badge-info";
+  }
+  else if(status == 'Pending PPT') {
+    document.getElementById("submissionID").className = "badge badge-warning";
+  }
+  else {
+    document.getElementById("submissionID").className = "badge badge-warning";
+  }
+  
   document.getElementById("submissionID").innerHTML = status + ": #" + id;
+  
+  //make ppt option aviable to user
   if (status == "Pending PPT") {
     document.getElementById("IPO").style.visibility = "visible";
     $("#customFile").on('change', ()=>{
@@ -19,6 +42,7 @@ function launchStudentModal(
       $("input[id^='fileID']").attr('value', status);
     })
   }
+
   document.getElementById("abstractLaunchModal").innerHTML = abstract;
   document.getElementById("primary").innerHTML = primary;
   document.getElementById("coPres").innerHTML = coPres;
