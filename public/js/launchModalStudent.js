@@ -15,8 +15,7 @@ function launchStudentModal(
   if (status == "Pending PPT") {
     document.getElementById("IPO").style.visibility = "visible";
     $("#customFile").on('change', ()=>{
-      console.log(status);
-      $("input[id^='fileID']").attr('value', status);
+      $("input[id^='fileID']").attr('value', id);
     })
   }
   document.getElementById("abstractLaunchModal").innerHTML = abstract;
