@@ -12,6 +12,14 @@ function launchStudentModal(
   ) {
     document.getElementById("studentTitle").innerHTML = title;
     document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
+    if (status == "Pending Faculty") {
+      document.getElementById("Sedit").style.visibility = "visible";
+      document.getElementById("Sapprove").style.visibility = "visible";
+    }
+    else {
+      document.getElementById("Sedit").style.visibility = "hidden";
+      document.getElementById("Sapprove").style.visibility = "hidden";
+    }
     document.getElementById("studentAbstractLaunchModal").innerHTML = abstract;
     document.getElementById("studentPrimary").innerHTML = primary;
     document.getElementById("studentCoPres").innerHTML = coPres;
@@ -56,17 +64,17 @@ function launchStudentModal(
   
   // Make div border grey to see it when in edit mode
   function editAbstarct() {
-    document.getElementById("abstractLaunchModal").style.borderColor = "grey";
+    document.getElementById("studentAbstractLaunchModal").style.borderColor = "grey";
   }
   
   // Make div border white to hide it when not in edit mode
   function doneEditAbstarct() {
-    document.getElementById("abstractLaunchModal").style.borderColor = "white";
+    document.getElementById("studentAbstractLaunchModal").style.borderColor = "white";
   }
   
   //make the div editable
   function editable() {
-    var h1 = document.getElementsByTagName("p")[0];
+    var h1 = document.getElementsByTagName("ps")[0];
     var att = document.createAttribute("contenteditable");
     att.value = "true";
     h1.setAttributeNode(att);
@@ -74,7 +82,7 @@ function launchStudentModal(
   
   //make the div none editable
   function noteditable() {
-    var h1 = document.getElementsByTagName("p")[0];
+    var h1 = document.getElementsByTagName("ps")[0];
     var att = document.createAttribute("contenteditable");
     att.value = "flase";
     h1.setAttributeNode(att);

@@ -22,6 +22,31 @@ $('#approve').click(function() {
     confirm("Do you confirm that this is the final abstract revision");
 });
 
+//student
+$('#Sedit').click(function() {
+    $(this).hide();
+    $(this).siblings('#Sclose, #Sapprove').hide();
+    $(this).siblings('#Ssave, #Scancel').show();
+});
+
+$('#Ssave').click(function() {
+    // confirm("Confirm changes");
+    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
+    $(this).siblings('#Scancel').hide();
+    $(this).hide();
+});
+
+$('#Scancel').click(function() {
+    // confirm("Any changes you made, will not be saved! Do you wish to continue?");
+    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
+    $(this).siblings('#Ssave').hide();
+    $(this).hide();
+});
+
+$('#Sapprove').click(function() {
+    confirm("Do you confirm that this is the final abstract revision");
+});
+
 // orsp
 $('#ORSPedit').click(function() {
     $(this).hide();

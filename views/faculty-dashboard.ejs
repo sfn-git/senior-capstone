@@ -218,7 +218,7 @@
                     <div class="row">
                         <div class="col-8 mr-auto">
                             <h5>Abstract</h5>
-                            <p class="my-textbox" id="studentAbstractLaunchModal" contenteditable="false">
+                            <ps class="my-textbox" id="studentAbstractLaunchModal" contenteditable="false">
                             </p>
                         </div>
                         <div class="col-3">
@@ -229,29 +229,18 @@
                             <h5 class="mt-4">Faculty</h5>
                             <p id="studentFaculty"></p>
                         </div>
-
-                        <div id="IPO" class="input-group input-file m-3">
-                            <form action="/file-upload" method="post" enctype="multipart/form-data">
-                                <div class="custom-file">
-                                    <input type="file" accept=".ppt,.pptx" id="customFile"
-                                        name="filename" required>
-                                     <!-- <label class="custom-file-label" for="customFile">Choose file (.ppt,.pptx only)</label> -->
-                                    <span class="input-group-btn">
-                                        <input class="btn btn-default btn-choose btn-primary"
-                                            type="submit" value="Submit" />
-                                    </span>
-                                </div>
-                                <input type="text" value="" name="fileID" id="fileID"
-                                    style="display: none;">
-                            </form>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <p class="mr-auto small text-muted" id="studentLastEdit"></p>
-                        <span id="edit"></span>
-                        <span id="approve"></span>
-                        <button type="button" class="btn btn-secondary"
-                            data-dismiss="modal">Close</button>
+                        <input id="Sedit" 
+                            onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" value="Edit" />
+                        <input id="Sapprove" 
+                            class="edit btn btn-success" type="button"data-dismiss="modal" value="Approve" />
+                        <input id="Ssave" 
+                            onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" value="Submit Changes & Approve" />
+                        <input id="Scancel" 
+                            onclick="noteditable(); doneEditAbstarct();"class="btn btn-danger" type="button" data-dismiss="modal" value="Close" />
+                        <input id="Sclose" class="btn btn-secondary" type="button" data-dismiss="modal" value="Close" />
                     </div>
                 </div>
             </div>

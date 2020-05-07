@@ -21,18 +21,11 @@ tbody {
   background-color: #f8f9fa !important;
 }
 
-#save, #cancel {
-  display:none;
-  }
-
-#ORSPsave, #ORSPcancel {
-  display:none;
-  }
-
-#abstractLaunchModal{
+#abstractLaunchModal,#studentAbstractLaunchModal{
   border: thin solid white;
   padding: 2px;
 }
+
 /* #customFile
 {
 max-width: 300px;
@@ -43,22 +36,46 @@ max-width: 300px;
   max-width: 525px;
 }
 
-#edit{
+/*faculty edit options of personal projects*/
+#save, #cancel {
+  display:none;
+  }
+
+#edit {
   visibility: hidden;
 }
 
-#approve{
+#approve {
   visibility: hidden;
 }
 
-#ORSPedit{
+/*faculty edit options for students*/
+#Ssave, #Scancel {
+  display:none;
+  }
+
+#Sedit {
   visibility: hidden;
 }
 
-#ORSPapprove{
+#Sapprove {
+  visibility: hidden;
+}
+
+/*ORSP edit options*/
+#ORSPsave, #ORSPcancel {
+  display:none;
+  }
+
+#ORSPedit {
+  visibility: hidden;
+}
+
+#ORSPapprove {
   visibility: hidden;
 }
 
 td {
   vertical-align: middle !important;
 }
+
