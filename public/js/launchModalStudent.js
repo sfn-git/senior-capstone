@@ -12,6 +12,13 @@ function launchStudentModal(
 ) {
   document.getElementById("title").innerHTML = title;
   document.getElementById("submissionID").innerHTML = status + ": #" + id;
+  if (status == "Pending PPT") {
+    document.getElementById("IPO").style.visibility = "visible";
+    $("#customFile").on('change', ()=>{
+      console.log(status);
+      $("input[id^='fileID']").attr('value', status);
+    })
+  }
   document.getElementById("abstractLaunchModal").innerHTML = abstract;
   document.getElementById("primary").innerHTML = primary;
   document.getElementById("coPres").innerHTML = coPres;
