@@ -62,7 +62,7 @@
                         </button>
                         <%}else{%>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitter%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisor%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
