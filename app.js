@@ -876,16 +876,15 @@ app.post("/orsp-approve-student", (req,res)=>{
   if(req.session.isORSP){
     var projectModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty", 'dateLastModified': Date.now()}, (err)=>{
-
+    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty", 'dateLastModified': Date.now()}, (err,fun)=>{
       if(err){
         res.send({status: false, message: `An error occured ${err.message}`});
       }else{
         res.send({status: true, message: `Project ID: ${projectID} has been updated`});
-        
+        var title = fun.title;
         var emailMessage = 
-        "Project ID: " + 
-        projectID + 
+        "Project Title: " + 
+        title + 
         ", has been updated!" +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
@@ -919,16 +918,17 @@ app.post("/orsp-deny-student", (req,res)=>{
   if(req.session.isORSP){
     var projectsModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectsModel.findByIdAndDelete(projectID, (err)=>{
+    projectsModel.findByIdAndDelete(projectID, (err,fun)=>{
 
       if(err){
         res.send({status: false, message: `${err.message}`});
       }else{
         res.send({status: true, message: `Success`});
 
+        var title = fun.title;
         var emailMessage = 
-        "Project ID: " + 
-        projectID + 
+        "Project Title: " + 
+        title + 
         ", has been redacted!" +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
@@ -960,16 +960,17 @@ app.post("/faculty-approve-student", (req,res)=>{
 
     var projectsModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
+    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err, fun)=>{
 
       if(err){
         res.send({status: false, message: `An error occurred: ${err.message}`})
       }else{
         res.send({status: true, message: `Project updated successfully`});
 
+        var title = fun.title;
         var emailMessage = 
-        "Project ID: " + 
-        projectID + 
+        "Project Title: " +
+        title + 
         ", has been updated!" +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
