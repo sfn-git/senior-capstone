@@ -33,7 +33,6 @@ function launchORSPModal(
   function editAbstarct() {
     document.getElementById("abstractLaunchModal").style.borderColor = "grey";
     document.getElementById("abstractLaunchModal").readOnly = false;
-
   }
   
   // Make div border white to hide it when not in edit mode
