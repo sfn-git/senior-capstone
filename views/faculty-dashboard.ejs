@@ -46,9 +46,9 @@
                             <%}else if (projects[element].status == 'Approved'){%>
                             <span class="badge badge-success"><%= projects[element].status%></span>
                             <%}else if (projects[element].status == 'Denied'){%>
-                            <span class="badge badge-warning"><%= projects[element].status%></span>
+                            <span class="badge badge-danger"><%= projects[element].status%></span>
                             <%}else{%>
-                            <span class="badge badge-info">Error: Please contact ORSP</span>
+                            <span class="badge badge-warning">Error: Please contact ORSP</span>
                             <%}%>
                         </td>
 
@@ -147,7 +147,7 @@
                                 <h3 id="title"></h3>
                             </div>
                             <div class="col">
-                                <span class="badge badge-info" id="status"></span>
+                                <span id="status"></span>
                             </div>
                         </div>
 
@@ -208,7 +208,7 @@
                             <h3 id="studentTitle"></h3>
                         </div>
                         <div class="col">
-                            <span class="badge badge-info" id="studentSubmissionID"></span>
+                            <span id="studentSubmissionID"></span>
                         </div>
                     </div>
 

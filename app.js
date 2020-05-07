@@ -855,20 +855,27 @@ app.post("/student-form", async (req, res) => {
 app.post("/file-upload", (req,res)=>{
   
   const file = req.files.filename;
-  var projectID = req.body.fileID
+  var projectID = req.body.fileID;
   var fileExt = file.name.split('.')[1];
   const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
 
-  file.mv(path, async (err)=>{
+  file.mv(path, (err)=>{
 
     if(err){
       res.render('error', {error: `Something went wrong uploading your file: ${err}`});
-    }
-    var projectsModel = require('./models/projects');
-    await projectsModel.findOneAndUpdate({"id": projectID}, {"fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()});
+    }else{
+      var projectsModel = require('./models/projects');
+      projectsModel.findByIdAndUpdate(projectID, {"status": "Approved","fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()}, (err, fun)=>{
 
+        if(err){
+          res.render("error",{error: `Something went wrong updating your status. Contact orsp with this error: ${err.message}`});
+        }else{
+          res.redirect("/");
+        }
+      });
+    }
   })
-  res.redirect("/")
+  
 })
 
 app.post("/orsp-approve-student", (req,res)=>{
