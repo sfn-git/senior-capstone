@@ -12,6 +12,27 @@ function launchORSPModal(
 ) {
   idGlobal = id;
   document.getElementById("studentTitle").innerHTML = title;
+
+  //change badge color in modal
+  if(status == 'Pending ORSP') {
+    document.getElementById("studentSubmissionID").className = "badge badge-info";
+  }
+  else if(status == 'Approved') {
+    document.getElementById("studentSubmissionID").className = "badge badge-success";
+  }
+  else if(status == 'Denied') {
+    document.getElementById("studentSubmissionID").className = "badge badge-danger";
+  }
+  else if(status == 'Pending Faculty') {
+    document.getElementById("studentSubmissionID").className = "badge badge-info";
+  }
+  else if(status == 'Pending PPT') {
+    document.getElementById("studentSubmissionID").className = "badge badge-warning";
+  }
+  else {
+    document.getElementById("studentSubmissionID").className = "badge badge-warning";
+  }
+
   document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
   if (status == "Pending ORSP"){
     document.getElementById("ORSPedit").style.visibility = "visible";
