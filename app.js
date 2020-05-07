@@ -97,11 +97,11 @@ app.get("/", async (req, res) => {
     } else if (req.session.isORSP) {
       var projectsModel = require("./models/projects.js");
       var studentModel = require("./models/students.js"); 
-      var facultyProjectsModel = require("./models/facultyProjects.js");
+      // var facultyProjectsModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
 
-      var projects = await projectsModel.find({}).lean();
-      var facultyProjects = await facultyProjectsModel.find({}).lean();
+      var projects = await projectsModel.find({}).sort("date").lean();
+      // var facultyProjects = await facultyProjectsModel.find({}).lean();
 
       for(index in projects){
 
@@ -112,18 +112,18 @@ app.get("/", async (req, res) => {
         projects[index].submitterName = studentName.name;
         projects[index].facultyAdvisorName = facultyName.facultyName;
 
-        // for(index in projects[index].copis){
+        for(co in projects[index].copis){
 
-        //   var copi
+          var copiInfo = await studentModel.findById(projects[index].copis[co]);
+          projects[index].copis[co] = copiInfo.name;
 
-        // }
+        }
 
       }
 
       res.render("orsp-dashboard", {
         name: req.session.name,
-        projects: projects,
-        facultyProjects: facultyProjects
+        projects: projects
       });
 
     //----------------------------------------------------------
@@ -191,6 +191,9 @@ app.get("/", async (req, res) => {
 
       for(index in facultyProjects){
         facultyProjects[index].primaryInvestigator = facultyID.facultyName;
+        for(co in facultyProjects[index].coFacultyInvestigator){
+          facultyProjects[index].coFacultyInvestigator[co] = facultyProjects[index].coFacultyInvestigator[co].name;
+        }
       }
 
       for(index in studentsProjects){
@@ -198,6 +201,13 @@ app.get("/", async (req, res) => {
         var studentInfo = await studentModel.findById(studentsProjects[index].submitter);
         studentsProjects[index].submitter = studentInfo.name;
         studentsProjects[index].facultyAdvisor = facultyID.facultyName;
+
+        for(co in studentsProjects[index].copis){
+
+          var copiInfo = await studentModel.findById(studentsProjects[index].copis[co]);
+          studentsProjects[index].copis[co] = copiInfo.name;
+
+        }
 
       }
 
@@ -881,16 +891,14 @@ app.post("/faculty-approve-student", (req,res)=>{
   if(req.session.isFaculty){
 
     var projectsModel = require("./models/projects.js");
-    projectsModel.findByIdAndUpdate(req.body.id, {abstractApproved: req.body.abstractUpdated.trim(), status: "Approved", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
+    projectsModel.findByIdAndUpdate(req.body.id, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
 
       if(err){
         res.send({status: false, message: `An error occurred: ${err.message}`})
       }else{
         res.send({status: true, message: `Project updated successfully`});
       }
-
     });
-
   }else{
     res.send()
   }
@@ -901,7 +909,6 @@ app.post("/faculty-form", async (req,res)=>{
   if(req.session.userId && req.session.isFaculty){
   var facultyProjectModel = require('./models/facultyProjects');
   var faculty = require('./models/faculty.js');
-
 
   // Project Info
   title = req.body.title;

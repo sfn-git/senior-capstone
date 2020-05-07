@@ -52,17 +52,16 @@
                         <span class="badge badge-warning">Error: Please contact ORSP</span>
                         <%}%>
                         </td>
-
                         <td><%= projects[element]._id %></td>
                     <td>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitterName%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
                     </td>
                     <td><%= projects[element].submitterName %></td>
-                    <td><%= projects[element].dateSubmitted %></td>
+                    <td><%= projects[element].dateSubmitted.toDateString() %></td>
                 </tr>
                 <%}%>
                 </tbody>
