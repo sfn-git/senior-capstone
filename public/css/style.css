@@ -24,6 +24,8 @@ tbody {
 #abstractLaunchModal,#studentAbstractLaunchModal{
   border: thin solid white;
   padding: 2px;
+  width: 100%;
+  word-wrap: break-word;
 }
 
 /* #customFile

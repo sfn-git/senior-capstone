@@ -674,11 +674,13 @@ app.post("/student-form", async (req, res) => {
     // Project Info
     title = req.body.title;
     projectArea = req.body.projectArea;
-    abstract = req.body.abstract;
+    abstract = req.body.abstract.replace(/(\r\n|\n|\r)/gm," ");
     advisor = req.body.advisor;
     campusConducted = req.body.researchCampus;
     presentationType = req.body.presentationType;
     fundedBy = req.body.fundedBy;
+
+    console.log(abstract);
 
     // Lead Presenter Info
     name = req.session.name;
@@ -834,7 +836,6 @@ app.post("/file-upload", (req,res)=>{
     await projectsModel.findOneAndUpdate({"id": projectID}, {"fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()});
 
   })
-
   res.redirect("/")
 })
 
@@ -854,6 +855,44 @@ app.post("/orsp-approve-student", (req,res)=>{
 
   }else{
     res.send({message: "You are not authorized to access this page."});
+  }
+
+})
+
+app.post("/orsp-deny-student", (req,res)=>{
+
+  if(req.session.isORSP){
+    var projectsModel = require("./models/projects.js");
+    projectsModel.findByIdAndDelete(req.body.id, (err)=>{
+
+      if(err){
+        res.send({status: false, message: `${err.message}`});
+      }else{
+        res.send({status: true, message: `Success`});
+      }
+    });
+  }else{
+    res.send({status: false, message: "You are not authorized to access this page."});
+  }
+})
+
+app.post("/faculty-approve-student", (req,res)=>{
+
+  if(req.session.isFaculty){
+
+    var projectsModel = require("./models/projects.js");
+    projectsModel.findByIdAndUpdate(req.body.id, {abstractApproved: req.body.abstractUpdated.trim(), status: "Approved", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
+
+      if(err){
+        res.send({status: false, message: `An error occurred: ${err.message}`})
+      }else{
+        res.send({status: true, message: `Project updated successfully`});
+      }
+
+    });
+
+  }else{
+    res.send()
   }
 
 })
@@ -1003,15 +1042,6 @@ app.post("/signin", async (req, res) => {
       }
 
     }
-
-    // orspInfo = await orspModel.findOne({email: req.session.email});
-
-    // if(orspInfo == null){
-    //   req.session.isORSP = false;
-    //   req.session.isORSPAdmin = false;
-    // }else{
-
-    // }
 
     res.send(true);
   }

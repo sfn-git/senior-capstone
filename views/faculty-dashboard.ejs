@@ -115,12 +115,19 @@
 
                         <td><%= studentProjects[element]._id %></td>
                         <td>
-                            <button
-                                onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractSubmitted%>','<%= studentProjects[element].submitter%>','<%= studentProjects[element].copis%>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
+                            <%if (studentProjects[element].status == 'Approved'){%>
+                                <button
+                                onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm," ")%>','<%= studentProjects[element].submitter%>','<%= studentProjects[element].copis%>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
                                 <%= studentProjects[element].title %>
                             </button>
-
+                            <%}else{%>
+                                <button
+                                onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= studentProjects[element].submitter%>','<%= studentProjects[element].copis%>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
+                                class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
+                                <%= studentProjects[element].title %>
+                            </button>
+                            <%}%>
                         </td>
                         <td><%= studentProjects[element].dateSubmitted %></td>
                     </tr>
@@ -218,8 +225,7 @@
                     <div class="row">
                         <div class="col-8 mr-auto">
                             <h5>Abstract</h5>
-                            <ps class="my-textbox" id="studentAbstractLaunchModal" contenteditable="false">
-                            </p>
+                            <textarea rows="5" class="my-textbox" id="studentAbstractLaunchModal" value="" readonly="true"></textarea>
                         </div>
                         <div class="col-3">
                             <h5>Primary Presenter</h5>
@@ -250,6 +256,6 @@
 </body>
 
 <!-- edit to save/cancel function -->
-<script src="/js/editModal.js"></script>
+<script src="/js/editModalFaculty.js"></script>
 
 </html>

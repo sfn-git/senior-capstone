@@ -1,5 +1,5 @@
 // output information into modal
-
+var idGlobal;
 function launchStudentModal(
     status,
     title,
@@ -10,6 +10,7 @@ function launchStudentModal(
     faculty,
     lastEdit
   ) {
+    idGlobal = id;
     document.getElementById("studentTitle").innerHTML = title;
     document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
     if (status == "Pending Faculty") {
@@ -20,7 +21,7 @@ function launchStudentModal(
       document.getElementById("Sedit").style.visibility = "hidden";
       document.getElementById("Sapprove").style.visibility = "hidden";
     }
-    document.getElementById("studentAbstractLaunchModal").innerHTML = abstract;
+    document.getElementById("studentAbstractLaunchModal").value = abstract;
     document.getElementById("studentPrimary").innerHTML = primary;
     document.getElementById("studentCoPres").innerHTML = coPres;
     document.getElementById("studentFaculty").innerHTML = faculty;
@@ -65,16 +66,18 @@ function launchStudentModal(
   // Make div border grey to see it when in edit mode
   function editAbstarct() {
     document.getElementById("studentAbstractLaunchModal").style.borderColor = "grey";
+    document.getElementById("studentAbstractLaunchModal").readOnly = false;
   }
   
   // Make div border white to hide it when not in edit mode
   function doneEditAbstarct() {
     document.getElementById("studentAbstractLaunchModal").style.borderColor = "white";
+    document.getElementById("studentAbstractLaunchModal").readOnly = true;
   }
   
-  //make the div editable
+  // make the div editable
   function editable() {
-    var h1 = document.getElementsByTagName("ps")[0];
+    var h1 = document.getElementsByTagName("input")[0];
     var att = document.createAttribute("contenteditable");
     att.value = "true";
     h1.setAttributeNode(att);
@@ -82,9 +85,9 @@ function launchStudentModal(
   
   //make the div none editable
   function noteditable() {
-    var h1 = document.getElementsByTagName("ps")[0];
+    var h1 = document.getElementsByTagName("input")[0];
     var att = document.createAttribute("contenteditable");
-    att.value = "flase";
+    att.value = "false";
     h1.setAttributeNode(att);
   }
   
