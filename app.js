@@ -315,11 +315,6 @@ app.get("/submission", (req, res) => {
   }
 });
 
-/* 
-  TO-DO, Setup admin page
-*/
-app.get("/admin", (req, res) => {});
-
 /*
   End Point for ORSP-Admins to modify majors database
 */
@@ -382,6 +377,30 @@ app.get("/orsp-staff", (req, res)=>{
     });
   }
 
+})
+
+/*
+  Page for ORSP Staff and Admins to Modify the students database
+*/
+
+app.get("/orsp-student-list", async (req,res)=>{
+
+  if(req.session.isORSP || req.session.isORSPAdmin){
+    var studentModel = require("./models/students.js");
+    var majorModel = require("./models/major.js");
+
+    var studentList = await studentModel.find({}).lean();
+    for(index in studentList){
+
+      var major = await majorModel.findById(studentList[index].major);
+      studentList[index].major = major.major;
+    }
+
+    res.render("student-list", {students: studentList});
+   
+  }else{
+    res.render("error", {error: "You are not authorized to view this page"});
+  }
 })
 
 /*
@@ -452,17 +471,20 @@ app.get("/faculty", (req, res) => {
 });
 
 /*
+  Contacts Page
+*/
+app.get("/contact", (req,res)=>{
+  res.render("contact");
+})
+
+/*
 Catch all routing
 */
 app.get("*", (req, res) => {
-  var file = req.url.split("/")[1];
-  var checkFile = file + ".ejs";
-  if (fs.existsSync(`${__dirname}\\views\\${checkFile}`)) {
-    res.render(file);
-  } else {
+
     res.status(404);
     res.render("404");
-  }
+
 });
 
 // =================================================//
