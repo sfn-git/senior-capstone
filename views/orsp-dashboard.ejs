@@ -4,10 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/style.css">
-    <!-- test if needed -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="/js/lib/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css"/>
+    <script src="/js/lib/bootstrap.min.js"></script>
     <script src="/js/launchModalORSP.js"></script>
     <script defer src="/js/orspSearch.js"></script>
 </head>
@@ -62,7 +61,7 @@
                         </button>
                         <%}else{%>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitter%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisor%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>

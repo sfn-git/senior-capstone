@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="/js/lib/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css"/>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/lib/jquery.dataTables.min.js"></script>
+    <script src="/js/lib/dataTables.bootstrap4.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <script defer src="/js/getStudents.js"></script>
+    <title>Student List Portal</title>
+    <style>
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:after,
+        table.dataTable thead .sorting_desc_disabled:before {
+            bottom: .5em;
+        }
+    </style>
+</head>
+
+<div id="nav-placeholder"></div>
+    <script>
+        $(function(){
+            $("#nav-placeholder").load("/navbar");
+        });
+    </script>
+<body>
+    <div class="container">
+
+        <table id="studentTable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Unique ID #</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Student ID #</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Major</th>
+                    <th scope="col">Class Level</th>
+                    <th scope="col">primaryLocation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(index in students){ %>
+                    <tr>
+                        <td><%= students[index]._id%></td>
+                        <td><%= students[index].name%></td>
+                        <td><%= students[index].stuID%></td>
+                        <td><%= students[index].email%></td>
+                        <td><%= students[index].major%></td>
+                        <td><%= students[index].classLevel%></td>
+                        <td><%= students[index].primaryLocation%></td>
+                    </tr>
+                <%}%>
+            </tbody>
+        </table>
+
+    </div>
+</body>

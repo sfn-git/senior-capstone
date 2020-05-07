@@ -7,19 +7,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <title>Student Submission</title>
+    
+    <script src="/js/lib/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css"/>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/abstractCharCounter.js"></script>
+    <script src="/js/additionalPresenters.js"></script>
+<!-- Custom Script -->
     <script>
         var majorJS = [];
         document.write("<% major.forEach((major)=>{ %>");
         majorJS.push('{' + '"id":<%= major.id%>, "major": <%= major.major%>, "college": <%= major.college%>' + "}");
         document.write("<% }) %>");
-
-
     </script>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="/js/abstractCharCounter.js"></script>
-    <script src="/js/additionalPresenters.js"></script>
-
 </head>
 
 
