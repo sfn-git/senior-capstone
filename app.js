@@ -808,7 +808,7 @@ app.post("/student-form", async (req, res) => {
       "Co-Presenter(s): " +
       coPresenters +
       "\n\n\n" +
-      "Please DO NOT reply to this email";
+      "Please DO NOT reply to this email.";
     var mailOptions = {
       from: "orsptemp20@gmail.com",
       to: emailList,
@@ -860,6 +860,29 @@ app.post("/orsp-approve-student", (req,res)=>{
         res.send({status: false, message: `An error occured ${err.message}`});
       }else{
         res.send({status: true, message: `Project ID: ${projectID} has been updated`});
+        
+        var emailMessage = 
+        "Project ID: " + 
+        projectID + 
+        ", has been updated!" +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptions = {
+          from: "orsptemp20@gmail.com",
+          to: req.session.email ,
+          subject: "Project Updated!",
+          text: emailMessage,
+        };
+
+        transporter.sendMail(mailOptions, function (err, info){
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(info);
+          }
+        })
+
       }
     });
 
@@ -873,12 +896,35 @@ app.post("/orsp-deny-student", (req,res)=>{
 
   if(req.session.isORSP){
     var projectsModel = require("./models/projects.js");
-    projectsModel.findByIdAndDelete(req.body.id, (err)=>{
+    var projectID = req.body.id;
+    projectsModel.findByIdAndDelete(projectID, (err)=>{
 
       if(err){
         res.send({status: false, message: `${err.message}`});
       }else{
         res.send({status: true, message: `Success`});
+
+        var emailMessage = 
+        "Project ID: " + 
+        projectID + 
+        ", has been redacted!" +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptions = {
+          from: "orsptemp20@gmail.com",
+          to: req.session.email ,
+          subject: "Project Removed!",
+          text: emailMessage,
+        };
+
+        transporter.sendMail(mailOptions, function (err, info){
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(info);
+          }
+        })
       }
     });
   }else{
@@ -891,12 +937,35 @@ app.post("/faculty-approve-student", (req,res)=>{
   if(req.session.isFaculty){
 
     var projectsModel = require("./models/projects.js");
-    projectsModel.findByIdAndUpdate(req.body.id, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
+    var projectID = req.body.id;
+    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err)=>{
 
       if(err){
         res.send({status: false, message: `An error occurred: ${err.message}`})
       }else{
         res.send({status: true, message: `Project updated successfully`});
+
+        var emailMessage = 
+        "Project ID: " + 
+        projectID + 
+        ", has been updated!" +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptions = {
+          from: "orsptemp20@gmail.com",
+          to: req.session.email ,
+          subject: "Project Updated!",
+          text: emailMessage,
+        };
+
+        transporter.sendMail(mailOptions, function (err, info){
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(info);
+          }
+        })
       }
     });
   }else{
@@ -980,7 +1049,7 @@ app.post("/faculty-form", async (req,res)=>{
     "Co-Faculty(s) Investigator: " +
     coFacultyList +
     "\n\n\n" +
-    "Please DO NOT reply to this email";
+    "Please DO NOT reply to this email.";
   
   var mailOptions = {
     from: "orsptemp20@gmail.com",
