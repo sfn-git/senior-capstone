@@ -36,7 +36,7 @@ $('#Ssave').click(function() {
     $(this).hide();
 });
 
-$('#Scancel').click(function() {
+$('#Scancel,#Ssave').click(function() {
     // confirm("Any changes you made, will not be saved! Do you wish to continue?");
     $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
     $(this).siblings('#Ssave').hide();

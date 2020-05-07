@@ -55,11 +55,19 @@
 
                         <td><%= projects[element]._id %></td>
                     <td>
+                        <%if (projects[element].status == 'Approved'){%>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
+                        <%}else{%>
+                        <button
+                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitter%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisor%>','<%= projects[element].dateLastModified%>')"
+                            class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
+                            <%= projects[element].title %>
+                        </button>
+                        <%}%>
                     </td>
                     <td><%= projects[element].submitterName %></td>
                     <td><%= projects[element].dateSubmitted %></td>
@@ -99,8 +107,7 @@
                         <p  id="StudentAbstractLaunchModal" contenteditable="false">
                         </p>
                         <h5>ORSP Notes</h5>
-                        <p.orsp min-width: class="my-textbox" id="abstractLaunchModal" contenteditable="false">
-                        </p>
+                        <textarea rows="5" class="my-textbox" id="abstractLaunchModal" value="" readonly="true"></textarea>
                     </div>
                     <div class="col-3">
                         <h5>Primary Presenter</h5>
