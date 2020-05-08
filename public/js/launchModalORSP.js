@@ -35,11 +35,9 @@ function launchORSPModal(
 
   document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
   if (status == "Pending ORSP"){
-    document.getElementById("ORSPedit").style.visibility = "visible";
     document.getElementById("ORSPapprove").style.visibility = "visible";
   }
   else {
-    document.getElementById("ORSPedit").style.visibility = "hidden";
     document.getElementById("ORSPapprove").style.visibility = "hidden";
   }
   document.getElementById("StudentAbstractLaunchModal").innerHTML = abstract;

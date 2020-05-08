@@ -19,7 +19,7 @@ $('#ORSPcancel').click(function() {
     $(this).hide();
 });
 
-$('#ORSPapprove,#ORSPsave').click(()=> {
+$('#ORSPapprove').click(()=> {
     if(window.confirm(`Approve Project ID: ${idGlobal}?`)){
         $.ajax({
             method: "POST",
