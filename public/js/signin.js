@@ -27,7 +27,6 @@ function attachSignin(element) {
     },
     function (error) {
       console.log(JSON.stringify(error, undefined, 2));
-      alert("An error occured, please try to sign-in again");
     }
   );
 }

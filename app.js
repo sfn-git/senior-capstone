@@ -854,28 +854,54 @@ app.post("/student-form", async (req, res) => {
 
 app.post("/file-upload", (req,res)=>{
   
-  const file = req.files.filename;
-  var projectID = req.body.fileID;
-  var fileExt = file.name.split('.')[1];
-  const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
+  if(req.session.userId && req.session.isStudent){
+    const file = req.files.filename;
+    var projectID = req.body.fileID;
+    var fileExt = file.name.split('.')[1];
+    const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
 
-  file.mv(path, (err)=>{
+    file.mv(path, (err)=>{
 
-    if(err){
-      res.render('error', {error: `Something went wrong uploading your file: ${err}`});
-    }else{
-      var projectsModel = require('./models/projects');
-      projectsModel.findByIdAndUpdate(projectID, {"status": "Approved","fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()}, (err, fun)=>{
+      if(err){
+        res.render('error', {error: `Something went wrong uploading your file: ${err}`});
+      }else{
+        var projectsModel = require('./models/projects');
+        projectsModel.findByIdAndUpdate(projectID, {"status": "Approved","fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()}, (err, fun)=>{
+          if(err){
+            res.render("error",{error: `Something went wrong updating your status. Contact orsp with this error: ${err.message}`});
+          }else{
 
-        if(err){
-          res.render("error",{error: `Something went wrong updating your status. Contact orsp with this error: ${err.message}`});
-        }else{
-          res.redirect("/");
-        }
-      });
-    }
-  })
-  
+            var title = fun.title;
+            var emailMessage = 
+            "Project Title: " + 
+            title + 
+            ", has been uploaded and you are now ready for research days!" +
+            "\n\n\n" + 
+            "Please DO NOT reply to this email.";
+
+            var mailOptions = {
+              from: "orsptemp20@gmail.com",
+              to: req.session.email ,
+              subject: "Poster file successfully uploaded!",
+              text: emailMessage,
+            };
+
+            transporter.sendMail(mailOptions, function (err, info){
+              if (err) {
+                res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
+              } else {
+                res.send({status: true, message: `Project ID: ${projectID} has been updated`});
+              }
+            })
+
+            res.redirect("/");
+          }
+        });
+      }
+    })
+  }else{
+    res.render('error', {error: `You are not authorized to view this page. Please login and try again.`});
+  }
 })
 
 app.post("/orsp-approve-student", (req,res)=>{
@@ -887,12 +913,11 @@ app.post("/orsp-approve-student", (req,res)=>{
       if(err){
         res.send({status: false, message: `An error occured ${err.message}`});
       }else{
-        res.send({status: true, message: `Project ID: ${projectID} has been updated`});
         var title = fun.title;
         var emailMessage = 
         "Project Title: " + 
         title + 
-        ", has been updated!" +
+        ", has been approved by ORSP." +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
@@ -905,9 +930,9 @@ app.post("/orsp-approve-student", (req,res)=>{
 
         transporter.sendMail(mailOptions, function (err, info){
           if (err) {
-            console.log(err);
+            res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
           } else {
-            console.log(info);
+            res.send({status: true, message: `Project ID: ${projectID} has been updated`});
           }
         })
 
@@ -930,28 +955,26 @@ app.post("/orsp-deny-student", (req,res)=>{
       if(err){
         res.send({status: false, message: `${err.message}`});
       }else{
-        res.send({status: true, message: `Success`});
-
         var title = fun.title;
         var emailMessage = 
         "Project Title: " + 
         title + 
-        ", has been redacted!" +
+        ", has been removed from research days. Please submit a new project if you would still like to participate in research days." +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
         var mailOptions = {
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
-          subject: "Project Removed!",
+          subject: "Project Removed.",
           text: emailMessage,
         };
 
         transporter.sendMail(mailOptions, function (err, info){
           if (err) {
-            console.log(err);
+            res.send({status: false, message: `Project successfully removed, but the student was unable to receive an email confirmation about it.`})
           } else {
-            console.log(info);
+            res.send({status: true, message:`Project has been removed.`})
           }
         })
       }
@@ -978,14 +1001,14 @@ app.post("/faculty-approve-student", (req,res)=>{
         var emailMessage = 
         "Project Title: " +
         title + 
-        ", has been updated!" +
+        ", has been approved by your faculty adviser! Your next step is to upload your poster by [date]. Please submit following our guidelines here <-this would be a link." +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
         var mailOptions = {
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
-          subject: "Project Updated!",
+          subject: "Research Days Project Approved by your Faculty Adviser!",
           text: emailMessage,
         };
 
@@ -999,7 +1022,7 @@ app.post("/faculty-approve-student", (req,res)=>{
       }
     });
   }else{
-    res.send()
+    res.send({status: false, message: "You are not authorized to access this page. Please login and try again."});
   }
 
 })
@@ -1085,7 +1108,7 @@ app.post("/faculty-form", async (req,res)=>{
     from: "orsptemp20@gmail.com",
     to: facultyEmail,
     cc: ccList,
-    subject: "Your Project Has Been Submitted!",
+    subject: "Your Faculty Submission Has Been Submitted!",
     text: emailMessage,
   };
   
@@ -1107,51 +1130,55 @@ app.post("/signin", async (req, res) => {
   const CLIENT_ID =
     "745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com";
   var token = req.body;
-  const { OAuth2Client } = require("google-auth-library");
-  const client = new OAuth2Client(CLIENT_ID);
-  async function verify() {
-    const ticket = await client.verifyIdToken({
-      idToken: token["idtoken"],
-      audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
-    });
-    const payload = ticket.getPayload();
-    const userid = payload["sub"];
-    // If request specified a G Suite domain:
-    //const domain = payload['hd'];
+  if(token){
+    const { OAuth2Client } = require("google-auth-library");
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: token["idtoken"],
+        audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+      });
+      const payload = ticket.getPayload();
+      const userid = payload["sub"];
+      // If request specified a G Suite domain:
+      //const domain = payload['hd'];
 
-    // All user info
-    req.session.userId = userid;
-    req.session.name = payload.name;
-    req.session.email = payload.email;
+      // All user info
+      req.session.userId = userid;
+      req.session.name = payload.name;
+      req.session.email = payload.email;
 
-    // Checking if they exist in db.
-    var studentModel = require('./models/students.js');
-    var facultyModel = require('./models/faculty.js');
-    var orspModel = require('./models/orsp.js');
+      // Checking if they exist in db.
+      var studentModel = require('./models/students.js');
+      var facultyModel = require('./models/faculty.js');
+      var orspModel = require('./models/orsp.js');
 
-    req.session.isORSP = false;
-    req.session.isORSPAdmin = false;
-    req.session.isStudent = true;
+      req.session.isORSP = false;
+      req.session.isORSPAdmin = false;
+      req.session.isStudent = true;
 
-    if(await facultyModel.exists({email: req.session.email})){
-      req.session.isFaculty = true;
-      req.session.isStudent = await facultyModel.exists({email: req.session.email});
-    }
-
-    if(await orspModel.exists({email: req.session.email})){
-
-      req.session.isORSP = true;
-      req.session.isStudent = await facultyModel.exists({email: req.session.email});
-      var orspCheck = await orspModel.findOne({email:  req.session.email});
-      if(orspCheck.isAdmin){
-        req.session.isORSPAdmin = true;
+      if(await facultyModel.exists({email: req.session.email})){
+        req.session.isFaculty = true;
+        req.session.isStudent = await facultyModel.exists({email: req.session.email});
       }
 
-    }
+      if(await orspModel.exists({email: req.session.email})){
 
-    res.send(true);
+        req.session.isORSP = true;
+        req.session.isStudent = await facultyModel.exists({email: req.session.email});
+        var orspCheck = await orspModel.findOne({email:  req.session.email});
+        if(orspCheck.isAdmin){
+          req.session.isORSPAdmin = true;
+        }
+
+      }
+
+      res.send(true);
+    }
+    verify().catch(console.error);
+  }else{
+    
   }
-  verify().catch(console.error);
 });
 
 app.listen(port, () => console.log(`Server now running at port ${port}`));
