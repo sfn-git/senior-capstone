@@ -117,9 +117,7 @@ app.get("/", async (req, res) => {
 
           var copiInfo = await studentModel.findById(projects[index].copis[co]);
           projects[index].copis[co] = copiInfo.name;
-
         }
-
       }
 
       res.render("orsp-dashboard", {
