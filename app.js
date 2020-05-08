@@ -203,12 +203,9 @@ app.get("/", async (req, res) => {
         studentsProjects[index].facultyAdvisor = facultyID.facultyName;
 
         for(co in studentsProjects[index].copis){
-
           var copiInfo = await studentModel.findById(studentsProjects[index].copis[co]);
           studentsProjects[index].copis[co] = copiInfo.name;
-
         }
-
       }
 
       res.render("faculty-dashboard", {
@@ -1127,58 +1124,51 @@ app.post("/faculty-form", async (req,res)=>{
 })
 
 app.post("/signin", async (req, res) => {
-  const CLIENT_ID =
-    "745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com";
+  const CLIENT_ID = "745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com";
   var token = req.body;
-  if(token){
-    const { OAuth2Client } = require("google-auth-library");
-    const client = new OAuth2Client(CLIENT_ID);
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-        idToken: token["idtoken"],
-        audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
-      });
-      const payload = ticket.getPayload();
-      const userid = payload["sub"];
-      // If request specified a G Suite domain:
-      //const domain = payload['hd'];
+  const { OAuth2Client } = require("google-auth-library");
+  const client = new OAuth2Client(CLIENT_ID);
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+      idToken: token["idtoken"],
+      audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+    });
+    const payload = ticket.getPayload();
+    const userid = payload["sub"];
+    // If request specified a G Suite domain:
+    //const domain = payload['hd'];
 
-      // All user info
-      req.session.userId = userid;
-      req.session.name = payload.name;
-      req.session.email = payload.email;
+    // All user info
+    req.session.userId = userid;
+    req.session.name = payload.name;
+    req.session.email = payload.email;
 
-      // Checking if they exist in db.
-      var studentModel = require('./models/students.js');
-      var facultyModel = require('./models/faculty.js');
-      var orspModel = require('./models/orsp.js');
+    // Checking if they exist in db.
+    var studentModel = require('./models/students.js');
+    var facultyModel = require('./models/faculty.js');
+    var orspModel = require('./models/orsp.js');
 
-      req.session.isORSP = false;
-      req.session.isORSPAdmin = false;
-      req.session.isStudent = true;
+    req.session.isORSP = false;
+    req.session.isORSPAdmin = false;
+    req.session.isStudent = true;
 
-      if(await facultyModel.exists({email: req.session.email})){
-        req.session.isFaculty = true;
-        req.session.isStudent = await facultyModel.exists({email: req.session.email});
-      }
-
-      if(await orspModel.exists({email: req.session.email})){
-
-        req.session.isORSP = true;
-        req.session.isStudent = await facultyModel.exists({email: req.session.email});
-        var orspCheck = await orspModel.findOne({email:  req.session.email});
-        if(orspCheck.isAdmin){
-          req.session.isORSPAdmin = true;
-        }
-
-      }
-
-      res.send(true);
+    if(await facultyModel.exists({email: req.session.email})){
+      req.session.isFaculty = true;
+      req.session.isStudent = await facultyModel.exists({email: req.session.email});
     }
-    verify().catch(console.error);
-  }else{
-    
+
+    if(await orspModel.exists({email: req.session.email})){
+      req.session.isORSP = true;
+      req.session.isStudent = await facultyModel.exists({email: req.session.email});
+      var orspCheck = await orspModel.findOne({email:  req.session.email});
+      if(orspCheck.isAdmin){
+        req.session.isORSPAdmin = true;
+      }
+    }
+
+    res.send(true);
   }
+  verify().catch(console.error);
 });
 
 app.listen(port, () => console.log(`Server now running at port ${port}`));
