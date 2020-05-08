@@ -80,3 +80,6 @@ td {
   vertical-align: middle !important;
 }
 
+.dataTables_filter {
+  display: none;
+  }

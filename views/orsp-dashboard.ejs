@@ -9,6 +9,8 @@
     <script src="/js/lib/bootstrap.min.js"></script>
     <script src="/js/launchModalORSP.js"></script>
     <script defer src="/js/orspSearch.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="/js/sortColumn.js"></script>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -22,7 +24,7 @@
     <h1>ORSP Dashboard</h1>
     <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
     <div class="table-responsive mt-4">
-        <table class="table table-hover">
+        <table id="sortColumn" class="table table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Status</th>
