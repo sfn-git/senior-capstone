@@ -12,6 +12,7 @@
     <script src="/js/lib/jquery.dataTables.min.js"></script>
     <script src="/js/sortColumn.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+    <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -58,13 +59,13 @@
                     <td>
                         <%if (projects[element].status == 'Approved'){%>
                         <button
-                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm,' ')%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= sanitizeText(projects[element].abstractApproved)%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
                         <%}else{%>
                         <button
-                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm,' ')%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= sanitizeText(projects[element].abstractSubmitted)%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
