@@ -20,6 +20,7 @@ const config = require('./config.json');
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(fileupload());
@@ -797,53 +798,54 @@ app.post("/student-form", async (req, res) => {
       waiver: waiver,
     });
 
-    newProject.save((err, fun) => {
+    newProject.save(async (err, fun) => {
       if (err) {
         res.render('error', {error: `Something went wrong when submitting your project: ${err.message}`});
       } else {
+        var facultyModel = require("./models/faculty.js");
+        var facultyDB = await facultyModel.findOne({_id: advisor});
+        var facultyName = facultyDB.facultyName;
+        var facultyEmail = facultyDB.email;
+    
+        var emailList = email + ", " + facultyEmail;
+    
+        var emailMessage =
+          "PROJECT ID: " +
+          fun._id +  
+          "\n\nYour project: " +
+          title +
+          ", has been submitted!\n\n" +
+          "Abstract: " +
+          abstract +
+          "\n" +
+          "Primary Presenter: " +
+          name +
+          "\n" +
+          "Faculty Advisor: " +
+          facultyName +
+          "\n" +
+          "Co-Presenter(s): " +
+          coPresenters +
+          "\n\n\n" +
+          "Please DO NOT reply to this email.";
+        var mailOptions = {
+          from: "orsptemp20@gmail.com",
+          to: emailList,
+          cc: ccList,
+          subject: "Your Project Has Been Submitted!",
+          text: emailMessage,
+        };
       }
+      
+      transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+          res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. Please save the following: PROJECT ID ${fun._id}`})
+        } else {
+          res.redirect("/");
+        }
+      });
     });
 
-    var facultyModel = require("./models/faculty.js");
-    var facultyDB = await facultyModel.findOne({_id: advisor});
-    var facultyName = facultyDB.facultyName;
-    var facultyEmail = facultyDB.email;
-
-    var emailList = email + ", " + facultyEmail;
-
-    var emailMessage =
-      "Your project: " +
-      title +
-      ", has been submitted!\n\n" +
-      "Abstract: " +
-      abstract +
-      "\n" +
-      "Primary Presenter: " +
-      name +
-      "\n" +
-      "Faculty Advisor: " +
-      facultyName +
-      "\n" +
-      "Co-Presenter(s): " +
-      coPresenters +
-      "\n\n\n" +
-      "Please DO NOT reply to this email.";
-    var mailOptions = {
-      from: "orsptemp20@gmail.com",
-      to: emailList,
-      cc: ccList,
-      subject: "Your Project Has Been Submitted!",
-      text: emailMessage,
-    };
-
-    transporter.sendMail(mailOptions, function (err, info) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(info);
-      }
-    });
-    res.redirect("/");
   }else{
     res.render('signin');
   }

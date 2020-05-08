@@ -18,60 +18,6 @@
 </script>
 
 <body>
-    
-    <div class="container p-4">
-        <h2>Your Submissions</h2>
-        <% if(facCount == 0){%>
-            <div class="container p-4">
-                <h3> You do not have any submissions. <a href="/submission">Click here </a>to start a submission.</h3>
-            </div>
-        <%}else{%>
-        <div class="table-responsive mt-4">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Status</th>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Date Submitted</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <% for(var element in projects){%>
-                    <tr>
-                        <td>
-                            <% if(projects[element].status == 'Pending Approval'){%>
-                            <span class="badge badge-info"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Approved'){%>
-                            <span class="badge badge-success"><%= projects[element].status%></span>
-                            <%}else if (projects[element].status == 'Denied'){%>
-                            <span class="badge badge-danger"><%= projects[element].status%></span>
-                            <%}else{%>
-                            <span class="badge badge-warning">Error: Please contact ORSP</span>
-                            <%}%>
-                        </td>
-
-                        <td><%= projects[element]._id %></td>
-                        <td>
-                            <button
-                                onclick="launchFacultySubmissionModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstract%>', '<%= projects[element].description%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
-                                class="btn btn-link text-left" data-toggle="modal" data-target="#myFacultyModal">
-                                <%= projects[element].title %>
-                            </button>
-
-                        </td>
-                        <td><%= projects[element].dateSubmitted.toDateString() %></td>
-                    </tr>
-                    <%}%>
-                </tbody>
-
-            </table>
-        </div>
-        <% }%>
-    </div>
-    
-    <hr>
     <div class="container p-4">
         
         <h2>Your Submissions with Students</h2>
@@ -135,6 +81,58 @@
         </div>
         <%}%>
     </div>
+    <hr>
+    <div class="container p-4">
+        <h2>Your Submissions</h2>
+        <% if(facCount == 0){%>
+            <div class="container p-4">
+                <h3> You do not have any submissions. <a href="/submission">Click here </a>to start a submission.</h3>
+            </div>
+        <%}else{%>
+        <div class="table-responsive mt-4">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Status</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Submitted</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for(var element in projects){%>
+                    <tr>
+                        <td>
+                            <% if(projects[element].status == 'Pending Approval'){%>
+                            <span class="badge badge-info"><%= projects[element].status%></span>
+                            <%}else if (projects[element].status == 'Approved'){%>
+                            <span class="badge badge-success"><%= projects[element].status%></span>
+                            <%}else if (projects[element].status == 'Denied'){%>
+                            <span class="badge badge-danger"><%= projects[element].status%></span>
+                            <%}else{%>
+                            <span class="badge badge-warning">Error: Please contact ORSP</span>
+                            <%}%>
+                        </td>
+
+                        <td><%= projects[element]._id %></td>
+                        <td>
+                            <button
+                                onclick="launchFacultySubmissionModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstract%>', '<%= projects[element].description%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
+                                class="btn btn-link text-left" data-toggle="modal" data-target="#myFacultyModal">
+                                <%= projects[element].title %>
+                            </button>
+
+                        </td>
+                        <td><%= projects[element].dateSubmitted.toDateString() %></td>
+                    </tr>
+                    <%}%>
+                </tbody>
+
+            </table>
+        </div>
+        <% }%>
+    </div>    
 
     <!-- Faculty Modal -->
     <div id="myFacultyModal" class="modal" tabindex="-1" role="dialog">
@@ -222,7 +220,7 @@
                     <div class="row">
                         <div class="col-8 mr-auto">
                             <h5>Abstract</h5>
-                            <textarea rows="5" class="my-textbox" id="studentAbstractLaunchModal" value="" readonly="true"></textarea>
+                            <textarea rows="5" maxlength="750" class="my-textbox" id="studentAbstractLaunchModal" value="" readonly="true"></textarea>
                         </div>
                         <div class="col-3">
                             <h5>Primary Presenter</h5>
@@ -240,7 +238,7 @@
                         <input id="Sapprove" 
                             class="edit btn btn-success" type="button"data-dismiss="modal" value="Approve" />
                         <input id="Ssave" 
-                            onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" value="Submit Changes & Approve" />
+                            onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" value="Save" />
                         <input id="Scancel" 
                             onclick="noteditable(); doneEditAbstarct();"class="btn btn-danger" type="button" data-dismiss="modal" value="Close" />
                         <input id="Sclose" class="btn btn-secondary" type="button" data-dismiss="modal" value="Close" />

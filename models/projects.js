@@ -5,10 +5,10 @@ const schema = mongoose.Schema;
 var projectSchema = new schema({
     // _ID get automatically generated
     presentationType: {type: String, required: true},
-    title: {type: String, required: true},
+    title: {type: String, maxlength: 100, required: true},
     abstractSubmitted: {type: String, maxlength: 750, required: true},
     abstractApproved: {type: String, maxlength: 750},
-    projectArea: {type: String, required: true},
+    projectArea: {type: String, maxlength: 50, required: true},
     researchLocation: {type: String, required: true},
     researchFunding: {type: String, required: true},
     rdYear: {type: Number},
