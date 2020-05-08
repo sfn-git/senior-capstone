@@ -25,14 +25,21 @@ $('#approve').click(function() {
 //student
 $('#Sedit').click(function() {
     $(this).hide();
-    $(this).siblings('#Sclose, #Sapprove').hide();
+    $(this).siblings('#Sclose, #Sapprove, #Sdenied').hide();
     $(this).siblings('#Ssave, #Scancel').show();
 });
 
 $('#Ssave').click(function() {
     alert("NOTE: Your changes will not save until you press the 'Approve' button.");
-    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
+    $(this).siblings('#Sedit, #Sapprove, #Sclose, #Sdenied').show();
     $(this).siblings('#Scancel').hide();
+    $(this).hide();
+});
+
+$('#Scancel,#Ssave').click(function() {
+    // confirm("Any changes you made, will not be saved! Do you wish to continue?");
+    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
+    $(this).siblings('#Ssave').hide();
     $(this).hide();
 });
 
@@ -72,3 +79,6 @@ $('#Sapprove').click(function() {
     }
 });
 
+$('#Sdenied').click(function() {
+   
+});
