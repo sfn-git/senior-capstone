@@ -35,12 +35,14 @@ function launchStudentModal(
 
   document.getElementById("studentSubmissionID").innerHTML = status + ": #" + id;
   if (status == "Pending Faculty") {
-    document.getElementById("Sedit").style.visibility = "visible";
-    document.getElementById("Sapprove").style.visibility = "visible";
+    document.getElementById("editStudentsAbstarct").style.visibility = "visible";
+    document.getElementById("approveStudent").style.visibility = "visible";
+    document.getElementById("denyStudent").style.visibility = "visible";
   }
   else {
-    document.getElementById("Sedit").style.visibility = "hidden";
-    document.getElementById("Sapprove").style.visibility = "hidden";
+    document.getElementById("editStudentsAbstarct").style.visibility = "hidden";
+    document.getElementById("approveStudent").style.visibility = "hidden";
+    document.getElementById("denyStudent").style.visibility = "hidden";
   }
   document.getElementById("studentAbstractLaunchModal").value = abstract;
   document.getElementById("studentPrimary").innerHTML = primary;

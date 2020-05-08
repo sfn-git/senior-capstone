@@ -23,27 +23,34 @@ $('#approve').click(function() {
 });
 
 //student
-$('#Sedit').click(function() {
+$('#editStudentsAbstarct').click(function() {
     $(this).hide();
-    $(this).siblings('#Sclose, #Sapprove').hide();
-    $(this).siblings('#Ssave, #Scancel').show();
+    $(this).siblings('#closeStudent, #approveStudent, #denyStudent').hide();
+    $(this).siblings('#reviewStudent, #cancelStudentReview').show();
 });
 
-$('#Ssave').click(function() {
+$('#reviewStudent').click(function() {
     alert("NOTE: Your changes will not save until you press the 'Approve' button.");
-    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
-    $(this).siblings('#Scancel').hide();
+    $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent, #denyStudent').show();
+    $(this).siblings('#cancelStudentReview').hide();
     $(this).hide();
 });
 
-$('#Scancel,#Ssave').click(function() {
+$('#cancelStudentReview,#reviewStudent').click(function() {
     // confirm("Any changes you made, will not be saved! Do you wish to continue?");
-    $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
-    $(this).siblings('#Ssave').hide();
+    $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent').show();
+    $(this).siblings('#reviewStudent').hide();
     $(this).hide();
 });
 
-$('#Sapprove').click(function() {
+$('#cancelStudentReview,#reviewStudent').click(function() {
+    // confirm("Any changes you made, will not be saved! Do you wish to continue?");
+    $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent').show();
+    $(this).siblings('#reviewStudent').hide();
+    $(this).hide();
+});
+
+$('#approveStudent').click(function() {
     if(confirm("Do you confirm that this is the final abstract revision")){
 
         var sendData = {
@@ -72,3 +79,6 @@ $('#Sapprove').click(function() {
     }
 });
 
+$('#denyStudent').click(function() {
+   
+});
