@@ -37,7 +37,7 @@ max-width: 300px;
   visibility: hidden;
 }
 
-/*faculty edit options of personal projects*/
+/* faculty edit options of personal projects*/
 #save, #cancel {
   display:none;
   }
@@ -51,26 +51,22 @@ max-width: 300px;
 }
 
 /*faculty edit options for students*/
-#Ssave, #Scancel {
+#reviewStudent, #cancelStudentReview {
   display:none;
   }
 
-#Sedit {
+#editStudentsAbstarct {
   visibility: hidden;
 }
 
-#Sapprove {
+#approveStudent {
   visibility: hidden;
 }
 
 /*ORSP edit options*/
-#ORSPsave, #ORSPcancel {
+#ORSPsave, #ORSPcloseNote {
   display:none;
   }
-
-/* #ORSPedit {
-  visibility: hidden;
-} */
 
 #ORSPapprove {
   visibility: hidden;
