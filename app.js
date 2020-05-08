@@ -903,15 +903,26 @@ app.post("/file-upload", (req,res)=>{
   }
 })
 
-app.post("/orsp-approve-student", (req,res)=>{
+app.post("/orsp-approve-student",  (req,res)=>{
 
   if(req.session.isORSP){
     var projectModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty", 'dateLastModified': Date.now()}, (err,fun)=>{
+    projectModel.findByIdAndUpdate(projectID, {'status': "Pending Faculty", 'dateLastModified': Date.now()}, async (err,fun)=>{
       if(err){
         res.send({status: false, message: `An error occured ${err.message}`});
       }else{
+        var studentModel = require("./models/students.js");
+        var facultyModel = require("./models/faculty.js");
+        var studentDB = await studentModel.findOne({_id: fun.submitter});
+        var facultyDB = await facultyModel.findOne({_id: fun.facultyAdvisor});
+
+        var ccList = studentDB.email  + ", " + facultyDB.email + ", ";
+        for(co in fun.copis){
+          var copiEmail = await studentModel.findById(fun.copis[co]);
+          ccList += copiEmail.email + ", "
+        }
+
         var title = fun.title;
         var emailMessage = 
         "Project Title: " + 
@@ -923,6 +934,7 @@ app.post("/orsp-approve-student", (req,res)=>{
         var mailOptions = {
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
+          cc: ccList,
           subject: "Project Updated!",
           text: emailMessage,
         };
@@ -949,11 +961,21 @@ app.post("/orsp-deny-student", (req,res)=>{
   if(req.session.isORSP){
     var projectsModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectsModel.findByIdAndDelete(projectID, (err,fun)=>{
+    projectsModel.findByIdAndDelete(projectID, async (err,fun)=>{
 
       if(err){
         res.send({status: false, message: `${err.message}`});
       }else{
+        var studentModel = require("./models/students.js");
+        var facultyModel = require("./models/faculty.js");
+        var studentDB = await studentModel.findOne({_id: fun.submitter});
+        var facultyDB = await facultyModel.findOne({_id: fun.facultyAdvisor});
+
+        var ccList = studentDB.email  + ", " + facultyDB.email + ", ";
+        for(co in fun.copis){
+          var copiEmail = await studentModel.findById(fun.copis[co]);
+          ccList += copiEmail.email + ", "
+        }
         var title = fun.title;
         var emailMessage = 
         "Project Title: " + 
@@ -965,6 +987,7 @@ app.post("/orsp-deny-student", (req,res)=>{
         var mailOptions = {
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
+          cc: ccList,
           subject: "Project Removed.",
           text: emailMessage,
         };
@@ -1007,12 +1030,23 @@ app.post("/faculty-approve-student", (req,res)=>{
 
     var projectsModel = require("./models/projects.js");
     var projectID = req.body.id;
-    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, (err, fun)=>{
+    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, async (err, fun)=>{
 
       if(err){
         res.send({status: false, message: `An error occurred: ${err.message}`})
       }else{
         res.send({status: true, message: `Project updated successfully`});
+
+        var studentModel = require("./models/students.js");
+        var studentDB = await studentModel.findOne({_id: fun.submitter});
+        
+        var facultyEmail = req.session.email;
+        var emailList = facultyEmail + ", " + studentDB.email;
+        var ccList;
+        for(co in fun.copis){
+          var copiEmail = await studentModel.findById(fun.copis[co]);
+          ccList += copiEmail.email + ", "
+        }
 
         var title = fun.title;
         var emailMessage = 
@@ -1024,7 +1058,8 @@ app.post("/faculty-approve-student", (req,res)=>{
 
         var mailOptions = {
           from: "orsptemp20@gmail.com",
-          to: req.session.email ,
+          to: emailList,
+          cc: ccList,
           subject: "Research Days Project Approved by your Faculty Adviser!",
           text: emailMessage,
         };
