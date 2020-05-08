@@ -56,10 +56,10 @@
                             <%}%>
                         </td>
 
-                        <td><%= projects[element].id %></td>
+                        <td><%= projects[element]._id %></td>
                         <td>
                             <button
-                                onclick="launchStudentModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element].id %>','<%= projects[element].abstract%>','<%= projects[element].primaryPresenter%>','<%= projects[element].coPresenter%>','<%= projects[element].faculty%>','<%= projects[element].dateLastModified%>')"
+                                onclick="launchStudentModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitter%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisor%>','<%= projects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                                 <%= projects[element].title %>
                             </button>
@@ -74,6 +74,63 @@
         </div>
     </div>
     <% }%>
+
+    <!-- Co Presenter -->
+    <% if(coCount == 0){%>
+        
+    <%}else{%>
+        <hr>
+        <div class="container p-4">
+            <h2>Projects where you are a Co-Presenter</h2>
+            <div class="table-responsive mt-4">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Status</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Date Submitted</th>
+                        </tr>
+                    </thead>
+    
+                    <tbody>
+                        <% for(var element in coProjects){%>
+                        <tr>
+                            <td>
+                                <% if(coProjects[element].status == 'Pending ORSP'){%>
+                                <span class="badge badge-info"><%= coProjects[element].status%></span>
+                                <%}else if (coProjects[element].status == 'Approved'){%>
+                                <span class="badge badge-success"><%= coProjects[element].status%></span>
+                                <%}else if (coProjects[element].status == 'Denied'){%>
+                                <span class="badge badge-danger"><%= coProjects[element].status%></span>
+                                <%}else if (coProjects[element].status == 'Pending Faculty'){%>
+                                <span class="badge badge-info"><%= coProjects[element].status%></span>
+                                <%}else if (coProjects[element].status == 'Pending PPT'){%>
+                                <span class="badge badge-warning"><%= coProjects[element].status%></span>
+                                <%}else{%>
+                                <span class="badge badge-warning">Error: Please contact ORSP</span>
+                                <%}%>
+                            </td>
+    
+                            <td><%= coProjects[element]._id %></td>
+                            <td>
+                                <button
+                                    onclick="launchStudentModal('<%= coProjects[element].status%>','<%= coProjects[element].title%>','<%= coProjects[element]._id %>','<%= coProjects[element].abstractSubmitted%>','<%= coProjects[element].submitter%>','<%= coProjects[element].copis%>','<%= coProjects[element].facultyAdvisor%>','<%= coProjects[element].dateLastModified%>')"
+                                    class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
+                                    <%= coProjects[element].title %>
+                                </button>
+    
+                            </td>
+                            <td><%= coProjects[element].dateSubmitted.toDateString() %></td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% }%>
+
+    <!-- Modal Template -->
     <div id="myModal" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">

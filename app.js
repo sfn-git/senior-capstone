@@ -137,44 +137,50 @@ app.get("/", async (req, res) => {
       var fullProjects = []; //This will contain the projects that will be sent to the front end
 
       var studentID = await studentModel.find({ email: req.session.email },"_id");
-      var projects = await projectsModel.find({ submitter: studentID }); //This is the projects from the database that have ids instead of names
+      var projects = await projectsModel.find({ submitter: studentID }).lean(); //This is the projects from the database that have ids instead of names
+      var coProjects = await projectsModel.find({copis: studentID}).lean();
 
+      // Projects where student is primary presenter
       for (index in projects) {
         facultyInfo = await facultyModel.findById(projects[index].facultyAdvisor,"facultyName");
-        facultyName = facultyInfo.facultyName;
+        projects[index].facultyAdvisor = facultyInfo.facultyName;
 
-        var thisProject = {
-          id: projects[index]._id,
-          status:projects[index].status,
-          primaryPresenter: req.session.name,
-          coPresenter: [],
-          faculty: facultyName,
-          title: projects[index].title,
-          abstract: projects[index].abstractSubmitted,
-          dateSubmitted: projects[index].dateSubmitted,
-          dateApproved: projects[index].dateApproved,
-          dateDenied: projects[index].dateDenied,
-          dateLastModified: projects[index].dateLastModified,
-          datePosterSubmitted:  projects[index].datePosterSubmitted
-        };
+        studentInfo = await studentModel.findById(projects[index].submitter, "name");
+        projects[index].submitter = studentInfo.name;
 
         for (coIndex in projects[index].copis) {
-          coPresenterName = await studentModel.findById(
+          var coPresenterName = await studentModel.findById(
             projects[index].copis[coIndex],
             "name"
           );
           if (coPresenterName == null) {
           } else {
-            thisProject.coPresenter.push(coPresenterName.name);
+            projects[index].copis[coIndex] = coPresenterName.name;
           }
         }
-        fullProjects.push(thisProject);
       }
       
+      //Projects where student is a co-pi
+      for(var i=0; i<coProjects.length; i++){
+
+        var facultyInfo = await facultyModel.findById(coProjects[i].facultyAdvisor, "facultyName");
+        var studentInfo = await studentModel.findById(coProjects[i].submitter, "name");
+
+        coProjects[i].facultyAdvisor = facultyInfo.facultyName;
+        coProjects[i].submitter = studentInfo.name;
+
+        for(coIndex in coProjects[i].copis){
+          var coPresenterName = await studentModel.findById(coProjects[i].copis[coIndex], "name");
+          coProjects[i].copis[coIndex] = coPresenterName.name;
+        }
+      }
+
       res.render("student-dashboard", {
         name: req.session.name,
-        projects: fullProjects,
-        count: fullProjects.length,
+        projects: projects,
+        count: projects.length,
+        coCount: coProjects.length,
+        coProjects: coProjects
       });
     //-----------------------------------------------------------------
     //Will send user to faculty-dashboard if they are a faculty member
