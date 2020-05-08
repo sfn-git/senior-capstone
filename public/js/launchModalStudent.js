@@ -36,10 +36,13 @@ function launchStudentModal(
   
   //make ppt option aviable to user
   if (status == "Pending PPT") {
-    document.getElementById("IPO").style.visibility = "visible";
+    document.getElementById("insertPowerpoint").style.visibility = "visible";
     $("#customFile").on('change', ()=>{
       $("input[id^='fileID']").attr('value', id);
     })
+  }
+  else{
+    document.getElementById("insertPowerpoint").style.visibility = "hidden";
   }
 
   document.getElementById("abstractLaunchModal").innerHTML = abstract;

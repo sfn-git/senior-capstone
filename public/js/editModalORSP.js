@@ -1,14 +1,14 @@
 // orsp
-$('#ORSPedit').click(function() {
+$('#ORSPnote').click(function() {
     $(this).hide();
-    $(this).siblings('#ORSPclose, #ORSPapprove, #ORSPremove').hide();
-    $(this).siblings('#ORSPsave, #ORSPcancel').show();
+    $(this).siblings('#ORSPclose, #ORSPapprove, #ORSPredact').hide();
+    $(this).siblings('#ORSPsave, #ORSPcloseNote').show();
 });
 
 $('#ORSPsave').click(function() {
     if($("#noteLaunchModal").val() == noteGlobal){
-        $(this).siblings('#ORSPedit, #ORSPapprove, #ORSPremove, #ORSPclose').show();
-        $(this).siblings('#ORSPcancel').hide();
+        $(this).siblings('#ORSPnote, #ORSPapprove, #ORSPredact, #ORSPclose').show();
+        $(this).siblings('#ORSPcloseNote').hide();
         $(this).hide();
     }else{
         $.ajax({
@@ -30,9 +30,9 @@ $('#ORSPsave').click(function() {
     }
 });
 
-$('#ORSPcancel').click(function() {
+$('#ORSPcloseNote').click(function() {
     // confirm("Any changes you made, will not be saved! Do you wish to continue?");
-    $(this).siblings('#ORSPedit, #ORSPapprove, #ORSPremove, #ORSPclose').show();
+    $(this).siblings('#ORSPnote, #ORSPapprove, #ORSPredact, #ORSPclose').show();
     $(this).siblings('#ORSPsave').hide();
     $(this).hide();
 });
@@ -55,9 +55,9 @@ $('#ORSPapprove').click(()=> {
     }
 });
 
-$('#ORSPremove').click(()=>{
+$('#ORSPredact').click(()=>{
 
-    if(window.confirm(`Are you sure you would like to redact project ${idGlobal}`)){
+    if(window.confirm(`Are you sure you would like to redact project #${idGlobal}?`)){
 
         $.ajax({
             method: "POST",
@@ -65,7 +65,7 @@ $('#ORSPremove').click(()=>{
             data: {id: idGlobal},
             success:(res) =>{
                 if(res.status){
-                    window.alert(`${idGlobal} has been removed.`)
+                    window.alert(`${idGlobal} has been redacted.`)
                     location.reload();
                 }else{
                     window.alert(res.message);

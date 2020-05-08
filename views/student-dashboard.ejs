@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/lib/jquery-3.4.1.js"></script>
-    <link rel="stylesheet" href="/css/lib/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
     <script src="/js/launchModalStudent.js"></script>
 </head>
@@ -74,73 +74,66 @@
         </div>
     </div>
     <% }%>
-    <div id="myModal" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="container">
-                    <div class="modal-header">
-                        <div class="row">
-                            <div class="col-10">
-                                <h3 id="title"></h3>
-                            </div>
-                            <div class="col">
-                                <span id="submissionID"></span>
-                            </div>
-                        </div>
+                    <div id="myModal" class="modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="container">
+                                    <div class="modal-header">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <h3 id="title"></h3>
+                                            </div>
+                                            <div class="col">
+                                                <span id="submissionID"></span>
+                                            </div>
+                                        </div>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-8 mr-auto">
-                                <h5>Abstract</h5>
-                                <p class="my-textbox" id="abstractLaunchModal" contenteditable="false">
-                                </p>
-                            </div>
-                            <div class="col-3">
-                                <h5>Primary Presenter</h5>
-                                <p id="primary"></p>
-                                <h5 class="mt-4">Additional Presenters</h5>
-                                <p id="coPres"></p>
-                                <h5 class="mt-4">Faculty</h5>
-                                <p id="faculty"></p>
-                            </div>
-
-                            <div id="IPO" class="input-group input-file m-3">
-                                <form action="/file-upload" method="post" enctype="multipart/form-data">
-                                    <div class="custom-file">
-                                        <input type="file" accept=".ppt,.pptx" id="customFile"
-                                            name="filename" required>
-                                        <!-- <label class="custom-file-label" for="customFile">Choose file (.ppt,.pptx only)</label> -->
-                                        <span class="input-group-btn">
-                                            <input class="btn btn-default btn-choose btn-primary"
-                                                type="submit" value="Submit" />
-                                        </span>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                    <input type="text" value="" name="fileID" id="fileID"
-                                        style="display: none;">
-                                </form>
+
+
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-8 mr-auto">
+                                                <h5>Abstract</h5>
+                                                <p class="my-textbox" id="abstractLaunchModal" contenteditable="false">
+                                                </p>
+                                            </div>
+                                            <div class="col-3">
+                                                <h5>Primary Presenter</h5>
+                                                <p id="primary"></p>
+                                                <h5 class="mt-4">Additional Presenters</h5>
+                                                <p id="coPres"></p>
+                                                <h5 class="mt-4">Faculty</h5>
+                                                <p id="faculty"></p>
+                                            </div>
+
+                                            <div id="insertPowerpoint" class="input-group input-file m-3">
+                                                <form action="/file-upload" method="post" enctype="multipart/form-data">
+                                                    <div class="custom-file">
+                                                        <input type="file" accept=".ppt,.pptx" id="customFile"
+                                                            name="filename" required>
+                                                        <span class="input-group-btn">
+                                                            <input class="btn btn-default btn-choose btn-primary"
+                                                                type="submit" value="Submit" />
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" value="" name="fileID" id="fileID"
+                                                        style="display: none;">
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <p class="mr-auto small text-muted" id="lastEdit"></p>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <p class="mr-auto small text-muted" id="lastEdit"></p>
-                            <span id="edit"></span>
-                            <span id="approve"></span>
-                            <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
 </body>
-
-<!-- edit to save/cancel function -->
-<script src="/js/editModal.js"></script>
 
 </html>
