@@ -21,7 +21,7 @@ tbody {
   background-color: #f8f9fa !important;
 }
 
-#abstractLaunchModal,#studentAbstractLaunchModal{
+#abstractLaunchModal,#studentAbstractLaunchModal, #noteLaunchModal{
   border: thin solid white;
   padding: 2px;
   width: 100%;

@@ -58,13 +58,13 @@
                     <td>
                         <%if (projects[element].status == 'Approved'){%>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm,' ')%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
                         <%}else{%>
                         <button
-                            onclick="launchORSPModal('notes','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
+                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm,' ')%>','<%= projects[element].submitterName%>','<%= projects[element].coPresenter%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
                             class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
@@ -108,7 +108,7 @@
                         <p  id="StudentAbstractLaunchModal" contenteditable="false">
                         </p>
                         <h5>ORSP Notes</h5>
-                        <textarea rows="5" class="my-textbox" id="abstractLaunchModal" value="" readonly="true"></textarea>
+                        <textarea rows="5" class="my-textbox" id="noteLaunchModal" value="" readonly="true"></textarea>
                     </div>
                     <div class="col-3">
                         <h5>Primary Presenter</h5>
@@ -127,7 +127,7 @@
                         type="button" value="Save Note" />
                     <input id="ORSPremove" class="edit btn btn-warning" type="button" data-dismiss="modal"
                         value="Redact" />
-                        <input id="ORSPedit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
+                    <input id="ORSPedit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
                         type="button" value="Add Note"/>
                     <input id="ORSPcancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger"
                         type="button" data-dismiss="modal" value="Close" />

@@ -1,4 +1,5 @@
 var idGlobal;
+var noteGlobal;
 function launchORSPModal(
   note,
   status,
@@ -11,6 +12,7 @@ function launchORSPModal(
   lastEdit
 ) {
   idGlobal = id;
+  noteGlobal = note;
   document.getElementById("studentTitle").innerHTML = title;
 
   //change badge color in modal
@@ -41,7 +43,7 @@ function launchORSPModal(
     document.getElementById("ORSPapprove").style.visibility = "hidden";
   }
   document.getElementById("StudentAbstractLaunchModal").innerHTML = abstract;
-  document.getElementById("abstractLaunchModal").innerHTML = note;
+  $("#noteLaunchModal").val(note);
   document.getElementById("studentPrimary").innerHTML = primary;
   document.getElementById("studentCoPres").innerHTML = coPres;
   document.getElementById("studentFaculty").innerHTML = faculty;
@@ -50,14 +52,14 @@ function launchORSPModal(
   
   // Make div border grey to see it when in edit mode
   function editAbstarct() {
-    document.getElementById("abstractLaunchModal").style.borderColor = "grey";
-    document.getElementById("abstractLaunchModal").readOnly = false;
+    document.getElementById("noteLaunchModal").style.borderColor = "grey";
+    document.getElementById("noteLaunchModal").readOnly = false;
   }
   
   // Make div border white to hide it when not in edit mode
   function doneEditAbstarct() {
-    document.getElementById("abstractLaunchModal").style.borderColor = "white";
-    document.getElementById("abstractLaunchModal").readOnly = true;
+    document.getElementById("noteLaunchModal").style.borderColor = "white";
+    document.getElementById("noteLaunchModal").readOnly = true;
   }
   
   //make the div editable

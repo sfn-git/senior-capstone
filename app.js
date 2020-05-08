@@ -983,6 +983,24 @@ app.post("/orsp-deny-student", (req,res)=>{
   }
 })
 
+app.post("/orsp-add-note", (req,res)=>{
+
+  if(req.session.isORSP || req.session.isORSPAdmin){
+    var projectsModel = require("./models/projects");
+
+    projectsModel.findByIdAndUpdate(req.body.id, {notes: req.body.note}, (err, fun)=>{
+      if(err){
+        res.send({status: false, message: err.message});
+      }else{
+        console.log(fun);
+        res.send({status: true, message: ""});
+      }
+    })
+  }else{
+    res.send({status: false, message: "You are not authorized to view this page. Please login and try again."});
+  }
+})
+
 app.post("/faculty-approve-student", (req,res)=>{
 
   if(req.session.isFaculty){

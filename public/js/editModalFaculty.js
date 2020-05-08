@@ -30,7 +30,7 @@ $('#Sedit').click(function() {
 });
 
 $('#Ssave').click(function() {
-    // confirm("Confirm changes");
+    alert("NOTE: Your changes will not save until you press the 'Approve' button.");
     $(this).siblings('#Sedit, #Sapprove, #Sclose').show();
     $(this).siblings('#Scancel').hide();
     $(this).hide();
