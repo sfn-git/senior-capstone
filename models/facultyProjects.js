@@ -17,7 +17,8 @@ var facultyProjectsSchema = new schema({
     coStudentInvestigator: [{type: mongoose.Types.ObjectId}],
     consent: {type: Boolean},
     dateSubmitted: {type: Date, default: Date.now},
-    status: {type: String, default: "Pending Approval", enum: ["Pending Approval", "Approved", "Denied"]}
+    status: {type: String, default: "Pending Approval", enum: ["Pending Approval", "Approved", "Denied"]},
+    notes: {type: String}
 
 });
 

@@ -9,7 +9,6 @@ const port = process.env.PORT || 3000; //3000 for Development. Can be changed wh
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const fileupload = require("express-fileupload");
-const fs = require("fs");
 require("./models/database.js");
 const config = require('./config.json');
 
@@ -17,13 +16,17 @@ const config = require('./config.json');
 //                  Express Configs                 //
 //==================================================//
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use(express.static("uploads"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(fileupload());
+app.set("views", path.join(__dirname, "views"));            //Sets views directory
+app.set("view engine", "ejs");                              //Sets view engine to EJS
+app.use(express.static("public"));                          //Adds public folder to static content
+app.use(express.static("uploads"));                         //Adds uploads folder to static content
+app.use(bodyParser.urlencoded({ extended: true }));         //Used to read req.body for app requests
+app.use(bodyParser.json());                                 //Puts req.body in JSON format. 
+app.use(fileupload());                                      //Allows express to use fileupload
+
+// =================================================//
+//                 Session Config                   //
+//==================================================//
 app.use(
   session({
     name: "sid",
@@ -85,6 +88,7 @@ app.get("/", async (req, res) => {
         isFaculty: req.session.isFaculty,
         isORSPAdmin: req.session.isORSPAdmin,
       });
+
     //------------------------------------------------------------
     //Will send user to orspadmin-dashboard if they an ORSP Admin
     //------------------------------------------------------------
@@ -108,24 +112,21 @@ app.get("/", async (req, res) => {
         projects: facultyProjects,
         facCount: facultyProjects.length
       });
+
     //---------------------------------------------------------
     //Will send user to orsp-dashboard if they are ORSP Staff
     //---------------------------------------------------------
     } else if (req.session.isORSP) {
       var projectsModel = require("./models/projects.js");
       var studentModel = require("./models/students.js"); 
-      // var facultyProjectsModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
 
       var projects = await projectsModel.find({}).sort("date").lean();
-      // var facultyProjects = await facultyProjectsModel.find({}).lean();
 
       for(index in projects){
 
-        var stuID = projects[index].submitter;
-        var facultyID = projects[index].facultyAdvisor;
-        var studentName = await studentModel.findById(stuID).lean();
-        var facultyName = await facultyModel.findById(facultyID).lean();
+        var studentName = await studentModel.findById(projects[index].submitter).lean();
+        var facultyName = await facultyModel.findById(projects[index].facultyAdvisor).lean();
         projects[index].submitterName = studentName.name;
         projects[index].facultyAdvisorName = facultyName.facultyName;
 
@@ -148,7 +149,6 @@ app.get("/", async (req, res) => {
       var studentModel = require("./models/students");
       var projectsModel = require("./models/projects");
       var facultyModel = require("./models/faculty");
-      var fullProjects = []; //This will contain the projects that will be sent to the front end
 
       var studentID = await studentModel.find({ email: req.session.email },"_id");
       var projects = await projectsModel.find({ submitter: studentID }).lean(); //This is the projects from the database that have ids instead of names
@@ -163,11 +163,11 @@ app.get("/", async (req, res) => {
         projects[index].submitter = studentInfo.name;
 
         for (coIndex in projects[index].copis) {
-          var coPresenterName = await studentModel.findById(
-            projects[index].copis[coIndex],
-            "name"
-          );
+
+          var coPresenterName = await studentModel.findById(projects[index].copis[coIndex],"name");
+
           if (coPresenterName == null) {
+            // Do Nothing
           } else {
             projects[index].copis[coIndex] = coPresenterName.name;
           }
@@ -785,8 +785,9 @@ app.post("/student-form", async (req, res) => {
 
         if ((await studentModel.exists({ email: coEmail }))){
 
-          var temp = await studentModel.findOne({ email: coEmail }).select("_id");
-          if(coPresenterID.includes(temp._id)){
+          var temp = await studentModel.findOne({ email: coEmail }).select("_id").lean();
+          console.log(coPresenterID.includes(temp._id));
+          if(coPresenterID.indexOf(`${temp._id}`) > -1){
             // Do nothing
           }else{
             coPresenterID.push(temp._id);
@@ -862,7 +863,7 @@ app.post("/student-form", async (req, res) => {
       
       transporter.sendMail(mailOptions, function (err, info) {
         if (err) {
-          res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. Please save the following: PROJECT ID ${fun._id}`})
+          res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. You can view your project submission by going to the home page. PROJECT ID ${fun._id}`})
         } else {
           res.redirect("/");
         }
@@ -1165,6 +1166,9 @@ app.post("/faculty-deny-student", (req,res)=>{
 
 })
 
+// ---------------------------------------------//
+//         Post for faculty submissions         //
+// ---------------------------------------------//
 app.post("/faculty-form", async (req,res)=>{
   if(req.session.userId && req.session.isFaculty){
   var facultyProjectModel = require('./models/facultyProjects');
