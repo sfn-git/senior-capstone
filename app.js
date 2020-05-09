@@ -89,8 +89,24 @@ app.get("/", async (req, res) => {
     //Will send user to orspadmin-dashboard if they an ORSP Admin
     //------------------------------------------------------------
     } else if (req.session.isORSPAdmin) {
+      var facultyProjectsModel = require("./models/facultyProjects.js");
+      var facultyModel = require("./models/faculty.js");
+      var facultyProjects = await facultyProjectsModel.find({}).lean();
+
+      for(index in facultyProjects){
+
+        var facultyInfo = await facultyModel.findById(facultyProjects[index].primaryInvestigator, "facultyName");
+        facultyProjects[index].primaryInvestigator = facultyInfo.facultyName;
+
+        for(co in facultyProjects[index].coFacultyInvestigator){
+          facultyProjects[index].coFacultyInvestigator[co] = facultyProjects[index].coFacultyInvestigator[co].name
+        }
+      }
+      
       res.render("orspadmin-dashboard", {
         name: req.session.name,
+        projects: facultyProjects,
+        facCount: facultyProjects.length
       });
     //---------------------------------------------------------
     //Will send user to orsp-dashboard if they are ORSP Staff

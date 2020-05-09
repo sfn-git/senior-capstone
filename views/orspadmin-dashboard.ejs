@@ -7,7 +7,7 @@
     <script src="/js/lib/jquery-3.4.1.js"></script>
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
-    <script src="/js/launchModal.js"></script>
+    <script src="/js/launchModalFaculty.js"></script>
     <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
@@ -27,7 +27,7 @@
         <h2>Faculty Submissions</h2>
         <% if(facCount == 0){%>
         <div class="container p-4">
-            <h3> You do not have any submissions. <a href="/submission">Click here </a>to start a submission.</h3>
+            <h3> There are no faculty submission.</h3>
         </div>
         <%}else{%>
         <div class="table-responsive mt-4">
@@ -60,11 +60,11 @@
                         <td>
                             <button onclick="launchFacultySubmissionModal(
                                         '<%= projects[element].status%>',
-                                        '<%= sanitizeText(projects[element].title)%>',
+                                        '<%= projects[element].title%>',
                                         '<%= projects[element]._id %>',
-                                        '<%= sanitizeText(projects[element].abstract)%>',
-                                        '<%= sanitizeText(projects[element].description)%>',
-                                        '<%= sanitizeText( projects[element].primaryInvestigator)%>',
+                                        '<%= projects[element].abstract%>',
+                                        '<%= projects[element].description%>',
+                                        '<%= projects[element].primaryInvestigator%>',
                                         '<%= projects[element].coFacultyInvestigator%>',
                                         '<%= projects[element].faculty%>',
                                         '<%= projects[element].dateSubmitted %>')" class="btn btn-link text-left"
@@ -73,7 +73,7 @@
                             </button>
 
                         </td>
-                        <td><%= projects[element].dateSubmitted.toDateString() %></td>
+                        <td><%= projects[element].dateSubmitted %></td>
                     </tr>
                     <%}%>
                 </tbody>
