@@ -1264,8 +1264,8 @@ app.post("/faculty-form", async (req,res)=>{
   facultyProject.primaryInvestigator = facultyInfo.id;
 
   var coFacultyInvestigatorCount = req.body.additionalFacultyCount;
-  var ccList;
-  var coFacultyList; 
+  var ccList = "";
+  var coFacultyList = ""; 
 
   if(coFacultyInvestigatorCount == 0){
     // Do Nothing
@@ -1313,10 +1313,10 @@ app.post("/faculty-form", async (req,res)=>{
       "Abstract: " +
       abstract +
       "\n" +
-      "Description" +
+      "Description: " +
       description +
       "\n" +
-      "Co-Faculty(s) Investigator: " +
+      "Investigators: " +
       coFacultyList +
       "\n\n\n" +
       "Please DO NOT reply to this email.";
@@ -1333,6 +1333,7 @@ app.post("/faculty-form", async (req,res)=>{
       if (err) {
         res.render("error", {message: `Your project has been submitted but we were unable to send you a confirmation email. You can return to the main page to view your project and project ID number. PROJECT ID: ${fun._id}`})
       } else { 
+        console.log(info);
         res.redirect("/");
       }
     });
