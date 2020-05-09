@@ -14,7 +14,7 @@ $('#adminSave').click(function() {
         $.ajax({
 
             method: "POST",
-            url: "/orsp-add-note",
+            url: "/orsp-add-note-faculty",
             data: {id: idGlobal, note: $("#AdminNoteLaunchModal").val()},
             success: (res)=>{
                 if(res.status){
@@ -41,7 +41,7 @@ $('#adminApprove').click(()=> {
     if(window.confirm(`Approve Project ID: ${idGlobal}?`)){
         $.ajax({
             method: "POST",
-            url: "/orsp-approve-student",
+            url: "/orsp-approve-faculty",
             data: {id: idGlobal},
             success: (res) => {
                 if(res.status){
@@ -61,15 +61,18 @@ $('#adminRedact').click(()=>{
 
         $.ajax({
             method: "POST",
-            url: "/orsp-deny-student",
+            url: "/orsp-deny-faculty",
             data: {id: idGlobal},
             success:(res) =>{
                 if(res.status){
-                    window.alert(`${idGlobal} has been redacted.`)
-                    location.reload();
+                    window.alert(`${idGlobal} has been denied.`);
+                    window.location.reload();
                 }else{
                     window.alert(res.message);
                 }
+            },
+            error:(err)=>{
+                alert("Something went wrong.");
             }
         })
     }
