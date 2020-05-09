@@ -895,7 +895,9 @@ app.post("/file-upload", (req,res)=>{
 
             var title = fun.title;
             var emailMessage = 
-            "Project Title: " + 
+            "PROJECT ID: " +
+            fun._id +  
+            "\n\nProject Title: " + 
             title + 
             ", has been uploaded and you are now ready for research days!" +
             "\n\n\n" + 
@@ -914,7 +916,7 @@ app.post("/file-upload", (req,res)=>{
               } else {
                 res.send({status: true, message: `Project ID: ${projectID} has been updated`});
               }
-            })
+            });
 
             res.redirect("/");
           }
@@ -948,7 +950,9 @@ app.post("/orsp-approve-student",  (req,res)=>{
 
         var title = fun.title;
         var emailMessage = 
-        "Project Title: " + 
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " + 
         title + 
         ", has been approved by ORSP." +
         "\n\n\n" + 
@@ -968,7 +972,7 @@ app.post("/orsp-approve-student",  (req,res)=>{
           } else {
             res.send({status: true, message: `Project ID: ${projectID} has been updated`});
           }
-        })
+        });
 
       }
     });
@@ -1001,7 +1005,9 @@ app.post("/orsp-deny-student", (req,res)=>{
         }
         var title = fun.title;
         var emailMessage = 
-        "Project Title: " + 
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " + 
         title + 
         ", has been removed from research days. Please submit a new project if you would still like to participate in research days." +
         "\n\n\n" + 
@@ -1021,7 +1027,7 @@ app.post("/orsp-deny-student", (req,res)=>{
           } else {
             res.send({status: true, message:`Project has been removed.`})
           }
-        })
+        });
       }
     });
   }else{
@@ -1072,7 +1078,9 @@ app.post("/faculty-approve-student", (req,res)=>{
 
         var title = fun.title;
         var emailMessage = 
-        "Project Title: " +
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " +
         title + 
         ", has been approved by your faculty adviser! Your next step is to upload your poster by [date]. Please submit following our guidelines here <-this would be a link." +
         "\n\n\n" + 
@@ -1092,7 +1100,7 @@ app.post("/faculty-approve-student", (req,res)=>{
           } else {
             console.log(info);
           }
-        })
+        });
       }
     });
   }else{
@@ -1104,14 +1112,47 @@ app.post("/faculty-deny-student", (req,res)=>{
 
   if(req.session.isFaculty){
     var projectsModel = require("./models/projects.js");
-    projectsModel.findByIdAndUpdate(req.body.id, {status: "Denied", dateLastModified: Date.now()}, (err, fun)=>{
+    projectsModel.findByIdAndUpdate(req.body.id, {status: "Denied", dateLastModified: Date.now()}, async (err, fun)=>{
 
       if(err){
         res.send({status: false, message: err.message})
       }else{
-        /*
-        Reuben email here
-        */
+        var studentModel = require("./models/students.js");
+        var studentDB = await studentModel.findOne({_id: fun.submitter});
+        
+        var facultyEmail = req.session.email;
+        var emailList = facultyEmail + ", " + studentDB.email;
+        var ccList;
+        for(co in fun.copis){
+          var copiEmail = await studentModel.findById(fun.copis[co]);
+          ccList += copiEmail.email + ", "
+        }
+
+        var title = fun.title;
+        var emailMessage = 
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " +
+        title + 
+        ", has been denied by your faculty adviser!" +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptions = {
+          from: "orsptemp20@gmail.com",
+          to: emailList,
+          cc: ccList,
+          subject: "Research Days Project Denied by your Faculty Adviser!",
+          text: emailMessage,
+        };
+
+        transporter.sendMail(mailOptions, function (err, info){
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(info);
+          }
+        })
         res.send({status: true, message: "We good"})
       }
     })
@@ -1184,7 +1225,9 @@ app.post("/faculty-form", async (req,res)=>{
   facultyProject.save();
 
   var emailMessage =
-    "Your project: " +
+    "PROJECT ID: " +
+    facultyProject._id +  
+    "\n\nYour project: " +
     title +
     ", has been submitted!\n\n" +
     "Abstract: " +
