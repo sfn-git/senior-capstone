@@ -79,3 +79,8 @@ td {
 .dataTables_filter {
   display: none;
   }
+
+#abstractCharRemaining
+{
+  visibility: hidden;
+}
