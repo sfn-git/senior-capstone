@@ -102,7 +102,7 @@ app.get("/", async (req, res) => {
           facultyProjects[index].coFacultyInvestigator[co] = facultyProjects[index].coFacultyInvestigator[co].name
         }
       }
-      
+
       res.render("orspadmin-dashboard", {
         name: req.session.name,
         projects: facultyProjects,
@@ -1222,41 +1222,46 @@ app.post("/faculty-form", async (req,res)=>{
     facultyProject.consent = true;
   }
 
-  facultyProject.save();
+  facultyProject.save((err, fun)=>{
 
-  var emailMessage =
-    "PROJECT ID: " +
-    facultyProject._id +  
-    "\n\nYour project: " +
-    title +
-    ", has been submitted!\n\n" +
-    "Abstract: " +
-    abstract +
-    "\n" +
-    "Description" +
-    description +
-    "\n" +
-    "Co-Faculty(s) Investigator: " +
-    coFacultyList +
-    "\n\n\n" +
-    "Please DO NOT reply to this email.";
-  
-  var mailOptions = {
-    from: "orsptemp20@gmail.com",
-    to: facultyEmail,
-    cc: ccList,
-    subject: "Your Faculty Submission Has Been Submitted!",
-    text: emailMessage,
-  };
-  
-  transporter.sendMail(mailOptions, function (err, info) {
-    if (err) {
-      console.log(err);
-    } else { 
-      console.log(info);
+    if(err){
+      res.render("error", {error: err.message});
+    }else{
+
+      var emailMessage =
+      "PROJECT ID: " +
+      facultyProject._id +  
+      "\n\nYour project: " +
+      title +
+      ", has been submitted!\n\n" +
+      "Abstract: " +
+      abstract +
+      "\n" +
+      "Description" +
+      description +
+      "\n" +
+      "Co-Faculty(s) Investigator: " +
+      coFacultyList +
+      "\n\n\n" +
+      "Please DO NOT reply to this email.";
+    
+    var mailOptions = {
+      from: "orsptemp20@gmail.com",
+      to: facultyEmail,
+      cc: ccList,
+      subject: "Your Faculty Submission Has Been Submitted!",
+      text: emailMessage,
+    };
+    
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.render("error", {message: `Your project has been submitted but we were unable to send you a confirmation email. You can return to the main page to view your project and project ID number. PROJECT ID: ${fun._id}`})
+      } else { 
+        res.redirect("/");
+      }
+    });
     }
   });
-  res.redirect("/");
   
   }else{
     res.render('error', {error: "Please login to continue"});
