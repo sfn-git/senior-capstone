@@ -27,6 +27,7 @@ $('#editStudentsAbstarct').click(function() {
     $(this).hide();
     $(this).siblings('#closeStudent, #approveStudent, #denyStudent').hide();
     $(this).siblings('#reviewStudent, #cancelStudentReview').show();
+    document.getElementById("abstractCharRemaining").style.visibility = "visible";
 });
 
 $('#reviewStudent').click(function() {
@@ -34,6 +35,7 @@ $('#reviewStudent').click(function() {
     $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent, #denyStudent').show();
     $(this).siblings('#cancelStudentReview').hide();
     $(this).hide();
+    document.getElementById("abstractCharRemaining").style.visibility = "hidden";
 });
 
 $('#cancelStudentReview,#reviewStudent').click(function() {
@@ -41,6 +43,7 @@ $('#cancelStudentReview,#reviewStudent').click(function() {
     $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent').show();
     $(this).siblings('#reviewStudent').hide();
     $(this).hide();
+    document.getElementById("abstractCharRemaining").style.visibility = "hidden";
 });
 
 $('#cancelStudentReview,#reviewStudent').click(function() {
