@@ -408,13 +408,14 @@ app.get("/orsp-student-list", async (req,res)=>{
     var majorModel = require("./models/major.js");
 
     var studentList = await studentModel.find({}).lean();
+    var majorList = await majorModel.find({}).sort({ major: 1 });
     for(index in studentList){
 
       var major = await majorModel.findById(studentList[index].major);
       studentList[index].major = major.major;
     }
 
-    res.render("student-list", {students: studentList});
+    res.render("student-list", {students: studentList, major: majorList});
    
   }else{
     res.render("error", {error: "You are not authorized to view this page"});
@@ -936,6 +937,37 @@ app.post("/file-upload", (req,res)=>{
   }else{
     res.render('error', {error: `You are not authorized to view this page. Please login and try again.`});
   }
+})
+
+app.post("/orsp-add-student", (req,res)=>{
+
+  if(req.session.isORSPAdmin || req.session.isORSP){
+
+    var studentModel = require("./models/students.js");
+
+    var newStudent = new studentModel({
+      name: req.body.studentName,
+      stuID: req.body.studentID,
+      email: req.body.studentEmail,
+      major: req.body.studentMajor,
+      classLevel: req.body.studentClassLevel,
+      primaryLocation: req.body.studentCampus
+    })
+
+    newStudent.save((err, fun)=>{
+
+      if(err){
+        res.render("error", {error: err.message});
+      }else{
+        res.redirect("/orsp-student-list");
+      }
+
+    })
+
+  }else{
+    res.render("error", {error: "You are not authorized to access this page"});
+  }
+
 })
 
 app.post("/orsp-approve-student",  (req,res)=>{

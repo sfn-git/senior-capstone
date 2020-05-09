@@ -35,9 +35,62 @@
     </script>
 <body>
     <div class="container p-4">
-
-        <form action="/add-student" method="post"></form>
-
+        <h3>Add Student</h3>
+        <form action="/orsp-add-student" method="post">
+            <div class="row">
+                <div class="form-group col-md-8">
+                    <label for="studentName">Name:</label>
+                    <input type="text" name="studentName" class="form-control" id="studentName" required="true">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="studentEmail">Email:</label>
+                    <input type="text" name="studentEmail" class="form-control" id="studentName" required="true">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="studentID">ID Number:</label>
+                    <input type="text" class="form-control" name="studentID" id="studentID" required="true">
+                </div>
+                <div class="form-group col-4">
+                    <label for="studentMajor">Major:</label>
+                    <select id="studentMajor" name="studentMajor" class="form-control" required="true">
+                        <option></option>
+                        <% major.forEach((major)=>{ %>
+                        <option value='<%= major.id%>'><%= major.major%></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="form-group col-2">
+                    <label for="studentClassLevel">Class Level</label>
+                    <select id="studentClassLevel" name="studentClassLevel" class="form-control" required="true">
+                        <option></option>
+                        <option value="Freshman">Freshman</option>
+                        <option value="Sophomore">Sophomore</option>
+                        <option value="Junior">Junior</option>
+                        <option value="Senior">Senior</option>
+                        <option value="Graduate">Graduate</option>
+                    </select>
+                </div>
+                <div class="form-group col-3">
+                    <label for="studentCampus">Campus</label>
+                    <select id="studentCampus" name="studentCampus" class="form-control" required="true">
+                        <option></option>
+                        <option value="Union" selected>Union (Main)</option>
+                        <option value="Wenzhou">Wenzhou (China)</option>
+                        <option value="Ocean">Ocean (Toms River)</option>
+                        <option value="Skylands">Skylands (Oak Ridge)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <button type="submit" class="form-check btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <h3>List of Students</h3>
         <table id="studentTable" class="table table-responsive">
             <thead>
                 <tr>
