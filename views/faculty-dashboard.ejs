@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
     <script defer src="/js/launchModalFaculty.js"></script>
+    <script defer src="/js/abstractRevisionCharCounter.js"></script>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -65,7 +66,7 @@
                                 <%= studentProjects[element].title %>
                             </button>
                             <%}else{%>
-                            <button
+                            <button name="popModal"
                                 onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= studentProjects[element].submitter%>','<% studentProjects[element].copis %>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
                                 <%= studentProjects[element].title %>
@@ -176,14 +177,14 @@
                                 </div>
                                 <div class="modal-footer">
                                     <p class="mr-auto small text-muted" id="lastEdit"></p>
-                                    <input id="edit" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" 
-                                        value="Edit" />
+                                    <input id="edit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
+                                        type="button" value="Edit" />
                                     <input id="approve" class="edit btn btn-success" type="button" data-dismiss="modal"
                                         value="Approve" />
-                                    <input id="save" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" 
-                                        value="Submit Changes & Approve" />
-                                    <input id="cancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger" type="button" data-dismiss="modal" 
-                                        value="Close" />
+                                    <input id="save" onclick="noteditable(); doneEditAbstarct();"
+                                        class="btn btn-primary" type="button" value="Submit Changes & Approve" />
+                                    <input id="cancel" onclick="noteditable(); doneEditAbstarct();"
+                                        class="btn btn-danger" type="button" data-dismiss="modal" value="Close" />
                                     <input id="close" class="btn btn-secondary" type="button" data-dismiss="modal"
                                         value="Close" />
                                 </div>
@@ -213,13 +214,13 @@
                                 </button>
                             </div>
 
-
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-8 mr-auto">
                                         <h5>Abstract</h5>
                                         <textarea rows="5" maxlength="750" class="my-textbox"
                                             id="studentAbstractLaunchModal" value="" readonly="true"></textarea>
+                                        <small class="text-muted" id="abstractCharRemaining"></small>
                                     </div>
                                     <div class="col-3">
                                         <h5>Primary Presenter</h5>
@@ -232,18 +233,18 @@
                                 </div>
                                 <div class="modal-footer">
                                     <p class="mr-auto small text-muted" id="studentLastEdit"></p>
-                                    <input id="editStudentsAbstarct" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" 
-                                        value="Edit" />
-                                    <input id="approveStudent" class="edit btn btn-success" type="button" data-dismiss="modal"
-                                        value="Approve" />
-                                    <input id="reviewStudent" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" 
-                                        value="Review" />
-                                    <input id="denyStudent" class="edit btn btn-danger" type="button" data-dismiss="modal" 
-                                        value="Deny" />
-                                    <input id="cancelStudentReview" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger" type="button" data-dismiss="modal" 
-                                        value="Close" />
-                                    <input id="closeStudent" class="btn btn-secondary" type="button" data-dismiss="modal"
-                                        value="Close" />
+                                    <input id="editStudentsAbstarct" onclick="editable(); editAbstarct();"
+                                        class="edit btn btn-primary" type="button" value="Edit" />
+                                    <input id="approveStudent" class="edit btn btn-success" type="button"
+                                        data-dismiss="modal" value="Approve" />
+                                    <input id="reviewStudent" onclick="noteditable(); doneEditAbstarct();"
+                                        class="btn btn-primary" type="button" value="Review" />
+                                    <input id="denyStudent" class="edit btn btn-danger" type="button"
+                                        data-dismiss="modal" value="Deny" />
+                                    <input id="cancelStudentReview" onclick="noteditable(); doneEditAbstarct();"
+                                        class="btn btn-danger" type="button" data-dismiss="modal" value="Close" />
+                                    <input id="closeStudent" class="btn btn-secondary" type="button"
+                                        data-dismiss="modal" value="Close" />
                                 </div>
                             </div>
                         </div>
