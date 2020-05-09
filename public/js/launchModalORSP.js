@@ -17,7 +17,7 @@ function launchORSPModal(
 
   //change badge color in modal
   if(status == 'Pending ORSP') {
-    document.getElementById("studentSubmissionID").className = "badge badge-warning";
+    document.getElementById("studentSubmissionID").className = "badge badge-info";
   }
   else if(status == 'Approved') {
     document.getElementById("studentSubmissionID").className = "badge badge-success";
@@ -29,7 +29,7 @@ function launchORSPModal(
     document.getElementById("studentSubmissionID").className = "badge badge-info";
   }
   else if(status == 'Pending PPT') {
-    document.getElementById("studentSubmissionID").className = "badge badge-info";
+    document.getElementById("studentSubmissionID").className = "badge badge-warning";
   }
   else {
     document.getElementById("studentSubmissionID").className = "badge badge-warning";
