@@ -8,7 +8,12 @@ var facultyProjectsSchema = new schema({
     description: {type: String},
     primaryInvestigator: {type: mongoose.Types.ObjectId},
     onCampus: {type: Boolean},
-    coFacultyInvestigator: [{}],
+    coFacultyInvestigator: [{
+        name: {type: String},
+        position: {type: String},
+        campus: {type: String},
+        email: {type: String}
+    }],
     coStudentInvestigator: [{type: mongoose.Types.ObjectId}],
     consent: {type: Boolean},
     dateSubmitted: {type: Date, default: Date.now},

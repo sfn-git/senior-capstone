@@ -879,50 +879,53 @@ app.post("/file-upload", (req,res)=>{
   if(req.session.userId && req.session.isStudent){
     const file = req.files.filename;
     var projectID = req.body.fileID;
-    var fileExt = file.name.split('.')[1];
-    const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
+    var fileExt = file.name.split('.')[file.name.split('.').length-1];
 
-    file.mv(path, (err)=>{
+    if(fileExt != "pptx" || fileExt != "ppt"){
+      res.send({status: false, message: "You must upload a powerpoint file (pptx or ppt)"})
+    }else{
+      const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
 
-      if(err){
-        res.render('error', {error: `Something went wrong uploading your file: ${err}`});
-      }else{
-        var projectsModel = require('./models/projects');
-        projectsModel.findByIdAndUpdate(projectID, {"status": "Approved","fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()}, (err, fun)=>{
-          if(err){
-            res.render("error",{error: `Something went wrong updating your status. Contact orsp with this error: ${err.message}`});
-          }else{
+      file.mv(path, (err)=>{
 
-            var title = fun.title;
-            var emailMessage = 
-            "PROJECT ID: " +
-            fun._id +  
-            "\n\nProject Title: " + 
-            title + 
-            ", has been uploaded and you are now ready for research days!" +
-            "\n\n\n" + 
-            "Please DO NOT reply to this email.";
+        if(err){
+          res.send({status: false, message: `Something went wrong uploading your file: ${err}`});
+        }else{
+          var projectsModel = require('./models/projects');
+          projectsModel.findByIdAndUpdate(projectID, {"status": "Approved","fileLoc": path, dateLastModified: Date.now(), datePosterSubmitted: Date.now()}, (err, fun)=>{
+            if(err){
+              res.render("error",{error: `Something went wrong updating your status. Contact orsp with this error: ${err.message}`});
+            }else{
 
-            var mailOptions = {
-              from: "orsptemp20@gmail.com",
-              to: req.session.email ,
-              subject: "Poster file successfully uploaded!",
-              text: emailMessage,
-            };
+              var title = fun.title;
+              var emailMessage = 
+              "PROJECT ID: " +
+              fun._id +  
+              "\n\nProject Title: " + 
+              title + 
+              ", has been uploaded and you are now ready for research days!" +
+              "\n\n\n" + 
+              "Please DO NOT reply to this email.";
 
-            transporter.sendMail(mailOptions, function (err, info){
-              if (err) {
-                res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
-              } else {
-                res.send({status: true, message: `Project ID: ${projectID} has been updated`});
-              }
-            });
+              var mailOptions = {
+                from: "orsptemp20@gmail.com",
+                to: req.session.email ,
+                subject: "Poster file successfully uploaded!",
+                text: emailMessage,
+              };
 
-            res.redirect("/");
-          }
-        });
-      }
-    })
+              transporter.sendMail(mailOptions, function (err, info){
+                if (err) {
+                  res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
+                } else {
+                  res.send({status: true, message: `Project ID: ${projectID} has been updated`});
+                }
+              });
+            }
+          });
+        }
+      })
+    }
   }else{
     res.render('error', {error: `You are not authorized to view this page. Please login and try again.`});
   }
@@ -1200,7 +1203,7 @@ app.post("/faculty-form", async (req,res)=>{
         name: `${req.body["firstName"+(i+1)]} ${req.body["lastName"+(i+1)]}`,
         position: req.body["facultyPosition"+(i+1)],
         campus: req.body["campus"+(i+1)],
-        email: `${req.body["keanEmail"+(i+1)]}@kean.edu`
+        email: `${req.body["keanEmail"+(i+1)]}@kean.edu`.toLowerCase()
       })
       if(i == (coFacultyInvestigatorCount - 1)){
         ccList += facultyProject.coFacultyInvestigator[i].email;
@@ -1262,7 +1265,7 @@ app.post("/faculty-form", async (req,res)=>{
     });
     }
   });
-  
+
   }else{
     res.render('error', {error: "Please login to continue"});
   }
