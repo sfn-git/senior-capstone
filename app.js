@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000; //3000 for Development. Can be changed wh
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const fileupload = require("express-fileupload");
+const fs = require("fs");
 require("./models/database.js");
 const config = require('./config.json');
 
@@ -16,17 +17,13 @@ const config = require('./config.json');
 //                  Express Configs                 //
 //==================================================//
 
-app.set("views", path.join(__dirname, "views"));            //Sets views directory
-app.set("view engine", "ejs");                              //Sets view engine to EJS
-app.use(express.static("public"));                          //Adds public folder to static content
-app.use(express.static("uploads"));                         //Adds uploads folder to static content
-app.use(bodyParser.urlencoded({ extended: true }));         //Used to read req.body for app requests
-app.use(bodyParser.json());                                 //Puts req.body in JSON format. 
-app.use(fileupload());                                      //Allows express to use fileupload
-
-// =================================================//
-//                 Session Config                   //
-//==================================================//
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.static("uploads"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(fileupload());
 app.use(
   session({
     name: "sid",
@@ -88,7 +85,6 @@ app.get("/", async (req, res) => {
         isFaculty: req.session.isFaculty,
         isORSPAdmin: req.session.isORSPAdmin,
       });
-
     //------------------------------------------------------------
     //Will send user to orspadmin-dashboard if they an ORSP Admin
     //------------------------------------------------------------
@@ -112,21 +108,24 @@ app.get("/", async (req, res) => {
         projects: facultyProjects,
         facCount: facultyProjects.length
       });
-
     //---------------------------------------------------------
     //Will send user to orsp-dashboard if they are ORSP Staff
     //---------------------------------------------------------
     } else if (req.session.isORSP) {
       var projectsModel = require("./models/projects.js");
       var studentModel = require("./models/students.js"); 
+      // var facultyProjectsModel = require("./models/facultyProjects.js");
       var facultyModel = require("./models/faculty.js");
 
       var projects = await projectsModel.find({}).sort("date").lean();
+      // var facultyProjects = await facultyProjectsModel.find({}).lean();
 
       for(index in projects){
 
-        var studentName = await studentModel.findById(projects[index].submitter).lean();
-        var facultyName = await facultyModel.findById(projects[index].facultyAdvisor).lean();
+        var stuID = projects[index].submitter;
+        var facultyID = projects[index].facultyAdvisor;
+        var studentName = await studentModel.findById(stuID).lean();
+        var facultyName = await facultyModel.findById(facultyID).lean();
         projects[index].submitterName = studentName.name;
         projects[index].facultyAdvisorName = facultyName.facultyName;
 
@@ -149,6 +148,7 @@ app.get("/", async (req, res) => {
       var studentModel = require("./models/students");
       var projectsModel = require("./models/projects");
       var facultyModel = require("./models/faculty");
+      var fullProjects = []; //This will contain the projects that will be sent to the front end
 
       var studentID = await studentModel.find({ email: req.session.email },"_id");
       var projects = await projectsModel.find({ submitter: studentID }).lean(); //This is the projects from the database that have ids instead of names
@@ -163,11 +163,11 @@ app.get("/", async (req, res) => {
         projects[index].submitter = studentInfo.name;
 
         for (coIndex in projects[index].copis) {
-
-          var coPresenterName = await studentModel.findById(projects[index].copis[coIndex],"name");
-
+          var coPresenterName = await studentModel.findById(
+            projects[index].copis[coIndex],
+            "name"
+          );
           if (coPresenterName == null) {
-            // Do Nothing
           } else {
             projects[index].copis[coIndex] = coPresenterName.name;
           }
@@ -785,9 +785,8 @@ app.post("/student-form", async (req, res) => {
 
         if ((await studentModel.exists({ email: coEmail }))){
 
-          var temp = await studentModel.findOne({ email: coEmail }).select("_id").lean();
-          console.log(coPresenterID.includes(temp._id));
-          if(coPresenterID.indexOf(`${temp._id}`) > -1){
+          var temp = await studentModel.findOne({ email: coEmail }).select("_id");
+          if(coPresenterID.includes(temp._id)){
             // Do nothing
           }else{
             coPresenterID.push(temp._id);
@@ -831,8 +830,6 @@ app.post("/student-form", async (req, res) => {
         var facultyName = facultyDB.facultyName;
         var facultyEmail = facultyDB.email;
     
-        var emailList = email + ", " + facultyEmail;
-    
         var emailMessage =
           "PROJECT ID: " +
           fun._id +  
@@ -852,22 +849,31 @@ app.post("/student-form", async (req, res) => {
           coPresenters +
           "\n\n\n" +
           "Please DO NOT reply to this email.";
-        var mailOptions = {
+
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: email,
           cc: ccList,
-          subject: "Your Project Has Been Submitted!",
+          subject: "Your Project \"" + title + "\" Has Been Submitted!",
           text: emailMessage,
         };
+        transporter.sendMail(mailOptionStudent);
+
+        var mailOptionFaculty ={
+          from: "osrptemp20@gmail.com",
+          to: facultyEmail,
+          subject: "Student Project \"" + title + "\" Has Been Submitted!",
+          text: emailMessage,
+        };
+        transporter.sendMail(mailOptionFaculty, function (err, info) {
+          if (err) {
+            res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. Please save the following: PROJECT ID ${fun._id}`})
+          } else {
+            res.redirect("/");
+          }
+        });
       }
       
-      transporter.sendMail(mailOptions, function (err, info) {
-        if (err) {
-          res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. You can view your project submission by going to the home page. PROJECT ID ${fun._id}`})
-        } else {
-          res.redirect("/");
-        }
-      });
     });
 
   }else{
@@ -911,7 +917,7 @@ app.post("/file-upload", (req,res)=>{
               var mailOptions = {
                 from: "orsptemp20@gmail.com",
                 to: req.session.email ,
-                subject: "Poster file successfully uploaded!",
+                subject: "\"" + title + "\" Poster file successfully uploaded!",
                 text: emailMessage,
               };
 
@@ -966,7 +972,7 @@ app.post("/orsp-approve-student",  (req,res)=>{
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
           cc: ccList,
-          subject: "Project Updated!",
+          subject: "\"" + title + "\" Project Updated!",
           text: emailMessage,
         };
 
@@ -1021,110 +1027,7 @@ app.post("/orsp-deny-student", (req,res)=>{
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
           cc: ccList,
-          subject: "Project Removed.",
-          text: emailMessage,
-        };
-
-        transporter.sendMail(mailOptions, function (err, info){
-          if (err) {
-            res.send({status: false, message: `Project successfully removed, but the student was unable to receive an email confirmation about it.`})
-          } else {
-            res.send({status: true, message:`Project has been removed.`})
-          }
-        });
-      }
-    });
-  }else{
-    res.send({status: false, message: "You are not authorized to access this page."});
-  }
-})
-
-// ORSP Approve Faculty
-app.post("/orsp-approve-faculty",  (req,res)=>{
-
-  if(req.session.isORSPAdmin){
-    var projectFacultyModel = require("./models/facultyProjects.js");
-    projectFacultyModel.findByIdAndUpdate(req.body.id, {'status': "Approved", 'dateLastModified': Date.now()}, async (err,fun)=>{
-      if(err){
-        res.send({status: false, message: `An error occured ${err.message}`});
-      }else{
-        var facultyModel = require("./models/faculty.js");
-        var facultyDB = await facultyModel.findOne({_id: fun.primaryInvestigator});
-
-        var ccList = facultyDB.email + ", ";
-        for(co in fun.coFacultyInvestigator){
-          var copiEmail = coFacultyInvestigator[co].email;
-          ccList += copiEmail + ", "
-        }
-
-        var title = fun.title;
-        var emailMessage = 
-        "PROJECT ID: " +
-        fun._id +  
-        "\n\nProject Title: " + 
-        title + 
-        ", has been approved by ORSP." +
-        "\n\n\n" + 
-        "Please DO NOT reply to this email.";
-
-        var mailOptions = {
-          from: "orsptemp20@gmail.com",
-          to: req.session.email ,
-          cc: ccList,
-          subject: "Project Updated!",
-          text: emailMessage,
-        };
-
-        transporter.sendMail(mailOptions, function (err){
-          if (err) {
-            res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
-          } else {
-            res.send({status: true, message: `Project ID: ${fun.id} has been updated`});
-          }
-        });
-
-      }
-    });
-
-  }else{
-    res.send({status: false, message: "You are not authorized to access this page."});
-  }
-
-})
-
-app.post("/orsp-deny-faculty", (req,res)=>{
-
-  if(req.session.isORSPAdmin){
-    var projectsFacultyModel = require("./models/facultyProjects.js");
-    var projectID = req.body.id;
-    projectsFacultyModel.findByIdAndUpdate(projectID,{status: "Denied"},async (err,fun)=>{
-
-      if(err){
-        res.send({status: false, message: `${err.message}`});
-      }else{
-        var facultyModel = require("./models/faculty.js");
-        var facultyDB = await facultyModel.findOne({_id: fun.primaryInvestigator});
-
-        var ccList = facultyDB.email + ", ";
-        for(co in fun.coFacultyInvestigator){
-          var copiEmail = fun.coFacultyInvestigator[co].name;
-          ccList += copiEmail.email + ", "
-        }
-        var title = fun.title;
-        var emailMessage = 
-        "PROJECT ID: " +
-        fun._id +  
-        "\n\nProject Title: " + 
-        title + 
-        ", has been denied from research days." +
-        "\n\n\n" + 
-        "Please DO NOT reply to this email.";
-
-        var mailOptions = {
-          from: "orsptemp20@gmail.com",
-          to: req.session.email ,
-          cc: ccList,
-          subject: "Project Denied.",
+          subject: "\"" + title + "\" Project Removed.",
           text: emailMessage,
         };
 
@@ -1143,29 +1046,11 @@ app.post("/orsp-deny-faculty", (req,res)=>{
 })
 
 app.post("/orsp-add-note", (req,res)=>{
-  console.log(req.url);
+
   if(req.session.isORSP || req.session.isORSPAdmin){
     var projectsModel = require("./models/projects");
 
     projectsModel.findByIdAndUpdate(req.body.id, {notes: req.body.note}, (err, fun)=>{
-      if(err){
-        res.send({status: false, message: err.message});
-      }else{
-        console.log(fun);
-        res.send({status: true, message: ""});
-      }
-    })
-  }else{
-    res.send({status: false, message: "You are not authorized to view this page. Please login and try again."});
-  }
-})
-
-app.post("/orsp-add-note-faculty", (req,res)=>{
-  console.log(req.url);
-  if(req.session.isORSPAdmin){
-    var facultyprojectsModel = require("./models/facultyProjects.js");
-
-    facultyprojectsModel.findByIdAndUpdate(req.body.id, {notes: req.body.note}, (err, fun)=>{
       if(err){
         res.send({status: false, message: err.message});
       }else{
@@ -1194,7 +1079,6 @@ app.post("/faculty-approve-student", (req,res)=>{
         var studentDB = await studentModel.findOne({_id: fun.submitter});
         
         var facultyEmail = req.session.email;
-        var emailList = facultyEmail + ", " + studentDB.email;
         var ccList;
         for(co in fun.copis){
           var copiEmail = await studentModel.findById(fun.copis[co]);
@@ -1202,7 +1086,7 @@ app.post("/faculty-approve-student", (req,res)=>{
         }
 
         var title = fun.title;
-        var emailMessage = 
+        var studentMessage = 
         "PROJECT ID: " +
         fun._id +  
         "\n\nProject Title: " +
@@ -1211,21 +1095,39 @@ app.post("/faculty-approve-student", (req,res)=>{
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
-        var mailOptions = {
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: studentDB.email,
           cc: ccList,
-          subject: "Research Days Project Approved by your Faculty Adviser!",
-          text: emailMessage,
+          subject: "Research Days Project \"" + title + "\" Approved by your Faculty Adviser!",
+          text: studentMessage,
         };
-
-        transporter.sendMail(mailOptions, function (err, info){
+        transporter.sendMail(mailOptionStudent, function (err, info){
           if (err) {
             console.log(err);
           } else {
             console.log(info);
           }
         });
+
+        var facultyMessage = 
+          "PROJECT ID: " +
+          fun._id +  
+          "\n\nProject Title: " +
+          title + 
+          ", was approved successfully." +
+          "\n\n\n" + 
+          "Please DO NOT reply to this email.";
+
+        var mailOptionFaculty = {
+          from: "orsptemp20@gmail.com",
+          to: facultyEmail,
+          cc: ccList,
+          subject: "Research Days Project \"" + title + "\" Approved!",
+          text: facultyMessage,
+        };
+        transporter.sendMail(mailOptionFaculty);
+
       }
     });
   }else{
@@ -1246,7 +1148,6 @@ app.post("/faculty-deny-student", (req,res)=>{
         var studentDB = await studentModel.findOne({_id: fun.submitter});
         
         var facultyEmail = req.session.email;
-        var emailList = facultyEmail + ", " + studentDB.email;
         var ccList;
         for(co in fun.copis){
           var copiEmail = await studentModel.findById(fun.copis[co]);
@@ -1254,7 +1155,7 @@ app.post("/faculty-deny-student", (req,res)=>{
         }
 
         var title = fun.title;
-        var emailMessage = 
+        var studentMessage = 
         "PROJECT ID: " +
         fun._id +  
         "\n\nProject Title: " +
@@ -1263,22 +1164,40 @@ app.post("/faculty-deny-student", (req,res)=>{
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
-        var mailOptions = {
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: studentDB.email,
           cc: ccList,
           subject: "Research Days Project Denied by your Faculty Adviser!",
-          text: emailMessage,
+          text: studentMessage,
         };
-
-        transporter.sendMail(mailOptions, function (err, info){
+        transporter.sendMail(mailOptionStudent, function (err, info){
           if (err) {
             console.log(err);
           } else {
             console.log(info);
           }
-        })
-        res.send({status: true, message: "We good"})
+        });
+
+        var facultyMessage = 
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " +
+        title + 
+        ", was denied successfully." +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptionFaculty = {
+          from: "orsptemp20@gmail.com",
+          to: facultyEmail,
+          cc: ccList,
+          subject: "Research Days Project Denied by your Faculty Adviser!",
+          text: facultyMessage,
+        };
+        transporter.sendMail(mailOptionFaculty);
+
+        res.send({status: true, message: "We good"});
       }
     })
   }else{
@@ -1287,9 +1206,6 @@ app.post("/faculty-deny-student", (req,res)=>{
 
 })
 
-// ---------------------------------------------//
-//         Post for faculty submissions         //
-// ---------------------------------------------//
 app.post("/faculty-form", async (req,res)=>{
   if(req.session.userId && req.session.isFaculty){
   var facultyProjectModel = require('./models/facultyProjects');
@@ -1377,7 +1293,7 @@ app.post("/faculty-form", async (req,res)=>{
       from: "orsptemp20@gmail.com",
       to: facultyEmail,
       cc: ccList,
-      subject: "Your Faculty Submission Has Been Submitted!",
+      subject: "Your Faculty Project \"" + title + "\" Has Been Submitted!",
       text: emailMessage,
     };
     

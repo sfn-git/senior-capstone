@@ -21,12 +21,17 @@ tbody {
   background-color: #f8f9fa !important;
 }
 
-#abstractLaunchModal,#studentAbstractLaunchModal, #noteLaunchModal, #AdminNoteLaunchModal{
-  border: thick solid white;
+#abstractLaunchModal,#studentAbstractLaunchModal, #noteLaunchModal{
+  border: thin solid white;
   padding: 2px;
   width: 100%;
   word-wrap: break-word;
 }
+
+/* #customFile
+{
+max-width: 300px;
+} */
 
 #IPO {
   visibility: hidden;
@@ -64,15 +69,6 @@ tbody {
   }
 
 #ORSPapprove {
-  visibility: hidden;
-}
-
-/*Admin edit options*/
-#adminSave, #adminCloseNote {
-  display:none;
-  }
-
-#adminApprove {
   visibility: hidden;
 }
 
