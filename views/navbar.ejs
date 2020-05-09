@@ -36,7 +36,7 @@
 </li>
 <%}%>
 
-<% if (loggedIn == true && isORSPAdmin == true){ %>
+<% if (loggedIn == true && isORSPAdmin && !isORSP){ %>
   <li class="nav-item">
     <a class="nav-link" href="/orsp-student-list">Students</a>
   </li>
