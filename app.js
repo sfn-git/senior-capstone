@@ -830,8 +830,6 @@ app.post("/student-form", async (req, res) => {
         var facultyName = facultyDB.facultyName;
         var facultyEmail = facultyDB.email;
     
-        var emailList = email + ", " + facultyEmail;
-    
         var emailMessage =
           "PROJECT ID: " +
           fun._id +  
@@ -851,22 +849,31 @@ app.post("/student-form", async (req, res) => {
           coPresenters +
           "\n\n\n" +
           "Please DO NOT reply to this email.";
-        var mailOptions = {
+
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: email,
           cc: ccList,
-          subject: "Your Project Has Been Submitted!",
+          subject: "Your Project \"" + title + "\" Has Been Submitted!",
           text: emailMessage,
         };
+        transporter.sendMail(mailOptionStudent);
+
+        var mailOptionFaculty ={
+          from: "osrptemp20@gmail.com",
+          to: facultyEmail,
+          subject: "Student Project \"" + title + "\" Has Been Submitted!",
+          text: emailMessage,
+        };
+        transporter.sendMail(mailOptionFaculty, function (err, info) {
+          if (err) {
+            res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. Please save the following: PROJECT ID ${fun._id}`})
+          } else {
+            res.redirect("/");
+          }
+        });
       }
       
-      transporter.sendMail(mailOptions, function (err, info) {
-        if (err) {
-          res.render('error', {error: `Your project has been submitted but there was a problem sending you a confirmation email. Please save the following: PROJECT ID ${fun._id}`})
-        } else {
-          res.redirect("/");
-        }
-      });
     });
 
   }else{
@@ -910,7 +917,7 @@ app.post("/file-upload", (req,res)=>{
               var mailOptions = {
                 from: "orsptemp20@gmail.com",
                 to: req.session.email ,
-                subject: "Poster file successfully uploaded!",
+                subject: "\"" + title + "\" Poster file successfully uploaded!",
                 text: emailMessage,
               };
 
@@ -965,7 +972,7 @@ app.post("/orsp-approve-student",  (req,res)=>{
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
           cc: ccList,
-          subject: "Project Updated!",
+          subject: "\"" + title + "\" Project Updated!",
           text: emailMessage,
         };
 
@@ -1020,7 +1027,7 @@ app.post("/orsp-deny-student", (req,res)=>{
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
           cc: ccList,
-          subject: "Project Removed.",
+          subject: "\"" + title + "\" Project Removed.",
           text: emailMessage,
         };
 
@@ -1072,7 +1079,6 @@ app.post("/faculty-approve-student", (req,res)=>{
         var studentDB = await studentModel.findOne({_id: fun.submitter});
         
         var facultyEmail = req.session.email;
-        var emailList = facultyEmail + ", " + studentDB.email;
         var ccList;
         for(co in fun.copis){
           var copiEmail = await studentModel.findById(fun.copis[co]);
@@ -1080,7 +1086,7 @@ app.post("/faculty-approve-student", (req,res)=>{
         }
 
         var title = fun.title;
-        var emailMessage = 
+        var studentMessage = 
         "PROJECT ID: " +
         fun._id +  
         "\n\nProject Title: " +
@@ -1089,21 +1095,39 @@ app.post("/faculty-approve-student", (req,res)=>{
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
-        var mailOptions = {
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: studentDB.email,
           cc: ccList,
-          subject: "Research Days Project Approved by your Faculty Adviser!",
-          text: emailMessage,
+          subject: "Research Days Project \"" + title + "\" Approved by your Faculty Adviser!",
+          text: studentMessage,
         };
-
-        transporter.sendMail(mailOptions, function (err, info){
+        transporter.sendMail(mailOptionStudent, function (err, info){
           if (err) {
             console.log(err);
           } else {
             console.log(info);
           }
         });
+
+        var facultyMessage = 
+          "PROJECT ID: " +
+          fun._id +  
+          "\n\nProject Title: " +
+          title + 
+          ", was approved successfully." +
+          "\n\n\n" + 
+          "Please DO NOT reply to this email.";
+
+        var mailOptionFaculty = {
+          from: "orsptemp20@gmail.com",
+          to: facultyEmail,
+          cc: ccList,
+          subject: "Research Days Project \"" + title + "\" Approved!",
+          text: facultyMessage,
+        };
+        transporter.sendMail(mailOptionFaculty);
+
       }
     });
   }else{
@@ -1124,7 +1148,6 @@ app.post("/faculty-deny-student", (req,res)=>{
         var studentDB = await studentModel.findOne({_id: fun.submitter});
         
         var facultyEmail = req.session.email;
-        var emailList = facultyEmail + ", " + studentDB.email;
         var ccList;
         for(co in fun.copis){
           var copiEmail = await studentModel.findById(fun.copis[co]);
@@ -1132,7 +1155,7 @@ app.post("/faculty-deny-student", (req,res)=>{
         }
 
         var title = fun.title;
-        var emailMessage = 
+        var studentMessage = 
         "PROJECT ID: " +
         fun._id +  
         "\n\nProject Title: " +
@@ -1141,22 +1164,40 @@ app.post("/faculty-deny-student", (req,res)=>{
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
-        var mailOptions = {
+        var mailOptionStudent = {
           from: "orsptemp20@gmail.com",
-          to: emailList,
+          to: studentDB.email,
           cc: ccList,
           subject: "Research Days Project Denied by your Faculty Adviser!",
-          text: emailMessage,
+          text: studentMessage,
         };
-
-        transporter.sendMail(mailOptions, function (err, info){
+        transporter.sendMail(mailOptionStudent, function (err, info){
           if (err) {
             console.log(err);
           } else {
             console.log(info);
           }
-        })
-        res.send({status: true, message: "We good"})
+        });
+
+        var facultyMessage = 
+        "PROJECT ID: " +
+        fun._id +  
+        "\n\nProject Title: " +
+        title + 
+        ", was denied successfully." +
+        "\n\n\n" + 
+        "Please DO NOT reply to this email.";
+
+        var mailOptionFaculty = {
+          from: "orsptemp20@gmail.com",
+          to: facultyEmail,
+          cc: ccList,
+          subject: "Research Days Project Denied by your Faculty Adviser!",
+          text: facultyMessage,
+        };
+        transporter.sendMail(mailOptionFaculty);
+
+        res.send({status: true, message: "We good"});
       }
     })
   }else{
@@ -1252,7 +1293,7 @@ app.post("/faculty-form", async (req,res)=>{
       from: "orsptemp20@gmail.com",
       to: facultyEmail,
       cc: ccList,
-      subject: "Your Faculty Submission Has Been Submitted!",
+      subject: "Your Faculty Project \"" + title + "\" Has Been Submitted!",
       text: emailMessage,
     };
     
