@@ -767,11 +767,14 @@ app.post("/student-form", async (req, res) => {
           coPresenters += coName + ", ";
         }
 
-        if (
-          (await studentModel.exists({ email: coEmail }))
-        ) {
+        if ((await studentModel.exists({ email: coEmail }))){
+
           var temp = await studentModel.findOne({ email: coEmail }).select("_id");
-          coPresenterID.push(temp._id);
+          if(coPresenterID.includes(temp._id)){
+            // Do nothing
+          }else{
+            coPresenterID.push(temp._id);
+          }
         } else {
           var newCoPresenter = new studentModel({
             name: coName,
@@ -1033,8 +1036,7 @@ app.post("/faculty-approve-student", (req,res)=>{
   if(req.session.isFaculty){
 
     var projectsModel = require("./models/projects.js");
-    var projectID = req.body.id;
-    projectsModel.findByIdAndUpdate(projectID, {abstractApproved: req.body.abstractUpdated.trim(), status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, async (err, fun)=>{
+    projectsModel.findByIdAndUpdate(req.body.id, {abstractApproved: req.body.abstractUpdated, status: "Pending PPT", dateApproved: Date.now(), dateLastModified: Date.now()}, async (err, fun)=>{
 
       if(err){
         res.send({status: false, message: `An error occurred: ${err.message}`})
@@ -1079,6 +1081,26 @@ app.post("/faculty-approve-student", (req,res)=>{
     });
   }else{
     res.send({status: false, message: "You are not authorized to access this page. Please login and try again."});
+  }
+})
+
+app.post("/faculty-deny-student", (req,res)=>{
+
+  if(req.session.isFaculty){
+    var projectsModel = require("./models/projects.js");
+    projectsModel.findByIdAndUpdate(req.body.id, {status: "Denied", dateLastModified: Date.now()}, (err, fun)=>{
+
+      if(err){
+        res.send({status: false, message: err.message})
+      }else{
+        /*
+        Reuben email here
+        */
+        res.send({status: true, message: "We good"})
+      }
+    })
+  }else{
+    res.send({status: false, message: "You are not authorized to view this page. Please login to try again"});
   }
 
 })

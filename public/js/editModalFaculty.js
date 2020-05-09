@@ -79,6 +79,26 @@ $('#approveStudent').click(function() {
     }
 });
 
-$('#denyStudent').click(function() {
-   
+$('#denyStudent').click(() =>{
+   if(confirm(`Are you sure you would like to deny ${nameGlobal.split(" ")[0]}'s project ${titleGlobal}?`)){
+       $.ajax({
+        method: "POST",
+        url: "/faculty-deny-student",
+        data: {id: idGlobal},
+        success: (res)=>{
+            if(res.status){
+                alert(`${nameGlobal.split(" ")[0]}'s project has been denied.`);
+                window.location.reload();
+            }else{
+                alert(`Something went wrong when trying to deny the project: ${res.message}`);
+            }
+        },
+        error: (err)=>{
+            alert(`Something went wrong trying to communicate with the server. Please refresh the page and try again.`);
+        }
+
+       })
+   }else{
+       alert(`You did not deny the project.`);
+   }
 });

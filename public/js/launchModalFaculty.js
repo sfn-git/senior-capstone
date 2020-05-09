@@ -1,5 +1,8 @@
 // output information into modal
 var idGlobal;
+var nameGlobal;
+var titleGlobal
+
 function launchStudentModal(
   status,
   title,
@@ -11,6 +14,8 @@ function launchStudentModal(
   lastEdit
 ) {
   idGlobal = id;
+  nameGlobal = primary;
+  titleGlobal = title;
   document.getElementById("studentTitle").innerHTML = title;
 
   //change badge color in modal
