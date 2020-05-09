@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
     <script src="/js/launchModalStudent.js"></script>
+    <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -59,7 +60,15 @@
                         <td><%= projects[element]._id %></td>
                         <td>
                             <button
-                                onclick="launchStudentModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstractSubmitted%>','<%= projects[element].submitter%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisor%>','<%= projects[element].dateLastModified%>')"
+                                onclick="launchStudentModal(
+                                '<%= projects[element].status%>',
+                                '<%= sanitizeText(projects[element].title)%>',
+                                '<%= projects[element]._id %>',
+                                '<%= sanitizeText(projects[element].abstractSubmitted)%>',
+                                '<%= sanitizeText(projects[element].submitter)%>',
+                                '<%= projects[element].copis%>',
+                                '<%= sanitizeText(projects[element].facultyAdvisor)%>',
+                                '<%= projects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                                 <%= projects[element].title %>
                             </button>
@@ -115,7 +124,15 @@
                             <td><%= coProjects[element]._id %></td>
                             <td>
                                 <button
-                                    onclick="launchStudentModal('<%= coProjects[element].status%>','<%= coProjects[element].title%>','<%= coProjects[element]._id %>','<%= coProjects[element].abstractSubmitted%>','<%= coProjects[element].submitter%>','<%= coProjects[element].copis%>','<%= coProjects[element].facultyAdvisor%>','<%= coProjects[element].dateLastModified%>')"
+                                    onclick="launchStudentModal(
+                                        '<%= coProjects[element].status%>',
+                                        '<%= sanitizeText(coProjects[element].title)%>',
+                                        '<%= coProjects[element]._id %>',
+                                        '<%= sanitizeText(coProjects[element].abstractSubmitted)%>',
+                                        '<%= sanitizeText(coProjects[element].submitter)%>',
+                                        '<%= coProjects[element].copis%>',
+                                        '<%= sanitizeText(coProjects[element].facultyAdvisor)%>',
+                                        '<%= coProjects[element].dateLastModified%>')"
                                     class="btn btn-link text-left" data-toggle="modal" data-target="#myModal">
                                     <%= coProjects[element].title %>
                                 </button>
@@ -185,7 +202,8 @@
                                         <div class="modal-footer">
                                             <p class="mr-auto small text-muted" id="lastEdit"></p>
                                             <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                                data-dismiss="modal">Close
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

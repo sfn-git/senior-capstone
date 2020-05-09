@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
     <script src="/js/launchModal.js"></script>
+    <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -15,11 +16,136 @@
     $(function () {
         $("#nav-placeholder").load("/navbar");
     });
-
 </script>
 
-<div class="container p-4">
-    <h1>ORSP Admin Dashboard</h1>
-</div>
+
+
+<body>
+    <div class="container p-4">
+        <h1>ORSP Admin Dashboard</h1>
+
+        <h2>Faculty Submissions</h2>
+        <% if(facCount == 0){%>
+        <div class="container p-4">
+            <h3> You do not have any submissions. <a href="/submission">Click here </a>to start a submission.</h3>
+        </div>
+        <%}else{%>
+        <div class="table-responsive mt-4">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Status</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Date Submitted</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for(var element in projects){%>
+                    <tr>
+                        <td>
+                            <% if(projects[element].status == 'Pending Approval'){%>
+                            <span class="badge badge-info"><%= projects[element].status%></span>
+                            <%}else if (projects[element].status == 'Approved'){%>
+                            <span class="badge badge-success"><%= projects[element].status%></span>
+                            <%}else if (projects[element].status == 'Denied'){%>
+                            <span class="badge badge-danger"><%= projects[element].status%></span>
+                            <%}else{%>
+                            <span class="badge badge-warning">Error: Please contact ORSP</span>
+                            <%}%>
+                        </td>
+
+                        <td><%= projects[element]._id %></td>
+                        <td>
+                            <button onclick="launchFacultySubmissionModal(
+                                        '<%= projects[element].status%>',
+                                        '<%= sanitizeText(projects[element].title)%>',
+                                        '<%= projects[element]._id %>',
+                                        '<%= sanitizeText(projects[element].abstract)%>',
+                                        '<%= sanitizeText(projects[element].description)%>',
+                                        '<%= sanitizeText( projects[element].primaryInvestigator)%>',
+                                        '<%= projects[element].coFacultyInvestigator%>',
+                                        '<%= projects[element].faculty%>',
+                                        '<%= projects[element].dateSubmitted %>')" class="btn btn-link text-left"
+                                data-toggle="modal" data-target="#myFacultyModal">
+                                <%= projects[element].title %>
+                            </button>
+
+                        </td>
+                        <td><%= projects[element].dateSubmitted.toDateString() %></td>
+                    </tr>
+                    <%}%>
+                </tbody>
+
+            </table>
+        </div>
+        <% }%>
+        </div>
+
+        <!-- Faculty Modal -->
+        <div id="myFacultyModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="container">
+                        <div class="modal-header">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h3 id="title"></h3>
+                                </div>
+                                <div class="col">
+                                    <span id="status"></span>
+                                </div>
+                            </div>
+
+                            <!-- warning message and edit -->
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-8 mr-auto">
+                                    <h5>Abstract</h5>
+                                    <p class="my-textbox" id="abstractLaunchModal" contenteditable="false">
+                                    </p>
+                                    <h5>Description</h5>
+                                    <p class="my-textbox" id="description" contenteditable="false">
+                                    </p>
+                                </div>
+                                <div class="col-3">
+                                    <h5>Primary Investigator</h5>
+                                    <p id="primary"></p>
+                                    <h5 class="mt-4">Co-Investigators</h5>
+                                    <p id="coPres"></p>
+                                    <h5 class="mt-4">Students</h5>
+                                    <p id="faculty"></p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <p class="mr-auto small text-muted" id="lastEdit"></p>
+                                <input id="edit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
+                                    type="button" value="Edit" />
+                                <input id="approve" class="edit btn btn-success" type="button" data-dismiss="modal"
+                                    value="Approve" />
+                                <input id="save" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary"
+                                    type="button" value="Submit Changes & Approve" />
+                                <input id="cancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger"
+                                    type="button" data-dismiss="modal" value="Close" />
+                                <input id="close" class="btn btn-secondary" type="button" data-dismiss="modal"
+                                    value="Close" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+
+<!-- edit to save/cancel function -->
+<script src="/js/editModalFaculty.js"></script>
 
 </html>

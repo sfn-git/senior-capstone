@@ -1,5 +1,8 @@
 // output information into modal
 var idGlobal;
+var nameGlobal;
+var titleGlobal
+
 function launchStudentModal(
   status,
   title,
@@ -11,6 +14,8 @@ function launchStudentModal(
   lastEdit
 ) {
   idGlobal = id;
+  nameGlobal = primary;
+  titleGlobal = title;
   document.getElementById("studentTitle").innerHTML = title;
 
   //change badge color in modal
@@ -24,7 +29,7 @@ function launchStudentModal(
     document.getElementById("studentSubmissionID").className = "badge badge-danger";
   }
   else if (status == 'Pending Faculty') {
-    document.getElementById("studentSubmissionID").className = "badge badge-info";
+    document.getElementById("studentSubmissionID").className = "badge badge-warning";
   }
   else if (status == 'Pending PPT') {
     document.getElementById("studentSubmissionID").className = "badge badge-warning";
