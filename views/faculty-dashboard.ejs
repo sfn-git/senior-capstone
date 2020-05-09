@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
     <script defer src="/js/launchModalFaculty.js"></script>
+    <script src="/js/lib/jquery.dataTables.min.js"></script>
+    <script src="/js/sortColumn.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
 <div id="nav-placeholder"></div>
@@ -27,7 +31,7 @@
         </div>
         <%}else{%>
         <div class="table-responsive mt-4">
-            <table class="table table-hover">
+            <table id="sortColumn" class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Status</th>
@@ -48,7 +52,7 @@
                             <%}else if (studentProjects[element].status == 'Denied'){%>
                             <span class="badge badge-danger"><%= studentProjects[element].status%></span>
                             <%}else if (studentProjects[element].status == 'Pending Faculty'){%>
-                            <span class="badge badge-info"><%= studentProjects[element].status%></span>
+                            <span class="badge badge-warning"><%= studentProjects[element].status%></span>
                             <%}else if (studentProjects[element].status == 'Pending PPT'){%>
                             <span class="badge badge-warning"><%= studentProjects[element].status%></span>
                             <%}else{%>
@@ -60,13 +64,30 @@
                         <td>
                             <%if (studentProjects[element].status == 'Approved'){%>
                             <button
-                                onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractApproved.replace(/(\r\n|\n|\r)/gm," ")%>','<%= studentProjects[element].submitter%>','<%= studentProjects[element].copis%>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
+                                onclick="launchStudentModal(
+                                    '<%= studentProjects[element].status%>',
+                                    '<%= sanitizeText(studentProjects[element].title)%>',
+                                    '<%= studentProjects[element]._id %>',
+                                    '<%= sanitizeText(studentProjects[element].abstractApproved)%>',
+                                    '<%= sanitizeText(studentProjects[element].submitter)%>',
+                                    '<%= studentProjects[element].copis%>',
+                                    '<%= sanitizeText(studentProjects[element].facultyAdvisor)%>',
+                                    '<%= studentProjects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
                                 <%= studentProjects[element].title %>
                             </button>
                             <%}else{%>
                             <button
-                                onclick="launchStudentModal('<%= studentProjects[element].status%>','<%= studentProjects[element].title%>','<%= studentProjects[element]._id %>','<%= studentProjects[element].abstractSubmitted.replace(/(\r\n|\n|\r)/gm," ")%>','<%= studentProjects[element].submitter%>','<% studentProjects[element].copis %>','<%= studentProjects[element].facultyAdvisor%>','<%= studentProjects[element].dateLastModified%>')"
+                                onclick="launchStudentModal(
+                                    '<%= studentProjects[element].status%>',
+                                    '<%= sanitizeText(studentProjects[element].title)%>',
+                                    '<%= studentProjects[element]._id %>',
+                                    
+                                    '<%= sanitizeText(studentProjects[element].abstractSubmitted)%>',
+                                    '<%= sanitizeText(studentProjects[element].submitter)%>',
+                                    '<%= studentProjects[element].copis%>',
+                                    '<%= sanitizeText(studentProjects[element].facultyAdvisor)%>',
+                                    '<%= studentProjects[element].dateLastModified%>')"
                                 class="btn btn-link text-left" data-toggle="modal" data-target="#myStudentModal">
                                 <%= studentProjects[element].title %>
                             </button>
@@ -118,7 +139,16 @@
                         <td><%= projects[element]._id %></td>
                             <td>
                                 <button
-                                    onclick="launchFacultySubmissionModal('<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= projects[element].abstract%>', '<%= projects[element].description%>','<%= projects[element].primaryInvestigator%>','<%= projects[element].coFacultyInvestigator%>','<%= projects[element].faculty%>','<%= projects[element].dateSubmitted %>')"
+                                    onclick="launchFacultySubmissionModal(
+                                        '<%= projects[element].status%>',
+                                        '<%= sanitizeText(projects[element].title)%>',
+                                        '<%= projects[element]._id %>',
+                                        '<%= sanitizeText(projects[element].abstract)%>',
+                                        '<%= sanitizeText(projects[element].description)%>',
+                                        '<%= sanitizeText( projects[element].primaryInvestigator)%>',
+                                        '<%= projects[element].coFacultyInvestigator%>',
+                                        '<%= projects[element].faculty%>',
+                                        '<%= projects[element].dateSubmitted %>')"
                                     class="btn btn-link text-left" data-toggle="modal" data-target="#myFacultyModal">
                                     <%= projects[element].title %>
                                 </button>

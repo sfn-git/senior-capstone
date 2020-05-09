@@ -11,7 +11,7 @@
     <script defer src="/js/orspSearch.js"></script>
     <script src="/js/lib/jquery.dataTables.min.js"></script>
     <script src="/js/sortColumn.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
     <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
@@ -26,7 +26,7 @@
     <h1>ORSP Dashboard</h1>
     <input class="form-control mb-4" id="tableSearch" type="text" placeholder="Search..">
     <div class="table-responsive mt-4">
-        <table id="sortColumn" class="table table-hover"> 
+        <table id="sortColumn" class="table table-hover">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Status</th>
@@ -58,15 +58,31 @@
                         <td><%= projects[element]._id %></td>
                     <td>
                         <%if (projects[element].status == 'Approved'){%>
-                        <button
-                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= sanitizeText(projects[element].abstractApproved)%>','<%= projects[element].submitterName%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
-                            class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
+                        <button onclick="launchORSPModal(
+                            '<%= projects[element].notes %>',
+                            '<%= projects[element].status%>',
+                            '<%= sanitizeText(projects[element].title) %>',
+                            '<%= projects[element]._id %>',
+                            '<%= sanitizeText(projects[element].abstractApproved) %>',
+                            '<%= sanitizeText(projects[element].submitterName) %>',
+                            '<%= projects[element].copis%>',
+                            '<%= sanitizeText(projects[element].facultyAdvisorName) %>',
+                            '<%= projects[element].dateLastModified%>')" class="btn btn-link text-left"
+                            data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
                         <%}else{%>
-                        <button
-                            onclick="launchORSPModal('<%= projects[element].notes %>','<%= projects[element].status%>','<%= projects[element].title%>','<%= projects[element]._id %>','<%= sanitizeText(projects[element].abstractSubmitted)%>','<%= projects[element].submitterName%>','<%= projects[element].copis%>','<%= projects[element].facultyAdvisorName%>','<%= projects[element].dateLastModified%>')"
-                            class="btn btn-link text-left" data-toggle="modal" data-target="#myORSPModal">
+                        <button onclick="launchORSPModal(
+                            '<%= projects[element].notes %>',
+                            '<%= projects[element].status%>',
+                            '<%= sanitizeText(projects[element].title) %>',
+                            '<%= projects[element]._id %>',
+                            '<%= sanitizeText(projects[element].abstractSubmitted) %>',
+                            '<%= sanitizeText(projects[element].submitterName) %>',
+                            '<%= projects[element].copis%>',
+                            '<%= sanitizeText(projects[element].facultyAdvisorName) %>',
+                            '<%= projects[element].dateLastModified%>')" class="btn btn-link text-left"
+                            data-toggle="modal" data-target="#myORSPModal">
                             <%= projects[element].title %>
                         </button>
                         <%}%>

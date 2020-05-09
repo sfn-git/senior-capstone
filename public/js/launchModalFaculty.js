@@ -24,7 +24,7 @@ function launchStudentModal(
     document.getElementById("studentSubmissionID").className = "badge badge-danger";
   }
   else if (status == 'Pending Faculty') {
-    document.getElementById("studentSubmissionID").className = "badge badge-info";
+    document.getElementById("studentSubmissionID").className = "badge badge-warning";
   }
   else if (status == 'Pending PPT') {
     document.getElementById("studentSubmissionID").className = "badge badge-warning";
