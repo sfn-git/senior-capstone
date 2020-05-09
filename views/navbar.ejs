@@ -36,6 +36,21 @@
 </li>
 <%}%>
 
+<% if (loggedIn == true && isORSPAdmin && !isORSP){ %>
+  <li class="nav-item">
+    <a class="nav-link" href="/orsp-student-list">Students</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/insert-major">Majors</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/insert-faculty">Faculty</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/orsp-staff">ORSP Staff</a>
+  </li>
+  <%}%>
+
       <% if(!loggedIn){ %>
 <a class="nav-link" href="/contact">Contact Us</a>
 </li>
