@@ -33,9 +33,11 @@ function launchAdminModal(
   document.getElementById("status").innerHTML = status + ": #" + id;
   if (status == "Pending Approval"){
     document.getElementById("adminApprove").style.visibility = "visible";
+    document.getElementById("adminDeny").style.visibility = "visible";
   }
   else {
     document.getElementById("adminApprove").style.visibility = "hidden";
+    document.getElementById("adminDeny").style.visibility = "hidden";
   }
   document.getElementById("adminAbstarct").innerHTML = abstract;
   document.getElementById("description").innerHTML = description;

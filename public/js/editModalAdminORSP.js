@@ -1,13 +1,13 @@
 // orsp
 $('#adminNote').click(function() {
     $(this).hide();
-    $(this).siblings('#adminClose, #adminApprove, #adminRedact').hide();
+    $(this).siblings('#adminClose, #adminApprove, #adminDeny').hide();
     $(this).siblings('#adminSave, #adminCloseNote').show();
 });
 
 $('#adminSave').click(function() {
     if($("#AdminNoteLaunchModal").val() == noteGlobal){
-        $(this).siblings('#adminNote, #adminApprove, #adminRedact, #adminClose').show();
+        $(this).siblings('#adminNote, #adminApprove, #adminDeny, #adminClose').show();
         $(this).siblings('#adminCloseNote').hide();
         $(this).hide();
     }else{
@@ -32,7 +32,7 @@ $('#adminSave').click(function() {
 
 $('#adminCloseNote').click(function() {
     // confirm("Any changes you made, will not be saved! Do you wish to continue?");
-    $(this).siblings('#adminNote, #adminApprove, #adminRedact, #adminClose').show();
+    $(this).siblings('#adminNote, #adminApprove, #adminDeny, #adminClose').show();
     $(this).siblings('#adminSave').hide();
     $(this).hide();
 });
@@ -55,7 +55,7 @@ $('#adminApprove').click(()=> {
     }
 });
 
-$('#adminRedact').click(()=>{
+$('#adminDeny').click(()=>{
 
     if(window.confirm(`Are you sure you would like to redact project #${idGlobal}?`)){
 

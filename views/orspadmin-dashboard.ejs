@@ -131,14 +131,15 @@
                             </div>
                             <div class="modal-footer">
                                 <p class="mr-auto small text-muted" id="lastEdit"></p>
-                                <input id="adminNote" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" 
-                                    value="Add Notes" />
+                                
                                 <input id="adminApprove" class="edit btn btn-success" type="button" data-dismiss="modal"
                                     value="Approve" />
                                 <input id="adminSave" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" 
                                     value="Save Note" />
-                                <input id="adminRedact" class="edit btn btn-warning" type="button" data-dismiss="modal"
-                                    value="Redact" />
+                                <input id="adminDeny" class="edit btn btn-danger" type="button" data-dismiss="modal"
+                                    value="Deny" />
+                                <input id="adminNote" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" 
+                                    value="Add Notes" />
                                 <input id="adminCloseNote" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger" type="button" data-dismiss="modal" 
                                     value="Close" />
                                 <input id="adminClose" class="btn btn-secondary" type="button" data-dismiss="modal"
