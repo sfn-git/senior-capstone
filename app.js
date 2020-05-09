@@ -1203,7 +1203,7 @@ app.post("/faculty-form", async (req,res)=>{
         name: `${req.body["firstName"+(i+1)]} ${req.body["lastName"+(i+1)]}`,
         position: req.body["facultyPosition"+(i+1)],
         campus: req.body["campus"+(i+1)],
-        email: `${req.body["keanEmail"+(i+1)]}@kean.edu`
+        email: `${req.body["keanEmail"+(i+1)]}@kean.edu`.toLowerCase()
       })
       if(i == (coFacultyInvestigatorCount - 1)){
         ccList += facultyProject.coFacultyInvestigator[i].email;
