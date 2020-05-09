@@ -1094,22 +1094,20 @@ app.post("/orsp-approve-faculty",  (req,res)=>{
 
 app.post("/orsp-deny-faculty", (req,res)=>{
 
-  if(req.session.isORSP){
-    var projectsModel = require("./models/projects.js");
+  if(req.session.isORSPAdmin){
+    var projectsFacultyModel = require("./models/facultyProjects.js");
     var projectID = req.body.id;
-    projectsModel.findByIdAndDelete(projectID, async (err,fun)=>{
+    projectsFacultyModel.findByIdAndUpdate(projectID,{status: "Denied"},async (err,fun)=>{
 
       if(err){
         res.send({status: false, message: `${err.message}`});
       }else{
-        var studentModel = require("./models/students.js");
         var facultyModel = require("./models/faculty.js");
-        var studentDB = await studentModel.findOne({_id: fun.submitter});
-        var facultyDB = await facultyModel.findOne({_id: fun.facultyAdvisor});
+        var facultyDB = await facultyModel.findOne({_id: fun.primaryInvestigator});
 
-        var ccList = studentDB.email  + ", " + facultyDB.email + ", ";
-        for(co in fun.copis){
-          var copiEmail = await studentModel.findById(fun.copis[co]);
+        var ccList = facultyDB.email + ", ";
+        for(co in fun.coFacultyInvestigator){
+          var copiEmail = fun.coFacultyInvestigator[co].name;
           ccList += copiEmail.email + ", "
         }
         var title = fun.title;
@@ -1118,7 +1116,7 @@ app.post("/orsp-deny-faculty", (req,res)=>{
         fun._id +  
         "\n\nProject Title: " + 
         title + 
-        ", has been removed from research days. Please submit a new project if you would still like to participate in research days." +
+        ", has been denied from research days." +
         "\n\n\n" + 
         "Please DO NOT reply to this email.";
 
@@ -1126,15 +1124,15 @@ app.post("/orsp-deny-faculty", (req,res)=>{
           from: "orsptemp20@gmail.com",
           to: req.session.email ,
           cc: ccList,
-          subject: "Project Removed.",
+          subject: "Project Denied.",
           text: emailMessage,
         };
 
         transporter.sendMail(mailOptions, function (err, info){
           if (err) {
-            res.send({status: false, message: `Project successfully removed, but the student was unable to receive an email confirmation about it.`})
+            res.send({status: false, message: `Project successfully denied, but the faculty was unable to receive an email confirmation.`})
           } else {
-            res.send({status: true, message:`Project has been removed.`})
+            res.send({status: true, message:`Project has been Denied.`})
           }
         });
       }
@@ -1429,7 +1427,7 @@ app.post("/signin", async (req, res) => {
 
     if(await facultyModel.exists({email: req.session.email})){
       req.session.isFaculty = true;
-      req.session.isStudent = await facultyModel.exists({email: req.session.email});
+      req.session.isStudent = await studentModel.exists({email: req.session.email});
     }
 
     if(await orspModel.exists({email: req.session.email})){
