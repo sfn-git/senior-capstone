@@ -1,5 +1,5 @@
 // =================================================//
-//             All packages required                //
+//          All packages/Configs required           //
 //==================================================//
 const express = require("express");
 const session = require("express-session");
