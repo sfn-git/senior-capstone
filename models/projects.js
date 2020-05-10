@@ -25,7 +25,7 @@ var projectSchema = new schema({
     dateLastModified: {type: Date, default: Date.now, required: true},
     status: {type: String, enum:["Pending ORSP", "Pending Faculty","Approved", "Denied", "Pending PPT", "Retracted"], default:"Pending ORSP", required: true},
     notes: {type: String, default: ""}
-
 });
 
 module.exports = mongoose.model('Project', projectSchema);
+

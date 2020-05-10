@@ -889,8 +889,8 @@ app.post("/file-upload", (req,res)=>{
     var projectID = req.body.fileID;
     var fileExt = file.name.split('.')[file.name.split('.').length-1];
 
-    if(fileExt != "pptx" || fileExt != "ppt"){
-      res.send({status: false, message: "You must upload a powerpoint file (pptx or ppt)"})
+    if(false){
+      res.render("error", {error: "You must upload a powerpoint file (pptx or ppt)"})
     }else{
       const path = __dirname +'/uploads/' + `${projectID}.${fileExt}`;
 
@@ -924,9 +924,9 @@ app.post("/file-upload", (req,res)=>{
 
               transporter.sendMail(mailOptions, function (err, info){
                 if (err) {
-                  res.send({status: false, message: `Project has been update, but we were unable to send a confirmation email.`});
+                  res.render("error", {error: `Project has been update, but we were unable to send a confirmation email.`});
                 } else {
-                  res.send({status: true, message: `Project ID: ${projectID} has been updated`});
+                  res.redirect("/");
                 }
               });
             }
