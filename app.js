@@ -1345,6 +1345,42 @@ app.post("/faculty-form", async (req,res)=>{
   }
 })
 
+app.post("/orsp-approve-faculty", (req, res)=>{
+
+  if(req.session.isORSPAdmin){
+
+    require("./models/facultyProjects").findByIdAndUpdate(req.body.id, {status: "Approved"}, (err, fun)=>{
+
+      if(err){
+        res.send({status: false, message: err.message})
+      }else{
+        res.send({status: true})
+      }
+    })
+  }else{
+    res.send({status: false, message: "You are not authorized to access this page."})
+  }
+})
+
+app.post("/orsp-deny-faculty", (req, res)=>{
+
+  if(req.session.isORSPAdmin){
+
+    require("./models/facultyProjects").findByIdAndUpdate(req.body.id, {status: "Denied"}, (err, fun)=>{
+
+      if(err){
+        res.send({status: false, message: err.message})
+      }else{
+        res.send({status: true})
+      }
+    })
+
+  }else{
+    res.send({status: false, message: "You are not authorized to access this page."})
+  }
+
+})
+
 app.post("/signin", async (req, res) => {
   const CLIENT_ID = "745501205386-1eib7vvmr41pa488m35bf2f9l88thd72.apps.googleusercontent.com";
   var token = req.body;

@@ -64,7 +64,6 @@ $('#adminApprove').click(() => {
 $('#adminDeny').click(() => {
 
     if (window.confirm(`Are you sure you would like to redact project #${idGlobal}?`)) {
-
         $.ajax({
             method: "POST",
             url: "/orsp-deny-faculty",
