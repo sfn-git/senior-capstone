@@ -7,6 +7,10 @@
     <script src="/js/lib/jquery-3.4.1.js"></script>
     <link rel="stylesheet" href="/css/lib/bootstrap.min.css" />
     <script src="/js/lib/bootstrap.min.js"></script>
+    <script src="/js/launchModalAdmin.js"></script>
+    <script src="/js/lib/jquery.dataTables.min.js"></script>
+    <script src="/js/sortColumn.js"></script>
+    <link rel="stylesheet" href="/css/lib/jquery.dataTables.min.css"/>
     <script src="/js/launchModalFaculty.js"></script>
     <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
@@ -31,7 +35,7 @@
         </div>
         <%}else{%>
         <div class="table-responsive mt-4">
-            <table class="table table-hover">
+            <table id=sortColumn class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Status</th>
@@ -46,7 +50,7 @@
                     <tr>
                         <td>
                             <% if(projects[element].status == 'Pending Approval'){%>
-                            <span class="badge badge-info"><%= projects[element].status%></span>
+                            <span class="badge badge-warning"><%= projects[element].status%></span>
                             <%}else if (projects[element].status == 'Approved'){%>
                             <span class="badge badge-success"><%= projects[element].status%></span>
                             <%}else if (projects[element].status == 'Denied'){%>
@@ -58,15 +62,16 @@
 
                         <td><%= projects[element]._id %></td>
                         <td>
-                            <button onclick="launchFacultySubmissionModal(
+                            <button onclick="launchAdminModal(
+                                        '<%= projects[element].notes%>',
                                         '<%= projects[element].status%>',
-                                        '<%= projects[element].title%>',
+                                        '<%= sanitizeText(projects[element].title) %>',
                                         '<%= projects[element]._id %>',
-                                        '<%= projects[element].abstract%>',
-                                        '<%= projects[element].description%>',
-                                        '<%= projects[element].primaryInvestigator%>',
+                                        '<%= sanitizeText(projects[element].abstract) %>',
+                                        '<%= sanitizeText(projects[element].description) %>',
+                                        '<%= sanitizeText(projects[element].primaryInvestigator) %>',
                                         '<%= projects[element].coFacultyInvestigator%>',
-                                        '<%= projects[element].faculty%>',
+                                        '<%= projects[element].coStudentInvestigator%>',
                                         '<%= projects[element].dateSubmitted %>')" class="btn btn-link text-left"
                                 data-toggle="modal" data-target="#myFacultyModal">
                                 <%= projects[element].title %>
@@ -108,32 +113,36 @@
                             <div class="row">
                                 <div class="col-8 mr-auto">
                                     <h5>Abstract</h5>
-                                    <p class="my-textbox" id="abstractLaunchModal" contenteditable="false">
+                                    <p id="adminAbstarct" contenteditable="false">
                                     </p>
                                     <h5>Description</h5>
-                                    <p class="my-textbox" id="description" contenteditable="false">
+                                    <p id="description" contenteditable="false">>
                                     </p>
+                                    <h5>ORSP Notes</h5>
+                                    <textarea rows="5" class="my-textbox" id="AdminNoteLaunchModal" value="" readonly="true"></textarea>
                                 </div>
                                 <div class="col-3">
                                     <h5>Primary Investigator</h5>
                                     <p id="primary"></p>
                                     <h5 class="mt-4">Co-Investigators</h5>
-                                    <p id="coPres"></p>
+                                    <p id="coInve"></p>
                                     <h5 class="mt-4">Students</h5>
-                                    <p id="faculty"></p>
+                                    <p id="students"></p>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <p class="mr-auto small text-muted" id="lastEdit"></p>
-                                <input id="edit" onclick="editable(); editAbstarct();" class="edit btn btn-primary"
-                                    type="button" value="Edit" />
-                                <input id="approve" class="edit btn btn-success" type="button" data-dismiss="modal"
+                                <input id="adminApprove" class="edit btn btn-success" type="button" data-dismiss="modal"
                                     value="Approve" />
-                                <input id="save" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary"
-                                    type="button" value="Submit Changes & Approve" />
-                                <input id="cancel" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger"
-                                    type="button" data-dismiss="modal" value="Close" />
-                                <input id="close" class="btn btn-secondary" type="button" data-dismiss="modal"
+                                <input id="adminSave" onclick="noteditable(); doneEditAbstarct();" class="btn btn-primary" type="button" 
+                                    value="Save Note" />
+                                <input id="adminDeny" class="edit btn btn-danger" type="button" data-dismiss="modal"
+                                    value="Deny" />
+                                <input id="adminNote" onclick="editable(); editAbstarct();" class="edit btn btn-primary" type="button" 
+                                    value="Add Notes" />
+                                <input id="adminCloseNote" onclick="noteditable(); doneEditAbstarct();" class="btn btn-danger" type="button" data-dismiss="modal" 
+                                    value="Close" />
+                                <input id="adminClose" class="btn btn-secondary" type="button" data-dismiss="modal"
                                     value="Close" />
                             </div>
                         </div>
@@ -146,6 +155,6 @@
 </body>
 
 <!-- edit to save/cancel function -->
-<script src="/js/editModalFaculty.js"></script>
+<script src="/js/editModalAdminORSP.js"></script>
 
 </html>

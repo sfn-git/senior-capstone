@@ -21,17 +21,19 @@ tbody {
   background-color: #f8f9fa !important;
 }
 
-#abstractLaunchModal,#studentAbstractLaunchModal, #noteLaunchModal{
-  border: thin solid white;
+#abstractLaunchModal,#studentAbstractLaunchModal,#noteLaunchModal{
+  border: thick solid white;
   padding: 2px;
   width: 100%;
   word-wrap: break-word;
 }
 
-/* #customFile
-{
-max-width: 300px;
-} */
+#AdminNoteLaunchModal{
+  border: thick solid white;
+  padding: 2px;
+  width: 100%;
+  word-wrap: break-word;
+}
 
 #IPO {
   visibility: hidden;
@@ -69,6 +71,15 @@ max-width: 300px;
   }
 
 #ORSPapprove {
+  visibility: hidden;
+}
+
+/*Admin edit options*/
+#adminSave, #adminCloseNote {
+  display:none;
+  }
+
+#adminApprove {
   visibility: hidden;
 }
 

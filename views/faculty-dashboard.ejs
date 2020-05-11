@@ -11,7 +11,7 @@
     <script defer src="/js/abstractRevisionCharCounter.js"></script>
     <script src="/js/lib/jquery.dataTables.min.js"></script>
     <script src="/js/sortColumn.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="/css/lib/jquery.dataTables.min.css"/>
     <% function sanitizeText(expression){return expression.replace(/(\r\n|\n|\r)/gm,' ').replace(/'/g, "\\'"); } %>
 </head>
 
@@ -47,7 +47,7 @@
                     <tr>
                         <td>
                             <% if(studentProjects[element].status == 'Pending ORSP'){%>
-                            <span class="badge badge-info"><%= studentProjects[element].status%></span>
+                            <span class="badge badge-warning"><%= studentProjects[element].status%></span>
                             <%}else if (studentProjects[element].status == 'Approved'){%>
                             <span class="badge badge-success"><%= studentProjects[element].status%></span>
                             <%}else if (studentProjects[element].status == 'Denied'){%>
@@ -55,7 +55,7 @@
                             <%}else if (studentProjects[element].status == 'Pending Faculty'){%>
                             <span class="badge badge-warning"><%= studentProjects[element].status%></span>
                             <%}else if (studentProjects[element].status == 'Pending PPT'){%>
-                            <span class="badge badge-warning"><%= studentProjects[element].status%></span>
+                            <span class="badge badge-info"><%= studentProjects[element].status%></span>
                             <%}else{%>
                             <span class="badge badge-warning">Error: Please contact ORSP</span>
                             <%}%>
