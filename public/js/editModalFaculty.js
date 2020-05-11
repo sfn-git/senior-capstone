@@ -40,7 +40,7 @@ $('#reviewStudent').click(function() {
 
 $('#cancelStudentReview,#reviewStudent').click(function() {
     // confirm("Any changes you made, will not be saved! Do you wish to continue?");
-    $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent').show();
+    $(this).siblings('#editStudentsAbstarct, #approveStudent, #closeStudent, #denyStudent').show();
     $(this).siblings('#reviewStudent').hide();
     $(this).hide();
     document.getElementById("abstractCharRemaining").style.visibility = "hidden";
