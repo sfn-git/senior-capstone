@@ -10,13 +10,13 @@ Back-End Development: Syed Fahad Nadeem and Reuben Hernandez
 
 ## Prerequisites
 
-1. Have a computer (duh)
-2. Install [node.js](https://nodejs.org/en/download/) on your computer  
+1. Install [node.js](https://nodejs.org/en/download/) on your computer
+2. MongoDB Server
 
-## How to test the code/what the hell is going on
+## How to test the code
 
 1. Clone the repo.  
-`git clone https://github.com/mrfn323/senior-capstone`
+`git clone https://github.com/sfn-git/senior-capstone`
 2. Go into the directory and on the command line do...  
 `npm install`  
 
